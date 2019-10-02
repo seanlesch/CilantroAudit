@@ -30,10 +30,20 @@ This project will be developed using a feature-branch strategy.
   - https://www.jetbrains.com/pycharm/download
   - Make sure to go to `licenses` and login with your student pack account
 
+### Quick Dev-Environment Setup
+1. Create New Project in Pycharm.
+2. In Pycharm's Terminal: 
+  - 'git clone' this repo.
+  - 'pip3 install' the following:
+    - mongoengine
+    - pymongo (maybe?)
+    - kivy
+3. Right-Click the "source" dir and (towards the bottom) click "mark directory as..." > "Sources Root"
+
 #### Python Installation to Work w/ Pycharm
 - Download Python 3.7.4 here
   - https://www.python.org/downloads/release/python-374/
-  
+    
 #### Git Integration w/ Pycharm
 - Install GIT here required for use w/ IDE (cross-platform)
   - https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
