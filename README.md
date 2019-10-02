@@ -36,7 +36,6 @@ This project will be developed using a feature-branch strategy.
   - 'git clone' this repo.
   - 'pip3 install' the following:
     - mongoengine
-    - pymongo (maybe?)
     - kivy
 3. Right-Click the "source" dir and (towards the bottom) click "mark directory as..." > "Sources Root"
 
