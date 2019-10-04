@@ -41,6 +41,7 @@ This project will be developed using a feature-branch strategy.
   - `source env/bin/activate` to get into virtual environment
   - `pip3 install -r requirements.txt` to install the requirements such as kivy and mongoengine for the venv
 3. Right-Click the "source" dir and (towards the bottom) click "mark directory as..." > "Sources Root"
+4. Make sure your virtualenv is correctly configured in PyCharm following the steps here: https://www.jetbrains.com/help/pycharm/creating-virtual-environment.html
 
 #### Python Installation to Work w/ Pycharm
 - Download Python 3.7.4 here
