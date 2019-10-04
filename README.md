@@ -34,6 +34,7 @@ This project will be developed using a feature-branch strategy.
 1. Create New Project in Pycharm.
 2. In Pycharm's Terminal: 
   - 'git clone' this repo.
+  - Create a virtual environment following this tutorial for your platform: https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/
   - 'pip3 install' the following:
     - mongoengine
     - kivy
