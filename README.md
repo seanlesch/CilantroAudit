@@ -34,10 +34,12 @@ This project will be developed using a feature-branch strategy.
 1. Create New Project in Pycharm.
 2. In Pycharm's Terminal: 
   - 'git clone' this repo.
+  - cd <repo>
   - Create a virtual environment following this tutorial for your platform: https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/
-  - 'pip3 install' the following:
-    - mongoengine
-    - kivy
+    - `pip3 install venv` to install virtual environment
+    - `python3 -m venv env` to create a virtual environment
+  - `source env/bin/activate` to get into virtual environment
+  - `pip3 install -r requirements.txt` to install the requirements such as kivy and mongoengine for the venv
 3. Right-Click the "source" dir and (towards the bottom) click "mark directory as..." > "Sources Root"
 
 #### Python Installation to Work w/ Pycharm
