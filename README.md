@@ -18,7 +18,7 @@ Copyright (c) 2019 Sean Lesch
 
 This project will be developed using a feature-branch strategy.
 1. Create a new branch. Good convention to have the name describe the feature being implemented.
-2. Fully implement that feature.
+2. Fully implement that feature with necessary tests.
 3. Ensure there are no bugs that can break the master branch/release build.
 4. Merge into master using a pull request.
 
