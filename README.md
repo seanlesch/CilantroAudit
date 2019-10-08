@@ -12,7 +12,15 @@ Copyright (c) 2019 Sean Lesch
 
 ## Contributors
 
-*Capstone Team C* - Aaron, Bader, Bradley, Erik, Kegan, Josiah, Sean, Steven
+(Summer/Fall 2019) - Team C
+- Aaron
+- Bader Alshaya
+- Bradley
+- Erik
+- Kegan
+- Josiah
+- Sean
+- Steven
 
 ### How to Contribute
 
