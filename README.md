@@ -69,5 +69,9 @@ This project will be developed using a feature-branch strategy.
 - Kivy
   - Kivy is a free and open source Python library for developing mobile apps and other multitouch application software with a natural user interface.
   - Guide: https://kivy.org/doc/stable/guide/basic.html
+  
+#### Development Information
+- Style guide
+  - https://www.python.org/dev/peps/pep-0008/
 
 ## (TBA) Program Usage
