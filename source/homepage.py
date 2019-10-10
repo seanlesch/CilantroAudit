@@ -8,6 +8,7 @@ kivy.require('1.11.1')
 Config.set('graphics', 'resizable', '0')
 homePageLayout = Builder.load_file('./widgets/homepage.kv')
 
+
 class HomePage(App):
 
     def build(self):
