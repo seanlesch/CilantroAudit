@@ -1,5 +1,5 @@
 # Header something something something
-from mongoengine import *
+from mongoengine import Document, StringField, EmbeddedDocumentListField
 from source.question import Question
 
 class AuditTemplate(Document):

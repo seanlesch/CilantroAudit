@@ -1,4 +1,4 @@
-from mongoengine import *
+from mongoengine import EmbeddedDocument, StringField
 
 
 class SeverityEnum:
