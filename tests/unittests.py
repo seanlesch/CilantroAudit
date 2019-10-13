@@ -3,14 +3,36 @@ import os
 import sys
 import unittest
 
+# Add the parent directory to the path
+# Taken from: https://stackoverflow.com/questions/714063/importing-modules-from-parent-folder
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
 from source.question import *
+from source.severity import *
 
 
-class MyTestCase(unittest.TestCase):
+class SeverityTests(unittest.TestCase):
+    def test_default_severity(self):
+        self.assertEqual(SeverityEnum.GREEN, Severity.default().severity)
+
+    def test_severity_constructors(self):
+        self.assertEqual(SeverityEnum.RED, Severity.red().severity)
+        self.assertEqual(SeverityEnum.YELLOW, Severity.yellow().severity)
+        self.assertEqual(SeverityEnum.GREEN, Severity.green().severity)
+
+    def test_severity_is_required(self):
+        self.assertEqual(None, Severity.default().validate())
+        self.assertRaises(ValidationError, Severity().validate)
+
+    def test_next_severity(self):
+        self.assertEqual(Severity.yellow(), Severity.green().next())
+        self.assertEqual(Severity.red(), Severity.yellow().next())
+        self.assertEqual(Severity.green(), Severity.red().next())
+
+
+class QuestionTests(unittest.TestCase):
     def test_question_with_text(self):
         expected = "Question Text"
         question = Question(text=expected)
@@ -42,6 +64,12 @@ class MyTestCase(unittest.TestCase):
         too_many_characters = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2f"
         self.assertEqual(None, Question(text=fifty_characters).validate())
         self.assertRaises(ValidationError, Question(text=too_many_characters).validate)
+
+    def test_text_min_length(self):
+        one_character = "."
+        empty_string = ""
+        self.assertEqual(None, Question(text=one_character).validate())
+        self.assertRaises(ValidationError, Question(text=empty_string).validate)
 
 
 if __name__ == '__main__':
