@@ -8,10 +8,10 @@ from mongoengine import ValidationError
 # Taken from: https://stackoverflow.com/questions/714063/importing-modules-from-parent-folder
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
+sys.path.insert(0, os.path.join(parentdir, "source"))
 
-from source.audit_template_builder import *
-from source.question import Question
+from audit_template_builder import *
+from question import Question
 from mongoengine import ValidationError
 
 
