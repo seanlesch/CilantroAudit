@@ -11,7 +11,6 @@ sys.path.insert(0, parentdir)
 
 from source.audit_template import *
 
-default_question_list = [Question(text="Text")]
 
 class AuditTemplateTests(unittest.TestCase):
     def test_title_is_required(self):
@@ -42,7 +41,8 @@ class AuditTemplateTests(unittest.TestCase):
         fifty_characters = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2"
         too_many_characters = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2f"
         self.assertEqual(None, AuditTemplate(title=fifty_characters, questions=[Question(text="Text")]).validate())
-        self.assertRaises(ValidationError, AuditTemplate(title=too_many_characters, questions=[Question(text="Text")]).validate)
+        self.assertRaises(ValidationError,
+                          AuditTemplate(title=too_many_characters, questions=[Question(text="Text")]).validate)
 
     @staticmethod
     def run_tests():
