@@ -1,4 +1,4 @@
-from source.audit_template import AuditTemplate
+from audit_template import AuditTemplate
 
 class AuditTemplateBuilder:
     def __init__(self):

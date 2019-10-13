@@ -1,5 +1,5 @@
 from mongoengine import EmbeddedDocument, EmbeddedDocumentField, StringField
-from source.severity import Severity
+from severity import Severity
 
 
 class Question(EmbeddedDocument):
