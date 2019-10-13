@@ -6,14 +6,6 @@ class SeverityEnum:
     YELLOW = "YELLOW"
     GREEN = "GREEN"
 
-    def next(self):
-        if SeverityEnum.GREEN == self:
-            return SeverityEnum.YELLOW
-        elif SeverityEnum.YELLOW == self:
-            return SeverityEnum.RED
-        else:
-            return SeverityEnum.RED
-
 
 class Severity(EmbeddedDocument):
     severity = StringField(required=True)
