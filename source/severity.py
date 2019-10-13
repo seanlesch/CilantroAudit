@@ -1,7 +1,5 @@
 from mongoengine import *
 
-severities = {"RED", "YELLOW", "GREEN"}
-
 class SeverityEnum:
     RED = "RED"
     YELLOW = "YELLOW"
@@ -10,6 +8,9 @@ class SeverityEnum:
 
 class Severity(Document):
     severity = StringField(required=True)
+
+    def __init__(self, *args, **values):
+        super().__init__(*args, **values)
 
     @staticmethod
     def default():

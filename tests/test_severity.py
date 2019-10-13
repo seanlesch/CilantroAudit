@@ -12,5 +12,9 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(SeverityEnum.YELLOW, Severity(SeverityEnum.YELLOW).severity)
         self.assertEqual(SeverityEnum.GREEN,  Severity(SeverityEnum.GREEN).severity)
 
+    def test_severity_is_required(self):
+        self.assertEqual(None, Severity.default().validate())
+        self.assertRaises(ValidationError, Severity().validate)
+
 if __name__ == '__main__':
     unittest.main()
