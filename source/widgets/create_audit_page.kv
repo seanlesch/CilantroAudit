@@ -3,15 +3,15 @@
     question_list: question_list
 
     FloatLayout:
-
         size: root.width, root.height
 
-        RecycleView:
-            id: question_list
-            viewclass: 'Button'
-            pos_hint: {"x": 0, "top": 1}
+        ScrollView:
             size_hint: 1, .85
-            data: root.rv_data
+            pos_hint: {"top": 1}
+
+            StackLayout:
+                id: question_list
+                size_hint_y: None
 
         Button:
             text: "Add Question"
