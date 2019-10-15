@@ -1,0 +1,29 @@
+<CreateAuditPage>:
+
+    question_list: question_list
+
+    FloatLayout:
+
+        size: root.width, root.height
+
+        RecycleView:
+            id: question_list
+            viewclass: 'Button'
+            pos_hint: {"x": 0, "top": 1}
+            size_hint: 1, .85
+            data: root.rv_data
+
+        Button:
+            text: "Add Question"
+            size_hint: .15, .1
+            on_press: root.add_question()
+
+        Button:
+            text: "Submit"
+            size_hint: .15, .1
+            pos_hint: {"right": 1, "y": 0}
+
+        Button:
+            text: "Back"
+            size_hint: .15, .1
+            pos_hint: {"right": .85, "bottom": 0}
