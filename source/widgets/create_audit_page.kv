@@ -1,17 +1,33 @@
 <CreateAuditPage>:
 
-    question_list: question_list
+    stack_list: stack_list
+    audit_title: audit_title
 
     FloatLayout:
         size: root.width, root.height
 
         ScrollView:
-            size_hint: 1, .85
+            size_hint: 1, .89
             pos_hint: {"top": 1}
 
             StackLayout:
-                id: question_list
+                id: stack_list
                 size_hint_y: None
+                height: 100
+
+                GridLayout:
+                    row_force_default: True
+                    row_default_height: 30
+                    cols: 2
+                    rows: 1
+                    size_hint_y: None
+
+                    Label:
+                        text: "Audit Name:"
+
+                    TextInput:
+                        id: audit_title
+                        multiline: False
 
         Button:
             text: "Add Question"
@@ -22,6 +38,7 @@
             text: "Submit"
             size_hint: .15, .1
             pos_hint: {"right": 1, "y": 0}
+            on_press: root.submit_audit()
 
         Button:
             text: "Back"
