@@ -18,7 +18,9 @@ class CreateAuditPage(FloatLayout):
 
     def add_question(self):
         self.counter += 1
-        self.question_list.add_widget(Button(id=str(self.counter), text="New Question " + str(self.counter), size_hint=(1, 1)))
+        self.question_list.add_widget(Button(id=str(self.counter), text="New Question " + str(self.counter),
+                                             size_hint=(1, None), height=100))
+        self.question_list.height = self.counter * 100
         print(self.counter)
 
 
