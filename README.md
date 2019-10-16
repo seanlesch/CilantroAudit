@@ -12,7 +12,7 @@ Copyright (c) 2019 Sean Lesch
 
 ## Contributors
 
-(Summer/Fall 2019) - Team C
+(Summer/Fall 2019e) - Team C
 - Aaron
 - Bader Alshaya
 - Bradley
