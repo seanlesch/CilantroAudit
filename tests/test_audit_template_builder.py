@@ -10,8 +10,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, os.path.join(parentdir, "source"))
 
-from audit_template_builder import *
-from question import Question
+from audit_template import AuditTemplateBuilder, Question
 from mongoengine import ValidationError
 
 

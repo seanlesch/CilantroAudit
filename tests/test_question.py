@@ -10,7 +10,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, os.path.join(parentdir, "source"))
 
-from question import *
+from audit_template import Question, Severity
 
 
 class QuestionTests(unittest.TestCase):

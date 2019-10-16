@@ -1,9 +1,8 @@
-from question import Question
-from severity import Severity
-from audit_template_builder import AuditTemplateBuilder
+from audit_template import AuditTemplateBuilder, Question, Severity
 from mongoengine import connect
 
-connect("toast")
+connect("toost")
+
 
 if __name__ == '__main__':
     question1 = Question(text="Was there dust on the thing?")
@@ -26,6 +25,3 @@ if __name__ == '__main__':
         .with_question(question3) \
         .build() \
         .save()
-
-
-

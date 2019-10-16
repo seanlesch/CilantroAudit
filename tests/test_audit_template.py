@@ -11,7 +11,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, os.path.join(parentdir, "source"))
 
-from audit_template import *
+from audit_template import AuditTemplate, Question
 
 
 class AuditTemplateTests(unittest.TestCase):
