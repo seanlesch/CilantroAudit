@@ -23,26 +23,29 @@ class AuditTemplateTests(unittest.TestCase):
 
     def test_storage_and_retrieval(self):
         title = "Test Storage And Retrieval"
-        question1 = Question(text="Question 0")
+        q0_text = "Question 0"
+        q1_text = "Question 1"
+        q2_text = "Question 2"
+        question0 = Question(text=q0_text)
 
-        question2 = Question(text="Question 1", yes=Severity.red())
+        question1 = Question(text=q1_text, yes=Severity.red())
 
-        question3 = Question(text="Question 2", no=Severity.red(), other=Severity.yellow())
+        question2 = Question(text=q2_text, no=Severity.red(), other=Severity.yellow())
 
         AuditTemplateBuilder() \
             .with_title(title) \
+            .with_question(question0) \
             .with_question(question1) \
             .with_question(question2) \
-            .with_question(question3) \
             .build() \
             .save()
 
-        self.assertEqual(1, AuditTemplate.objects[:1](title=title).count())
-        for template in AuditTemplate.objects[:1](title=title):
-            self.assertEqual(title, template.title)
-            self.assertEqual("Question 0", template.questions[0].text)
-            self.assertEqual("Question 1", template.questions[1].text)
-            self.assertEqual("Question 2", template.questions[2].text)
+        templates = AuditTemplate.objects(title=title)
+        self.assertEqual(1, len(templates))
+        self.assertEqual(title, templates[0].title)
+        self.assertEqual(q0_text, templates[0].questions[0].text)
+        self.assertEqual(q1_text, templates[0].questions[1].text)
+        self.assertEqual(q2_text, templates[0].questions[2].text)
 
 if __name__ == '__main__':
     unittest.main()
