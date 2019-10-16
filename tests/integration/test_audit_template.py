@@ -42,8 +42,9 @@ class AuditTemplateTests(unittest.TestCase):
 
         templates = AuditTemplate.objects(title=title)
 
-        self.assertEqual(1, len(templates))
         self.assertEqual(title, templates[0].title)
+        self.assertEqual(1, len(templates))
+        self.assertEqual(3, len(templates[0].questions))
 
         self.assertEqual(q0_text, templates[0].questions[0].text)
         self.assertEqual(Severity.green(), templates[0].questions[0].yes)
@@ -59,6 +60,7 @@ class AuditTemplateTests(unittest.TestCase):
         self.assertEqual(Severity.green(),  templates[0].questions[2].yes)
         self.assertEqual(Severity.red(),    templates[0].questions[2].no)
         self.assertEqual(Severity.yellow(), templates[0].questions[2].other)
+
 
     @staticmethod
     def run_tests():
