@@ -2,6 +2,7 @@ import inspect
 import os
 import sys
 import unittest
+from datetime import datetime
 from mongoengine import ValidationError
 
 # Add the parent directory to the path
@@ -73,3 +74,11 @@ class CompletedAuditBuilderTests(unittest.TestCase):
             .with_auditor("Auditor") \
             .with_answer(VALID_ANSWER)
         self.assertRaises(ValidationError, builder.build)
+
+    def test_datetime_stamp(self):
+        audit = CompletedAuditBuilder() \
+            .with_title("Title") \
+            .with_auditor("Auditor") \
+            .with_answer(VALID_ANSWER) \
+            .build()
+        self.assertGreaterEqual(datetime.utcnow(), audit.datetime)

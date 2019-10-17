@@ -8,7 +8,6 @@ connect("troast")
 
 
 if __name__ == '__main__':
-
     CompletedAuditBuilder() \
         .with_title("Boiler Room Shenanigans") \
         .with_auditor("Jimmy Johns") \

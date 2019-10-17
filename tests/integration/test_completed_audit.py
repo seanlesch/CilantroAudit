@@ -2,7 +2,8 @@ import inspect
 import os
 import sys
 import unittest
-from mongoengine import connect, get_db
+from datetime import datetime
+from mongoengine import connect
 
 # Add the parent directory to the path
 # Taken from: https://stackoverflow.com/answers/714063/importing-modules-from-parent-folder
@@ -99,5 +100,6 @@ class CompletedAuditTests(unittest.TestCase):
         self.assertEqual(a2_response, audit.answers[2].response)
         self.assertEqual(a2_comments, audit.answers[2].comments)
 
+        self.assertGreaterEqual(datetime.utcnow(), audit.datetime)
 
 
