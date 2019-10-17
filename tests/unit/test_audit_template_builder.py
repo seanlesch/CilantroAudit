@@ -12,7 +12,6 @@ rootdir = os.path.dirname(parentdir)
 sys.path.insert(0, os.path.join(rootdir, "source"))
 
 from audit_template import AuditTemplateBuilder, Question
-from mongoengine import ValidationError
 
 
 class AuditTemplateBuilderTests(unittest.TestCase):
