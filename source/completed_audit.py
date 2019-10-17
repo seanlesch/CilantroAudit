@@ -1,4 +1,5 @@
-from mongoengine import Document, StringField, EmbeddedDocument, EmbeddedDocumentField, EmbeddedDocumentListField
+from mongoengine import Document, StringField, DateTimeField, EmbeddedDocument, EmbeddedDocumentField, EmbeddedDocumentListField
+from audit_template import Severity
 
 
 class ResponseEnum:
@@ -25,10 +26,15 @@ class Response(EmbeddedDocument):
 
 class Answer(EmbeddedDocument):
     text = StringField(required=True, max_length=50, min_length=1)
+    severity = EmbeddedDocumentField(Severity, required=True)
     response = EmbeddedDocumentField(Response, required=True)
     comments = StringField(max_length=150, min_length=1)
 
 
 class CompletedAudit(Document):
     title = StringField(required=True, max_length=50, min_length=1)
+    datetime = DateTimeField(required=True)
+    auditor = StringField(required=True, max_length=50, min_length=1)
     answers = EmbeddedDocumentListField(Answer, required=True)
+
+
