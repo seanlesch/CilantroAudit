@@ -15,6 +15,7 @@ from audit_template import AuditTemplate, AuditTemplateBuilder, Question, Severi
 
 connect("testdb")
 
+
 class AuditTemplateTests(unittest.TestCase):
 
     def __del__(self):
@@ -54,11 +55,11 @@ class AuditTemplateTests(unittest.TestCase):
         self.assertEqual(Severity.green(), template.questions[0].other)
 
         self.assertEqual(q1_text, template.questions[1].text)
-        self.assertEqual(Severity.red(),   template.questions[1].yes)
+        self.assertEqual(Severity.red(), template.questions[1].yes)
         self.assertEqual(Severity.green(), template.questions[1].no)
         self.assertEqual(Severity.green(), template.questions[1].other)
 
         self.assertEqual(q2_text, template.questions[2].text)
-        self.assertEqual(Severity.green(),  template.questions[2].yes)
-        self.assertEqual(Severity.red(),    template.questions[2].no)
+        self.assertEqual(Severity.green(), template.questions[2].yes)
+        self.assertEqual(Severity.red(), template.questions[2].no)
         self.assertEqual(Severity.yellow(), template.questions[2].other)

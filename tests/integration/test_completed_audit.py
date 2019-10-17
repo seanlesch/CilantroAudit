@@ -17,6 +17,7 @@ from audit_template import Severity
 
 connect("testdb")
 
+
 class CompletedAuditTests(unittest.TestCase):
 
     def __del__(self):
@@ -44,25 +45,25 @@ class CompletedAuditTests(unittest.TestCase):
             .with_title(title) \
             .with_auditor(auditor) \
             .with_answer(
-                Answer(
-                    text=a0_text,
-                    severity=a0_severity,
-                    response=a0_response,
-                )
-            ).with_answer(
-                Answer(
-                    text=a1_text,
-                    severity=a1_severity,
-                    response=a1_response,
-                )
-            ).with_answer(
-                Answer(
-                    text=a2_text,
-                    severity=a2_severity,
-                    response=a2_response,
-                    comments=a2_comments,
-                )
-            ).build().save()
+            Answer(
+                text=a0_text,
+                severity=a0_severity,
+                response=a0_response,
+            )
+        ).with_answer(
+            Answer(
+                text=a1_text,
+                severity=a1_severity,
+                response=a1_response,
+            )
+        ).with_answer(
+            Answer(
+                text=a2_text,
+                severity=a2_severity,
+                response=a2_response,
+                comments=a2_comments,
+            )
+        ).build().save()
 
         audits = CompletedAudit.objects(title=title)
 
@@ -101,5 +102,3 @@ class CompletedAuditTests(unittest.TestCase):
         self.assertEqual(a2_comments, audit.answers[2].comments)
 
         self.assertGreaterEqual(datetime.utcnow(), audit.datetime)
-
-

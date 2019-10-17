@@ -15,7 +15,6 @@ sys.path.insert(0, os.path.join(rootdir, "source"))
 from completed_audit import CompletedAuditBuilder, Answer, Response
 from audit_template import Severity
 
-
 VALID_ANSWER = Answer(
     text="Text",
     severity=Severity.red(),
@@ -35,7 +34,6 @@ class CompletedAuditBuilderTests(unittest.TestCase):
             .with_auditor("Auditor") \
             .with_answer(VALID_ANSWER)
         self.assertRaises(ValidationError, builder.build)
-
 
     def test_auditor_is_required(self):
         builder = CompletedAuditBuilder() \
