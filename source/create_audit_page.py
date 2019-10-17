@@ -1,4 +1,5 @@
 import kivy
+import questionModule
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -6,6 +7,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
+from questionModule import QuestionModule
 
 kivy.require("1.11.1")
 
@@ -32,10 +34,11 @@ class CreateAuditPage(FloatLayout):
     # to the question list dictionary.
     def add_question(self):
         self.q_counter += 1
-        q_temp = TextInput(text="New Question " + str(self.q_counter), size_hint=(1, None), height=100)
+        self.stack_list.height += 200
+        q_temp = QuestionModule()
+        # q_temp = TextInput(text="New Question " + str(self.q_counter), size_hint=(1, None), height=100)
         self.stack_list.add_widget(q_temp)
         self.question_list[str(self.q_counter)] = q_temp
-        self.stack_list.height += 100
         print(self.q_counter)
 
     # submit_audit gathers all the information from the questions and sends it to the database
@@ -47,7 +50,7 @@ class CreateAuditPage(FloatLayout):
     def submit_audit(self, callback):
         print(self.audit_title.text)
         for i in range(1, self.q_counter+1):
-            print(self.question_list[str(i)].text)
+            print(self.question_list[str(i)].question_text.text)
 
     def back(self):
         show = ConfirmationPop()
