@@ -53,7 +53,3 @@ class QuestionTests(unittest.TestCase):
         empty_string = ""
         self.assertEqual(None, Question(text=one_character).validate())
         self.assertRaises(ValidationError, Question(text=empty_string).validate)
-
-    @staticmethod
-    def run_tests():
-        unittest.main()

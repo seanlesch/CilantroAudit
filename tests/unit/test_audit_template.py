@@ -46,8 +46,3 @@ class AuditTemplateTests(unittest.TestCase):
         self.assertEqual(None, AuditTemplate(title=fifty_characters, questions=[Question(text="Text")]).validate())
         self.assertRaises(ValidationError,
                           AuditTemplate(title=too_many_characters, questions=[Question(text="Text")]).validate)
-
-    @staticmethod
-    def run_tests():
-        unittest.main()
-

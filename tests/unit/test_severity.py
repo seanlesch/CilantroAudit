@@ -31,7 +31,3 @@ class SeverityTests(unittest.TestCase):
         self.assertEqual(Severity.yellow(), Severity.green().next())
         self.assertEqual(Severity.red(), Severity.yellow().next())
         self.assertEqual(Severity.green(), Severity.red().next())
-
-    @staticmethod
-    def run_tests():
-        unittest.main()

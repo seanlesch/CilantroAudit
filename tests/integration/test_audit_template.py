@@ -60,9 +60,3 @@ class AuditTemplateTests(unittest.TestCase):
         self.assertEqual(Severity.green(),  templates[0].questions[2].yes)
         self.assertEqual(Severity.red(),    templates[0].questions[2].no)
         self.assertEqual(Severity.yellow(), templates[0].questions[2].other)
-
-
-    @staticmethod
-    def run_tests():
-        unittest.main()
-
