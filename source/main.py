@@ -1,27 +1,33 @@
-from audit_template import AuditTemplateBuilder, Question, Severity
-from mongoengine import connect
+# from audit_template import AuditTemplateBuilder, Question, Severity
+from audit_template import Severity
+from completed_audit import CompletedAudit, CompletedAuditBuilder, Answer, Response
+from mongoengine import connect, ValidationError
 
-connect("toost")
-
+connect("troast")
 
 if __name__ == '__main__':
-    question1 = Question(text="Was there dust on the thing?")
-
-    question2 = Question(
-        text="Did you stick your head in the boiler?",
-        yes=Severity.red(),
-    )
-
-    question3 = Question(
-        text="Did you clean the boiler today?",
-        no=Severity.red(),
-        other=Severity.yellow(),
-    )
-
-    AuditTemplateBuilder() \
-        .with_title("Boiler Room Shenanigans") \
-        .with_question(question1) \
-        .with_question(question2) \
-        .with_question(question3) \
-        .build() \
-        .save()
+    try:
+        CompletedAuditBuilder() \
+            .with_title("Boiler Room Shenanigans") \
+            .with_auditor("Jimmy Johns") \
+            .with_answer(
+            Answer(
+                text="Did you stick your head in the boiler?",
+                severity=Severity.red(),
+                response=Response.yes(),
+            )
+        ).with_answer(
+            Answer(
+                text="Was there dust on the machine?",
+                response=Response.no(),
+                severity=Severity.green(),
+            )
+        ).with_answer(
+            Answer(
+                text="Did you clean the machine?",
+                response=Response.other(),
+                severity=Severity.yellow(),
+            )
+        ).build().save()
+    except ValidationError as error:
+        print(error.message)
