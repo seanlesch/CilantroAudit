@@ -11,9 +11,6 @@ class SeverityEnum:
 class Severity(EmbeddedDocument):
     severity = StringField(required=True)
 
-    def __init__(self, *args, **values):
-        super().__init__(*args, **values)
-
     @staticmethod
     def default():
         return Severity.green()
