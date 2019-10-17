@@ -46,17 +46,19 @@ class AuditTemplateTests(unittest.TestCase):
         self.assertEqual(1, len(templates))
         self.assertEqual(3, len(templates[0].questions))
 
-        self.assertEqual(q0_text, templates[0].questions[0].text)
-        self.assertEqual(Severity.green(), templates[0].questions[0].yes)
-        self.assertEqual(Severity.green(), templates[0].questions[0].no)
-        self.assertEqual(Severity.green(), templates[0].questions[0].other)
+        template = templates[0]
 
-        self.assertEqual(q1_text, templates[0].questions[1].text)
-        self.assertEqual(Severity.red(),   templates[0].questions[1].yes)
-        self.assertEqual(Severity.green(), templates[0].questions[1].no)
-        self.assertEqual(Severity.green(), templates[0].questions[1].other)
+        self.assertEqual(q0_text, template.questions[0].text)
+        self.assertEqual(Severity.green(), template.questions[0].yes)
+        self.assertEqual(Severity.green(), template.questions[0].no)
+        self.assertEqual(Severity.green(), template.questions[0].other)
 
-        self.assertEqual(q2_text, templates[0].questions[2].text)
-        self.assertEqual(Severity.green(),  templates[0].questions[2].yes)
-        self.assertEqual(Severity.red(),    templates[0].questions[2].no)
-        self.assertEqual(Severity.yellow(), templates[0].questions[2].other)
+        self.assertEqual(q1_text, template.questions[1].text)
+        self.assertEqual(Severity.red(),   template.questions[1].yes)
+        self.assertEqual(Severity.green(), template.questions[1].no)
+        self.assertEqual(Severity.green(), template.questions[1].other)
+
+        self.assertEqual(q2_text, template.questions[2].text)
+        self.assertEqual(Severity.green(),  template.questions[2].yes)
+        self.assertEqual(Severity.red(),    template.questions[2].no)
+        self.assertEqual(Severity.yellow(), template.questions[2].other)
