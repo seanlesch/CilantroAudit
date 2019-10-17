@@ -30,11 +30,11 @@ class Answer(EmbeddedDocument):
     text = StringField(required=True, max_length=50, min_length=1)
     severity = EmbeddedDocumentField(Severity, required=True)
     response = EmbeddedDocumentField(Response, required=True)
-    comments = StringField(max_length=150, min_length=1)
+    comment = StringField(max_length=150, min_length=1)
 
     def validate(self, clean=True):
         super().validate(clean)
-        if self.response == Response.other() and self.comments is None:
+        if self.response == Response.other() and self.comment is None:
             raise ValidationError
 
 

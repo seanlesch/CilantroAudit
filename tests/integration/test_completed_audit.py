@@ -39,7 +39,7 @@ class CompletedAuditTests(unittest.TestCase):
         a2_text = "Did you clean the machine?"
         a2_severity = Severity.green()
         a2_response = Response.other()
-        a2_comments = "There was no dust on the machine to clean."
+        a2_comment = "There was no dust on the machine to clean."
 
         CompletedAuditBuilder() \
             .with_title(title) \
@@ -61,7 +61,7 @@ class CompletedAuditTests(unittest.TestCase):
                 text=a2_text,
                 severity=a2_severity,
                 response=a2_response,
-                comments=a2_comments,
+                comment=a2_comment,
             )
         ).build().save()
 
@@ -84,21 +84,21 @@ class CompletedAuditTests(unittest.TestCase):
         a2_text = "Did you clean the machine?"
         a2_severity = Severity.green()
         a2_response = Response.other()
-        a2_comments = "There was no dust on the machine to clean."
+        a2_comment = "There was no dust on the machine to clean."
 
         self.assertEqual(a0_text, audit.answers[0].text)
         self.assertEqual(a0_severity, audit.answers[0].severity)
         self.assertEqual(a0_response, audit.answers[0].response)
-        self.assertEqual(None, audit.answers[0].comments)
+        self.assertEqual(None, audit.answers[0].comment)
 
         self.assertEqual(a1_text, audit.answers[1].text)
         self.assertEqual(a1_severity, audit.answers[1].severity)
         self.assertEqual(a1_response, audit.answers[1].response)
-        self.assertEqual(None, audit.answers[1].comments)
+        self.assertEqual(None, audit.answers[1].comment)
 
         self.assertEqual(a2_text, audit.answers[2].text)
         self.assertEqual(a2_severity, audit.answers[2].severity)
         self.assertEqual(a2_response, audit.answers[2].response)
-        self.assertEqual(a2_comments, audit.answers[2].comments)
+        self.assertEqual(a2_comment, audit.answers[2].comment)
 
         self.assertGreaterEqual(datetime.utcnow(), audit.datetime)

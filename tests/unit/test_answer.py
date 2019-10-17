@@ -20,21 +20,21 @@ class AnswerTests(unittest.TestCase):
         expected_text = "Expected Text"
         expected_severity = Severity.red()
         expected_response = Response.yes()
-        expected_comments = "Expected Comments"
+        expected_comment = "Expected Comments"
 
         answer = Answer(
             text=expected_text,
             severity=expected_severity,
             response=expected_response,
-            comments=expected_comments,
+            comment=expected_comment,
         )
 
         self.assertEqual(expected_text, answer.text)
         self.assertEqual(expected_severity, answer.severity)
         self.assertEqual(expected_response, answer.response)
-        self.assertEqual(expected_comments, answer.comments)
+        self.assertEqual(expected_comment, answer.comment)
 
-    def test_comments_required_only_for_other_response(self):
+    def test_comment_required_only_for_other_response(self):
         yes_answer = Answer(
             text="Text",
             severity=Severity.red(),
@@ -45,21 +45,21 @@ class AnswerTests(unittest.TestCase):
             severity=Severity.yellow(),
             response=Response.no(),
         )
-        other_answer_without_comments = Answer(
+        other_answer_without_comment = Answer(
             text="Text",
             severity=Severity.green(),
             response=Response.other(),
         )
-        other_answer_with_comments = Answer(
+        other_answer_with_comment = Answer(
             text="Text",
             severity=Severity.yellow(),
             response=Response.other(),
-            comments="Comments"
+            comment="Comments"
         )
         self.assertEqual(None, yes_answer.validate())
         self.assertEqual(None, no_answer.validate())
-        self.assertEqual(None, other_answer_with_comments.validate())
-        self.assertRaises(ValidationError, other_answer_without_comments.validate)
+        self.assertEqual(None, other_answer_with_comment.validate())
+        self.assertRaises(ValidationError, other_answer_without_comment.validate)
 
     def test_severity_is_required(self):
         self.assertEqual(
@@ -146,7 +146,7 @@ class AnswerTests(unittest.TestCase):
             ).validate
         )
 
-    def test_comments_max_length(self):
+    def test_comment_max_length(self):
         character_limit = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2"
         character_maximum = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh22"
         self.assertEqual(
@@ -155,7 +155,7 @@ class AnswerTests(unittest.TestCase):
                 text="With Text",
                 severity=Severity.red(),
                 response=Response.other(),
-                comments=character_limit,
+                comment=character_limit,
             ).validate()
         )
         self.assertRaises(
@@ -164,11 +164,11 @@ class AnswerTests(unittest.TestCase):
                 text="With Text",
                 severity=Severity.red(),
                 response=Response.other(),
-                comments=character_maximum,
+                comment=character_maximum,
             ).validate
         )
 
-    def test_comments_min_length(self):
+    def test_comment_min_length(self):
         character_minimum = "."
         empty_string = ""
         self.assertEqual(
@@ -177,7 +177,7 @@ class AnswerTests(unittest.TestCase):
                 text="With Text",
                 severity=Severity.red(),
                 response=Response.other(),
-                comments=character_minimum,
+                comment=character_minimum,
             ).validate()
         )
         self.assertRaises(
@@ -186,7 +186,7 @@ class AnswerTests(unittest.TestCase):
                 text="With Text",
                 severity=Severity.red(),
                 response=Response.other(),
-                comments=empty_string,
+                comment=empty_string,
             ).validate
         )
 
