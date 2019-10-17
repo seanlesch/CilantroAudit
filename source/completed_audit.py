@@ -1,5 +1,5 @@
 from mongoengine import Document, StringField, DateTimeField, EmbeddedDocument, EmbeddedDocumentField, \
-    EmbeddedDocumentListField
+    EmbeddedDocumentListField, ValidationError
 from audit_template import Severity
 from datetime import datetime
 
@@ -32,6 +32,10 @@ class Answer(EmbeddedDocument):
     response = EmbeddedDocumentField(Response, required=True)
     comments = StringField(max_length=150, min_length=1)
 
+    def validate(self, clean=True):
+        super().validate(clean)
+        if self.response == Response.other() and self.comments is None:
+            raise ValidationError
 
 class CompletedAuditBuilder():
     def __init__(self):
