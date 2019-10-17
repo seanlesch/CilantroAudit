@@ -55,7 +55,3 @@ class AuditTemplateBuilderTests(unittest.TestCase):
                 .with_question(Question(text="Text")) \
                 .build
         )
-
-    @staticmethod
-    def run_tests():
-        unittest.main()
