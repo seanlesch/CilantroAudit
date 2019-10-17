@@ -7,6 +7,9 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button
 from kivy.properties import ObjectProperty
+from kivy.lang import Builder
+
+Builder.load_file("./widgets/questionModule.kv")
 
 
 class QuestionModule(Widget):
