@@ -41,8 +41,8 @@ class AuditTemplateTests(unittest.TestCase):
         self.assertRaises(ValidationError, AuditTemplate(title="", questions=[Question(text="Text")]).validate)
 
     def test_title_max_length(self):
-        fifty_characters = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2"
+        character_maximum = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2"
         too_many_characters = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2f"
-        self.assertEqual(None, AuditTemplate(title=fifty_characters, questions=[Question(text="Text")]).validate())
+        self.assertEqual(None, AuditTemplate(title=character_maximum, questions=[Question(text="Text")]).validate())
         self.assertRaises(ValidationError,
                           AuditTemplate(title=too_many_characters, questions=[Question(text="Text")]).validate)

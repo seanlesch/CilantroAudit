@@ -43,13 +43,13 @@ class QuestionTests(unittest.TestCase):
         self.assertRaises(ValidationError, Question().validate)
 
     def test_text_max_length(self):
-        fifty_characters = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2"
+        character_maximum = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2"
         too_many_characters = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2f"
-        self.assertEqual(None, Question(text=fifty_characters).validate())
+        self.assertEqual(None, Question(text=character_maximum).validate())
         self.assertRaises(ValidationError, Question(text=too_many_characters).validate)
 
     def test_text_min_length(self):
-        one_character = "."
+        character_minimum = "."
         empty_string = ""
-        self.assertEqual(None, Question(text=one_character).validate())
+        self.assertEqual(None, Question(text=character_minimum).validate())
         self.assertRaises(ValidationError, Question(text=empty_string).validate)
