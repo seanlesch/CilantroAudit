@@ -13,13 +13,8 @@ kivy.require("1.11.1")
 Builder.load_file("./widgets/create_audit_page.kv")
 
 
-class ConfirmationPop(FloatLayout):
-
-    def yes(self):
-        return 1
-
-    def no(self):
-        return 0
+class ConfirmationPop(Popup):
+    yes = ObjectProperty(None)
 
 
 # This class contains the functions and variables used in the audit creation page.
@@ -44,22 +39,23 @@ class CreateAuditPage(FloatLayout):
         print(self.q_counter)
 
     # submit_audit gathers all the information from the questions and sends it to the database
-    def submit_audit(self):
-        show_popup()
+    def submit_audit_pop(self):
+        show = ConfirmationPop()
+        show.yes.bind(on_press=self.submit_audit)
+        show.open()
+
+    def submit_audit(self, callback):
         print(self.audit_title.text)
         for i in range(1, self.q_counter+1):
             print(self.question_list[str(i)].text)
 
-    def go_back(self):
-        show_popup()
+    def back(self):
+        show = ConfirmationPop()
+        show.yes.bind(on_press=self.exit)
+        show.open()
 
-
-def show_popup():
-    show = ConfirmationPop()
-
-    popup_window = Popup(title="Confirmation", content=show, size_hint=(.5, .5))
-
-    popup_window.open()
+    def exit(self, callback):
+        exit(20)
 
 
 class TestApp(App):
