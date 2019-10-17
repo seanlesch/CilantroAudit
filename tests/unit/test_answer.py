@@ -70,11 +70,13 @@ class AnswerTests(unittest.TestCase):
                 response=Response.yes(),
             ).validate()
         )
-        self.assertRaises(ValidationError, Answer(
-            text="With Text",
-            response=Response.yes(),
-        ).validate
-                          )
+        self.assertRaises(
+            ValidationError,
+            Answer(
+                text="With Text",
+                response=Response.yes(),
+            ).validate
+        )
 
     def test_response_is_required(self):
         self.assertEqual(
@@ -85,11 +87,13 @@ class AnswerTests(unittest.TestCase):
                 response=Response.yes(),
             ).validate()
         )
-        self.assertRaises(ValidationError, Answer(
-            text="With Text",
-            severity=Severity.red(),
-        ).validate
-                          )
+        self.assertRaises(
+            ValidationError,
+            Answer(
+                text="With Text",
+                severity=Severity.red(),
+            ).validate
+        )
 
     def test_text_is_required(self):
         self.assertEqual(
@@ -100,11 +104,13 @@ class AnswerTests(unittest.TestCase):
                 response=Response.yes(),
             ).validate()
         )
-        self.assertRaises(ValidationError, Answer(
-            severity=Severity.red(),
-            response=Response.yes(),
-        ).validate
-                          )
+        self.assertRaises(
+            ValidationError,
+            Answer(
+                severity=Severity.red(),
+                response=Response.yes(),
+            ).validate
+        )
 
     def test_text_max_length(self):
         character_limit = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2"

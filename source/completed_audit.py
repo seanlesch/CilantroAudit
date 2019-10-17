@@ -35,10 +35,10 @@ class Answer(EmbeddedDocument):
     def validate(self, clean=True):
         super().validate(clean)
         if self.response == Response.other() and self.comment is None:
-            raise ValidationError
+            raise ValidationError("All questions marked OTHER must have a comment.")
 
 
-class CompletedAuditBuilder():
+class CompletedAuditBuilder:
     def __init__(self):
         self.title = None
         self.datetime = None
