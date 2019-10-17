@@ -11,7 +11,6 @@ parentdir = os.path.dirname(currentdir)
 rootdir = os.path.dirname(parentdir)
 sys.path.insert(0, os.path.join(rootdir, "source"))
 
-
 from completed_audit import Answer, Response
 from audit_template import Severity
 
@@ -62,57 +61,66 @@ class AnswerTests(unittest.TestCase):
         self.assertEqual(None, other_answer_with_comments.validate())
         self.assertRaises(ValidationError, other_answer_without_comments.validate)
 
-
     def test_severity_is_required(self):
-        self.assertEqual(None, Answer(
+        self.assertEqual(
+            None,
+            Answer(
                 text="With Text",
                 severity=Severity.red(),
                 response=Response.yes(),
             ).validate()
         )
         self.assertRaises(ValidationError, Answer(
-                text="With Text",
-                response=Response.yes(),
-            ).validate
-        )
+            text="With Text",
+            response=Response.yes(),
+        ).validate
+                          )
 
     def test_response_is_required(self):
-        self.assertEqual(None, Answer(
+        self.assertEqual(
+            None,
+            Answer(
                 text="With Text",
                 severity=Severity.red(),
                 response=Response.yes(),
             ).validate()
         )
         self.assertRaises(ValidationError, Answer(
-                text="With Text",
-                severity=Severity.red(),
-            ).validate
-        )
+            text="With Text",
+            severity=Severity.red(),
+        ).validate
+                          )
 
     def test_text_is_required(self):
-        self.assertEqual(None, Answer(
+        self.assertEqual(
+            None,
+            Answer(
                 text="With Text",
                 severity=Severity.red(),
                 response=Response.yes(),
             ).validate()
         )
         self.assertRaises(ValidationError, Answer(
-                severity=Severity.red(),
-                response=Response.yes(),
-            ).validate
-        )
+            severity=Severity.red(),
+            response=Response.yes(),
+        ).validate
+                          )
 
     def test_text_max_length(self):
         character_limit = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2"
-        too_many_characters = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2f"
-        self.assertEqual(None, Answer(
+        character_maximum = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2f"
+        self.assertEqual(
+            None,
+            Answer(
                 text=character_limit,
                 severity=Severity.red(),
                 response=Response.yes(),
             ).validate()
         )
-        self.assertRaises(ValidationError, Answer(
-                text=too_many_characters,
+        self.assertRaises(
+            ValidationError,
+            Answer(
+                text=character_maximum,
                 severity=Severity.red(),
                 response=Response.yes(),
             ).validate
@@ -121,49 +129,60 @@ class AnswerTests(unittest.TestCase):
     def test_text_min_length(self):
         character_minimum = "."
         empty_string = ""
-        self.assertEqual(None, Answer(
+        self.assertEqual(
+            None,
+            Answer(
                 text=character_minimum,
                 severity=Severity.red(),
                 response=Response.yes(),
             ).validate()
         )
-        self.assertRaises(ValidationError, Answer(
+        self.assertRaises(
+            ValidationError,
+            Answer(
                 text=empty_string,
                 severity=Severity.red(),
                 response=Response.yes(),
             ).validate
         )
 
-
     def test_comments_max_length(self):
         character_limit = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2"
-        too_many_characters = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh22"
-        self.assertEqual(None, Answer(
+        character_maximum = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh22"
+        self.assertEqual(
+            None,
+            Answer(
                 text="With Text",
                 severity=Severity.red(),
                 response=Response.other(),
                 comments=character_limit,
             ).validate()
         )
-        self.assertRaises(ValidationError, Answer(
+        self.assertRaises(
+            ValidationError,
+            Answer(
                 text="With Text",
                 severity=Severity.red(),
                 response=Response.other(),
-                comments=too_many_characters,
+                comments=character_maximum,
             ).validate
         )
 
     def test_comments_min_length(self):
         character_minimum = "."
         empty_string = ""
-        self.assertEqual(None, Answer(
+        self.assertEqual(
+            None,
+            Answer(
                 text="With Text",
                 severity=Severity.red(),
                 response=Response.other(),
                 comments=character_minimum,
             ).validate()
         )
-        self.assertRaises(ValidationError, Answer(
+        self.assertRaises(
+            ValidationError,
+            Answer(
                 text="With Text",
                 severity=Severity.red(),
                 response=Response.other(),
