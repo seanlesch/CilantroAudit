@@ -37,6 +37,7 @@ class Answer(EmbeddedDocument):
         if self.response == Response.other() and self.comments is None:
             raise ValidationError
 
+
 class CompletedAuditBuilder():
     def __init__(self):
         self.title = None
