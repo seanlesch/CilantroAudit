@@ -1,5 +1,6 @@
 # CilantroAudit
-[![CircleCI](https://circleci.com/gh/seanlesch/CilantroAudit.svg?style=svg)](https://circleci.com/gh/seanlesch/CilantroAudit)
+###**Build Status:** [![CircleCI](https://circleci.com/gh/seanlesch/CilantroAudit.svg?style=svg)](https://circleci.com/gh/seanlesch/CilantroAudit)  
+
 Capstone Team C Summer/Fall 2019
 ---
 ## Overview
