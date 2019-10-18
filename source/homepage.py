@@ -1,9 +1,6 @@
 from kivy.app import App
-from kivy.uix.gridlayout import GridLayout
 from kivy.lang import Builder
 from kivy.uix.popup import Popup
-from kivy.uix.textinput import TextInput
-from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.screenmanager import Screen
 
@@ -27,8 +24,17 @@ class AdminScreen(Screen):
     pass
 
 
+class AdminLoginPopup(Popup):
+
+    def validate_password(self, value):
+        if value == '12345':
+            sm.current = 'AdminScreen'
+            self.dismiss()
+
+
 class HomePage(App):
 
+    # Initialize screen manager and other necessary fields
     def build(self):
         sm.add_widget(HomeScreen(name="HomeScreen"))
         sm.add_widget(AdminScreen(name="AdminScreen"))
@@ -36,31 +42,16 @@ class HomePage(App):
         self.title = 'CilantroAudit'
         return sm
 
-    def admin_login(self):
-        box = GridLayout()
-        self.popup = Popup(title='Enter Your Admin Password',
-                           content=box,
-                           size_hint=(None, None), size=(400, 125)
-                           )
-
-        box.rows = 2
-        passwordText = TextInput(focus=False, password=True, multiline=False, size=(375, 30), size_hint=(None, None),
-                                 on_text_validate=self.validate_password)
-        box.add_widget(passwordText)
-        box.add_widget(
-            Button(text='Exit', font_size='20', size_hint=(None, None), size=(375, 30), on_press=self.popup.dismiss))
-
-        self.popup.bind(on_open=self.on_popup_parent)
-        self.popup.open()
-
+    # Set the text field inside of the popup to be focused
     def on_popup_parent(self, popup):
         if popup:
             popup.content.children[1].focus = True
 
-    def validate_password(self, value):
-        if value.text == '12345':
-            sm.current = 'AdminScreen'
-            self.popup.dismiss()
+    # Show the admin login, and focus onto the text field
+    def open_admin_login_popup(self):
+        t = AdminLoginPopup()
+        t.bind(on_open=self.on_popup_parent)
+        t.open()
 
     def exit(self):
         exit(1)
