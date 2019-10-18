@@ -2,50 +2,48 @@
 
     stack_list: stack_list
     audit_title: audit_title
+    size: root.width, root.height
 
-    FloatLayout:
-        size: root.width, root.height
+    ScrollView:
+        size_hint: 1, .89
+        pos_hint: {"top": 1}
 
-        ScrollView:
-            size_hint: 1, .89
-            pos_hint: {"top": 1}
+        StackLayout:
+            id: stack_list
+            size_hint_y: None
+            height: 30
+            orientation: "tb-lr"
 
-            StackLayout:
-                id: stack_list
+            GridLayout:
+                row_force_default: True
+                row_default_height: 30
+                cols: 2
+                rows: 1
                 size_hint_y: None
-                height: 30
-                orientation: "tb-lr"
 
-                GridLayout:
-                    row_force_default: True
-                    row_default_height: 30
-                    cols: 2
-                    rows: 1
-                    size_hint_y: None
+                Label:
+                    text: "Audit Name:"
 
-                    Label:
-                        text: "Audit Name:"
+                TextInput:
+                    id: audit_title
+                    multiline: False
 
-                    TextInput:
-                        id: audit_title
-                        multiline: False
+    Button:
+        text: "Add Question"
+        size_hint: .15, .1
+        on_press: root.add_question()
 
-        Button:
-            text: "Add Question"
-            size_hint: .15, .1
-            on_press: root.add_question()
+    Button:
+        text: "Submit"
+        size_hint: .15, .1
+        pos_hint: {"right": 1, "y": 0}
+        on_press: root.submit_audit_pop()
 
-        Button:
-            text: "Submit"
-            size_hint: .15, .1
-            pos_hint: {"right": 1, "y": 0}
-            on_press: root.submit_audit_pop()
-
-        Button:
-            text: "Back"
-            size_hint: .15, .1
-            pos_hint: {"right": .85, "bottom": 0}
-            on_press: root.back()
+    Button:
+        text: "Back"
+        size_hint: .15, .1
+        pos_hint: {"right": .85, "bottom": 0}
+        on_press: root.back()
 
 
 <ConfirmationPop>:
