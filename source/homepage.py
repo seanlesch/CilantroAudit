@@ -6,6 +6,8 @@ from kivy.uix.screenmanager import Screen
 
 import kivy
 
+from create_audit_page import CreateAuditPage
+
 kivy.require('1.11.1')
 
 # Config.set('graphics', 'resizable', '0')
@@ -38,6 +40,7 @@ class HomePage(App):
     def build(self):
         sm.add_widget(HomeScreen(name="HomeScreen"))
         sm.add_widget(AdminScreen(name="AdminScreen"))
+        sm.add_widget(CreateAuditPage(name="CreateAuditPage"))
 
         self.title = 'CilantroAudit'
         return sm

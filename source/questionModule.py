@@ -1,12 +1,5 @@
-import kivy
-
 from kivy.app import App
-from kivy.uix.label import Label
-from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.textinput import TextInput
-from kivy.uix.widget import Widget
-from kivy.uix.button import Button
 from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 
@@ -62,6 +55,7 @@ class QuestionModule(FloatLayout):
         elif self.no_val == 2:
             self.no_button.background_color = 0, 2, 0, 1
             self.no_val = 0
+
 
 class TestApp(App):
     def build(self):

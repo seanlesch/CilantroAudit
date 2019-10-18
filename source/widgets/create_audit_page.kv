@@ -41,7 +41,7 @@
         text: "Back"
         size_hint: .15, .1
         pos_hint: {"right": .85, "bottom": 0}
-        on_press: root.back()
+        on_press: root.back(root.manager)
 
 
 <ConfirmationPop>:
@@ -63,6 +63,7 @@
             text: "Yes"
             size_hint: .3, .3
             pos_hint: {"x": 0, "y": 0}
+            on_press: root.return_admin_page()
 
         Button:
             text: "No"
