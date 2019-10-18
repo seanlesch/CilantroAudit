@@ -54,10 +54,20 @@
             size_hint: None, None
             on_text_validate: root.validate_password(self.text)
 
-        Button:
-            text: "Exit"
-            font_size: 30
-            size: 375, 30
-            size_hint: None, None
-            on_press: root.dismiss()
+        GridLayout:
+            rows: 1
+            cols: 2
 
+            Button:
+                text: "Exit"
+                font_size: 30
+                size: 187.5, 30
+                size_hint: None, None
+                on_press: root.dismiss()
+
+            Button:
+                text: "Login"
+                font_size: 30
+                size: 187.5, 30
+                size_hint: None, None
+                on_press: root.validate_password(root.content.children[1].text)
