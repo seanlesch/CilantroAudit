@@ -37,14 +37,12 @@ class CreateAuditPage(Screen, FloatLayout):
     # The add_question method creates a new instance of the question widget, adds it to the StackLayout, and adds it
     # to the question list dictionary.
     def add_question(self):
-        print("called")
         self.q_counter += 1
         self.stack_list.height += 200
         q_temp = QuestionModule()
         # q_temp = TextInput(text="New Question " + str(self.q_counter), size_hint=(1, None), height=100)
         self.stack_list.add_widget(q_temp)
         self.question_list[str(self.q_counter)] = q_temp
-        print(self.q_counter)
 
     # submit_audit gathers all the information from the questions and sends it to the database
     def submit_audit_pop(self):
