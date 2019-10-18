@@ -13,7 +13,7 @@ from kivy.lang import Builder
 Builder.load_file("./widgets/questionModule.kv")
 
 
-class QuestionModule(Widget):
+class QuestionModule(FloatLayout):
     ##variables with Object properties so that we can "see" whats going on in kv file
     question_text = ObjectProperty(None)
     delete_question = ObjectProperty(None)

@@ -58,7 +58,7 @@ class CreateAuditPage(FloatLayout):
         show.open()
 
     def exit(self, callback):
-        exit(20)
+        exit(1)
 
 
 class TestApp(App):
