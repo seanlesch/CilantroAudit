@@ -1,11 +1,12 @@
-import kivy
 from kivy.app import App
+from kivy.uix.floatlayout import FloatLayout
+from kivy.properties import ObjectProperty
 from kivy.lang import Builder
-from kivy.uix.widget import Widget
 
 Builder.load_file("./widgets/questionModule.kv")
 
-class QuestionModule(Widget):
+
+class QuestionModule(FloatLayout):
 
     yes_val = 0
     no_val = 0
