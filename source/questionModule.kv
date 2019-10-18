@@ -62,3 +62,18 @@
         Label:
             text: "No"
             pos_hint: {"top": 0.75 , "center_x": 0.45}
+
+
+        ##"other" button
+        Button:
+            id: other_button
+            background_color: 0, 2, 0, 1
+            size: 40, 40
+            size_hint: None, None
+            pos_hint: {"top": 0.3, "center_x": 0.6}
+            on_press: root.other_btn_press()
+
+       ##other label
+        Label:
+            text: "Other"
+            pos_hint: {"top": 0.75 , "center_x": 0.65}
