@@ -20,7 +20,7 @@ jobs:
           name: Running tests
           command: |
             . venv/bin/activate
-            python3 setup.py tests
+            python3 setup.py develop
             cd tests/unit
             python3 -m unittest discover
       - store_artifacts:
