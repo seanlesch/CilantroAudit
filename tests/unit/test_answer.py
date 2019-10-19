@@ -4,7 +4,7 @@ from cilantro_audit.completed_audit import Answer, Response
 from cilantro_audit.audit_template import Severity
 
 
-class TestAnswer(unittest.TestCase):
+class AnswerTests(unittest.TestCase):
     def test_answer_construction(self):
         expected_text = "Expected Text"
         expected_severity = Severity.red()
@@ -184,7 +184,3 @@ class TestAnswer(unittest.TestCase):
                 comment=empty_string,
             ).validate
         )
-
-    @staticmethod
-    def run_tests():
-        unittest.main()

@@ -12,7 +12,3 @@ class ResponseTests(unittest.TestCase):
     def test_response_is_required(self):
         self.assertEqual(None, Response.yes().validate())
         self.assertRaises(ValidationError, Response().validate)
-
-    @staticmethod
-    def run_tests():
-        unittest.main()
