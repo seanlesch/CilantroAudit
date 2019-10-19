@@ -1,6 +1,6 @@
 from mongoengine import Document, StringField, DateTimeField, EmbeddedDocument, EmbeddedDocumentField, \
     EmbeddedDocumentListField, ValidationError
-from audit_template import Severity
+from cilantro_audit.audit_template import Severity
 from datetime import datetime
 
 
