@@ -13,8 +13,10 @@ Config.set('graphics', 'multisamples', '0')  # ignore
 auditorPageLayout = Builder.load_file('./widgets/auditor_page.kv')
 sm = ScreenManager()
 
+
 class AuditorScreen(Screen):
     pass
+
 
 class AuditorPage(App):
 
@@ -24,16 +26,17 @@ class AuditorPage(App):
         return sm
 
     def submit_new_audit(self):
-        return;
+        return
 
     def view_submitted_audits(self):
-        return;
+        return
 
     def return_to_homepage(self):
-        return;
+        return
 
     def exit(self):
         exit(1)
+
 
 if __name__ == '__main__':
     AuditorPage().run()
