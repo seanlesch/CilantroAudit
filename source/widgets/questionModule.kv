@@ -1,0 +1,63 @@
+<QuestionModule>
+
+## variables to be passed back into python code
+    question_text: question_text
+    delete_question: delete_question
+    yes_button: yes_button
+    no_button: no_button
+    label:label
+
+    size_hint: 1, None
+    height: 200
+
+    ##question input text box
+    TextInput:
+        id: question_text
+        size_hint: 0.8, 0.45
+        pos_hint: {"top": 0.9 , "center_x": 0.45}
+
+    ##delete question button
+    Button:
+        id: delete_question
+        size_hint: 0.08, 0.06
+        background_color: 2, 0, 0, 1
+        text: "Delete"
+        pos_hint: {"top": 0.95, "center_x": 0.93}
+        on_press: root.del_press()
+
+    ##yes/no information label
+    Label:
+        id: label
+        outline_width: 2
+        color: 1, 1, 1, 1
+        text: "Click to cycle through the severity of each response"
+        pos_hint: {"top": 0.9 , "center_x": 0.3}
+
+    ##"yes" button
+    Button:
+        id: yes_button
+        background_color: 0, 2, 0, 1
+        size: 40, 40
+        size_hint: None, None
+        pos_hint: {"top": 0.3, "center_x": 0.2}
+        on_press: root.yes_btn_press()
+
+   ##yes label
+    Label:
+        text: "Yes"
+        pos_hint: {"top": 0.75 , "center_x": 0.25}
+
+    ##"no" button
+    Button:
+        id: no_button
+        background_color: 0, 2, 0, 1
+        size: 40, 40
+        size_hint: None, None
+        pos_hint: {"top": 0.3, "center_x": 0.4}
+        on_press: root.no_btn_press()
+
+
+   ##no label
+    Label:
+        text: "No"
+        pos_hint: {"top": 0.75 , "center_x": 0.45}
