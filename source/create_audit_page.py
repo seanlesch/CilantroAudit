@@ -45,9 +45,10 @@ class CreateAuditPage(Screen, FloatLayout):
         self.question_list[str(self.q_counter)] = q_temp
 
     # submit_audit gathers all the information from the questions and sends it to the database
-    def submit_audit_pop(self):
+    def submit_audit_pop(self, manager):
         show = ConfirmationPop()
         show.yes.bind(on_press=self.submit_audit)
+        show.manager = manager
         show.open()
 
     def submit_audit(self, callback):
