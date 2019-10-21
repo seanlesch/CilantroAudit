@@ -1,14 +1,10 @@
-import os  # ignore
 import kivy
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.screenmanager import Screen
-from kivy import Config  # ignore
 
-os.environ['KIVY_GL_BACKEND'] = 'angle_sdl2'  # ignore
 kivy.require('1.11.1')
-Config.set('graphics', 'multisamples', '0')  # ignore
 
 auditorPageLayout = Builder.load_file('./widgets/auditor_page.kv')
 sm = ScreenManager()
