@@ -14,8 +14,10 @@ class QuestionModule(FloatLayout):
     yes_button = ObjectProperty(None)
     no_button = ObjectProperty(None)
     label = ObjectProperty(None)
-
-    question = Question(text = question_text, yes = Severity.default(), no = Severity.default())
+    yes_severity = Severity.default()
+    no_severity = Severity.default()
+    
+    # question = Question(text = question_text.text, yes = Severity.default(), no = Severity.default())
 
     ##do stuff when delete button is pressed
     def del_press(self):
@@ -23,24 +25,24 @@ class QuestionModule(FloatLayout):
 
     ##do stuff when the yes button is pressed
     def yes_btn_press(self):
-        self.question.yes = Severity.next(self.question.yes)
+        self.yes_severity = Severity.next(self.yes_severity)
 
-        if self.question.yes == Severity.green():
+        if self.yes_severity == Severity.green():
             self.yes_button.background_color = 0, 2, 0, 1
-        elif self.question.yes == Severity.yellow():
+        elif self.yes_severity == Severity.yellow():
             self.yes_button.background_color = 2, 1, 0, 1
-        elif self.question.yes == Severity.red():
+        elif self.yes_severity == Severity.red():
             self.yes_button.background_color = 2, 0, 0, 1
 
     ##do stuff when the no button is pressed
     def no_btn_press(self):
-        self.question.no = Severity.next(self.question.no)
+        self.no_severity = Severity.next(self.no_severity)
 
-        if self.question.no == Severity.green():
+        if self.no_severity == Severity.green():
             self.no_button.background_color = 0, 2, 0, 1
-        elif self.question.no == Severity.yellow():
+        elif self.no_severity == Severity.yellow():
             self.no_button.background_color = 2, 1, 0, 1
-        elif self.question.no == Severity.red():
+        elif self.no_severity == Severity.red():
             self.no_button.background_color = 2, 0, 0, 1
 
 

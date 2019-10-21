@@ -6,9 +6,11 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
+from mongoengine import Document
 
 from questionModule import QuestionModule
-from audit_template import AuditTemplateBuilder
+from audit_template import AuditTemplateBuilder, Question
+
 
 kivy.require("1.11.1")
 
@@ -44,7 +46,7 @@ class CreateAuditPage(Screen, FloatLayout):
         q_temp = QuestionModule()
         # q_temp = TextInput(text="New Question " + str(self.q_counter), size_hint=(1, None), height=100)
         self.stack_list.add_widget(q_temp)
-        self.question_list.append(q_temp.question)
+        self.question_list.append(q_temp)
 
     # submit_audit gathers all the information from the questions and sends it to the database
     def submit_audit_pop(self):
@@ -57,9 +59,11 @@ class CreateAuditPage(Screen, FloatLayout):
        # Create a new audit using the supplied text the admin has entered.
         self.audit_template.with_title(self.audit_title.text)
         for question in self.question_list:
-            self.audit_template.with_question(question)
-            
-        self.audit_template.build().save()
+            q = Question(text = question.question_text.text, yes=question.yes_severity, no=question.no_severity)
+            self.audit_template.with_question(q)
+ 
+        self.audit_template.build()
+        # self.audit_template.save()
 
     def back(self, manager):
         show = ConfirmationPop()
