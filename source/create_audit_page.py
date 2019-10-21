@@ -8,6 +8,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
 
 from questionModule import QuestionModule
+from audit_template import AuditTemplateBuilder
 
 kivy.require("1.11.1")
 
@@ -33,6 +34,8 @@ class CreateAuditPage(Screen, FloatLayout):
     audit_title = ObjectProperty()
     # A dictionary used to store and access questions.
     question_list = {}
+    # An object to store the AuditTemplate in the backend
+    audit_template = AuditTemplateBuilder()
 
     # The add_question method creates a new instance of the question widget, adds it to the StackLayout, and adds it
     # to the question list dictionary.
@@ -50,10 +53,16 @@ class CreateAuditPage(Screen, FloatLayout):
         show.yes.bind(on_press=self.submit_audit)
         show.open()
 
+    # Funtion called after user selects yes on the confirmation popup
     def submit_audit(self, callback):
-        print(self.audit_title.text)
+       # Create a new audit using the supplied text the admin has entered.
+        self.audit_template.with_title(self.audit_title.text)
         for i in range(1, self.q_counter + 1):
-            print(self.question_list[str(i)].question_text.text)
+            self.audit_template.with_question(self.question_list[str(i)].question_text.text)
+            
+        print(self.audit_template.questions)
+
+        self.audit_template.build().save()
 
     def back(self, manager):
         show = ConfirmationPop()
