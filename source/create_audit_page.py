@@ -60,8 +60,6 @@ class CreateAuditPage(Screen, FloatLayout):
         for i in range(1, self.q_counter + 1):
             self.audit_template.with_question(self.question_list[str(i)].question_text.text)
             
-        print(self.audit_template.questions)
-
         self.audit_template.build().save()
 
     def back(self, manager):
