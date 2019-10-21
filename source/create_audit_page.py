@@ -33,19 +33,18 @@ class CreateAuditPage(Screen, FloatLayout):
     # The id for the title section of the audit.
     audit_title = ObjectProperty()
     # A dictionary used to store and access questions.
-    question_list = {}
+    question_list = []
     # An object to store the AuditTemplate in the backend
     audit_template = AuditTemplateBuilder()
 
     # The add_question method creates a new instance of the question widget, adds it to the StackLayout, and adds it
     # to the question list dictionary.
     def add_question(self):
-        self.q_counter += 1
         self.stack_list.height += 200
         q_temp = QuestionModule()
         # q_temp = TextInput(text="New Question " + str(self.q_counter), size_hint=(1, None), height=100)
         self.stack_list.add_widget(q_temp)
-        self.question_list[str(self.q_counter)] = q_temp
+        self.question_list.append(q_temp.question)
 
     # submit_audit gathers all the information from the questions and sends it to the database
     def submit_audit_pop(self):
@@ -57,8 +56,8 @@ class CreateAuditPage(Screen, FloatLayout):
     def submit_audit(self, callback):
        # Create a new audit using the supplied text the admin has entered.
         self.audit_template.with_title(self.audit_title.text)
-        for i in range(1, self.q_counter + 1):
-            self.audit_template.with_question(self.question_list[str(i)].question_text.text)
+        for question in self.question_list:
+            self.audit_template.with_question(question)
             
         self.audit_template.build().save()
 
