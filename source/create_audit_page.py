@@ -11,7 +11,6 @@ from mongoengine import connect
 from questionModule import QuestionModule
 from audit_template import AuditTemplateBuilder, Question
 
-
 kivy.require("1.11.1")
 
 # Loads in the .kv file which contains the CreateAuditPage layout.
@@ -57,14 +56,15 @@ class CreateAuditPage(Screen, FloatLayout):
         show.manager = manager
         show.open()
 
-    # Funtion called after user selects yes on the confirmation popup
+    # Function called after user selects yes on the confirmation popup
     def submit_audit(self, callback):
-       # Create a new audit using the supplied text the admin has entered.
+        # Create a new audit using the supplied text the admin has entered.
         self.audit_template.with_title(self.audit_title.text)
         for question in self.question_list:
-            q = Question(text = question.question_text.text, yes=question.yes_severity, no=question.no_severity)
+            q = Question(text=question.question_text.text, yes=question.yes_severity, no=question.no_severity,
+                         other=question.other_severity)
             self.audit_template.with_question(q)
- 
+
         self.audit_template.build().save()
 
     def back(self, manager):
