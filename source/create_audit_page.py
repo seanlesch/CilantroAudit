@@ -6,8 +6,11 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
+from mongoengine import connect
 
 from questionModule import QuestionModule
+from audit_template import AuditTemplateBuilder, Question
+
 
 kivy.require("1.11.1")
 
@@ -32,17 +35,20 @@ class CreateAuditPage(Screen, FloatLayout):
     # The id for the title section of the audit.
     audit_title = ObjectProperty()
     # A dictionary used to store and access questions.
-    question_list = {}
+    question_list = []
+    # An object to store the AuditTemplate in the backend
+    audit_template = AuditTemplateBuilder()
+
+    connect("testdb")
 
     # The add_question method creates a new instance of the question widget, adds it to the StackLayout, and adds it
     # to the question list dictionary.
     def add_question(self):
-        self.q_counter += 1
         self.stack_list.height += 200
         q_temp = QuestionModule()
         # q_temp = TextInput(text="New Question " + str(self.q_counter), size_hint=(1, None), height=100)
         self.stack_list.add_widget(q_temp)
-        self.question_list[str(self.q_counter)] = q_temp
+        self.question_list.append(q_temp)
 
     # submit_audit gathers all the information from the questions and sends it to the database
     def submit_audit_pop(self, manager):
@@ -51,10 +57,15 @@ class CreateAuditPage(Screen, FloatLayout):
         show.manager = manager
         show.open()
 
+    # Funtion called after user selects yes on the confirmation popup
     def submit_audit(self, callback):
-        print(self.audit_title.text)
-        for i in range(1, self.q_counter + 1):
-            print(self.question_list[str(i)].question_text.text)
+       # Create a new audit using the supplied text the admin has entered.
+        self.audit_template.with_title(self.audit_title.text)
+        for question in self.question_list:
+            q = Question(text = question.question_text.text, yes=question.yes_severity, no=question.no_severity)
+            self.audit_template.with_question(q)
+ 
+        self.audit_template.build().save()
 
     def back(self, manager):
         show = ConfirmationPop()

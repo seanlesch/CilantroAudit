@@ -4,7 +4,6 @@ import sys
 import unittest
 from mongoengine import ValidationError
 
-
 # Add the parent directory to the path
 # Taken from: https://stackoverflow.com/questions/714063/importing-modules-from-parent-folder
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
