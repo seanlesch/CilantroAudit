@@ -1,0 +1,37 @@
+<AuditorScreen>:
+    FloatLayout:
+        FloatLayout:
+            pos_hint: {"center_x": 0.5, "center_y": 0.6}
+            size_hint: None, None
+
+            Button:
+                text: "Submit New Audit"
+                font_size: 20
+                size: 250, 100
+                size_hint: None, None
+                pos_hint: {"center_x": -0.8, "center_y": 0.8}
+                on_press: app.submit_new_audit()
+
+            Button:
+                text: "View Submitted Audits"
+                font_size: 20
+                size: 250, 100
+                size_hint: None, None
+                pos_hint: {"center_x": 1.8, "center_y": 0.8}
+                on_press: app.view_submitted_audits()
+
+            Button:
+                text: "Return to Homepage"
+                font_size: 20
+                size: 250, 100
+                size_hint: None, None
+                pos_hint: {"center_x": 0.5, "center_y": -0.3}
+                on_press: app.return_to_homepage()
+
+            Button:
+                text: "Exit"
+                font_size: 20
+                size: 150, 100
+                size_hint: None, None
+                pos_hint: {"center_x": 0.5, "center_y": -1.4}
+                on_press: app.exit()
