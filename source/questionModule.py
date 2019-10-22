@@ -7,6 +7,12 @@ Builder.load_file("./widgets/questionModule.kv")
 
 
 class QuestionModule(FloatLayout):
+    ##variables with Object properties so that we can "see" whats going on in kv file
+    question_text = ObjectProperty(None)
+    delete_question = ObjectProperty(None)
+    yes_button = ObjectProperty(None)
+    no_button = ObjectProperty(None)
+    yes_btn_severity = ObjectProperty(None)
 
     yes_val = 0
     no_val = 0
