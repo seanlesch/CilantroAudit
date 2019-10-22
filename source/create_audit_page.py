@@ -6,7 +6,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
-from mongoengine import Document
+from mongoengine import connect
 
 from questionModule import QuestionModule
 from audit_template import AuditTemplateBuilder, Question
@@ -39,6 +39,8 @@ class CreateAuditPage(Screen, FloatLayout):
     # An object to store the AuditTemplate in the backend
     audit_template = AuditTemplateBuilder()
 
+    connect("testdb")
+
     # The add_question method creates a new instance of the question widget, adds it to the StackLayout, and adds it
     # to the question list dictionary.
     def add_question(self):
@@ -63,8 +65,7 @@ class CreateAuditPage(Screen, FloatLayout):
             q = Question(text = question.question_text.text, yes=question.yes_severity, no=question.no_severity)
             self.audit_template.with_question(q)
  
-        self.audit_template.build()
-        # self.audit_template.save()
+        self.audit_template.build().save()
 
     def back(self, manager):
         show = ConfirmationPop()
