@@ -13,10 +13,10 @@ class QuestionModule(FloatLayout):
     yes_button = ObjectProperty(None)
     no_button = ObjectProperty(None)
     yes_btn_severity = ObjectProperty(None)
-    label = ObjectProperty(None)
 
     yes_val = 0
     no_val = 0
+    other_val = 0
 
     ##do stuff when delete button is pressed
     def del_press(self):
@@ -55,6 +55,23 @@ class QuestionModule(FloatLayout):
         elif self.no_val == 2:
             self.no_button.background_color = 0, 2, 0, 1
             self.no_val = 0
+
+    ##do stuff when the other button is pressed
+    def other_btn_press(self):
+        # changing button from green to orange
+        if self.other_val == 0:
+            self.other_button.background_color = 2, 1, 0, 1
+            self.other_val += 1
+
+        # changing button from orange to red
+        elif self.other_val == 1:
+            self.other_button.background_color = 2, 0, 0, 1
+            self.other_val += 1
+
+        ##changing button from red to green
+        elif self.other_val == 2:
+            self.other_button.background_color = 0, 2, 0, 1
+            self.other_val = 0
 
 
 class TestApp(App):
