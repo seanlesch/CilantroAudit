@@ -8,7 +8,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 
-from questionModule import QuestionModule
+from question_module import QuestionModule
 from audit_template import AuditTemplateBuilder, Question
 
 kivy.require("1.11.1")

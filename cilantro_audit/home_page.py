@@ -6,23 +6,23 @@ from kivy.uix.screenmanager import Screen
 
 import kivy
 
+from auditor_page import AuditorPage
 from create_audit_page import CreateAuditPage
 
 kivy.require('1.11.1')
 
-# Config.set('graphics', 'resizable', '0')
-homePageLayout = Builder.load_file('./widgets/homepage.kv')
-homePageLayout = Builder.load_file('./widgets/adminpage.kv')
+Builder.load_file('./widgets/home_page.kv')
+Builder.load_file('./widgets/admin_page.kv')
 
 # Create the screen manager
 sm = ScreenManager()
 
 
-class HomeScreen(Screen):
+class HomePage(Screen):
     pass
 
 
-class AdminScreen(Screen):
+class AdminPage(Screen):
     pass
 
 
@@ -34,12 +34,13 @@ class AdminLoginPopup(Popup):
             self.dismiss()
 
 
-class HomePage(App):
+class CilantroAudit(App):
 
     # Initialize screen manager and other necessary fields
     def build(self):
-        sm.add_widget(HomeScreen(name="HomeScreen"))
-        sm.add_widget(AdminScreen(name="AdminScreen"))
+        sm.add_widget(HomePage(name="HomeScreen"))
+        sm.add_widget(AdminPage(name="AdminScreen"))
+        sm.add_widget(AuditorPage(name="AuditorScreen"))
         sm.add_widget(CreateAuditPage(name="CreateAuditPage"))
 
         self.title = 'CilantroAudit'
@@ -61,4 +62,4 @@ class HomePage(App):
 
 
 if __name__ == '__main__':
-    HomePage().run()
+    CilantroAudit().run()

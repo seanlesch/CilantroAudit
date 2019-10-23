@@ -4,7 +4,7 @@ from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 from audit_template import Severity, Question
 
-Builder.load_file("./widgets/questionModule.kv")
+Builder.load_file("./widgets/question_module.kv")
 
 
 class QuestionModule(FloatLayout):

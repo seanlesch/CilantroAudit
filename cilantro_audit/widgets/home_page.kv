@@ -1,4 +1,4 @@
-<HomeScreen>:
+<HomePage>:
     FloatLayout:
         Label:
             text: 'Login'
@@ -25,6 +25,7 @@
                 size: 250, 200
                 size_hint: None, None
                 pos_hint: {"center_x": 1.7, "center_y": 0.5}
+                on_press: root.manager.current = 'AuditorScreen'
 
             Button:
                 text: 'Exit'
