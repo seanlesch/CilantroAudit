@@ -1,18 +1,7 @@
-import inspect
-import os
-import sys
 import unittest
 from mongoengine import ValidationError
-
-# Add the parent directory to the path
-# Taken from: https://stackoverflow.com/answers/714063/importing-modules-from-parent-folder
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-rootdir = os.path.dirname(parentdir)
-sys.path.insert(0, os.path.join(rootdir, "source"))
-
-from completed_audit import Answer, Response
-from audit_template import Severity
+from cilantro_audit.completed_audit import Answer, Response
+from cilantro_audit.audit_template import Severity
 
 
 class AnswerTests(unittest.TestCase):
@@ -195,7 +184,3 @@ class AnswerTests(unittest.TestCase):
                 comment=empty_string,
             ).validate
         )
-
-    @staticmethod
-    def run_tests():
-        unittest.main()

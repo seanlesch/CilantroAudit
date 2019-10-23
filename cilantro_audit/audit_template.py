@@ -1,4 +1,3 @@
-# Header something something something
 from mongoengine import Document, StringField, EmbeddedDocument, EmbeddedDocumentField, EmbeddedDocumentListField
 
 

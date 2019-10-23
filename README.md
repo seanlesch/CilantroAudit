@@ -47,6 +47,7 @@ This project will be developed using a feature-branch strategy.
   - Create a virtual environment following this tutorial for your platform: https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/
     - `pip3 install venv` to install virtual environment
     - `python3 -m venv env` to create a virtual environment
+    - `python3 setup.py develop` to install cilantro_audit as a package to the venv such that you can modify the code and have the changes take effect immediately
   - `source env/bin/activate` to get into virtual environment
   - `pip3 install -r requirements.txt` to install the requirements such as kivy and mongoengine for the venv
 3. Right-Click the "source" dir and (towards the bottom) click "mark directory as..." > "Sources Root"
