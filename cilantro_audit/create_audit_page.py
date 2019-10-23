@@ -17,6 +17,7 @@ kivy.require("1.11.1")
 Builder.load_file("./widgets/create_audit_page.kv")
 
 
+# The popup used for both the back and submit buttons
 class ConfirmationPop(Popup):
     yes = ObjectProperty(None)
 
@@ -35,8 +36,6 @@ class CreateAuditPage(Screen, FloatLayout):
     audit_title = ObjectProperty()
     # A dictionary used to store and access questions.
     question_list = {}
-    # An object to store the AuditTemplate in the backend
-    audit_template = AuditTemplateBuilder()
 
     connect("testdb")
 
@@ -51,7 +50,7 @@ class CreateAuditPage(Screen, FloatLayout):
         q_temp.delete_question.bind(on_press=lambda x: self.del_question(q_temp.q_id))
         self.question_list[str(q_temp.q_id)] = q_temp
 
-    # submit_audit gathers all the information from the questions and sends it to the database
+    # shows the confirmation popup and sets the yes button functions
     def submit_audit_pop(self, manager):
         show = ConfirmationPop()
         show.yes.bind(on_press=self.clear_page)
@@ -62,25 +61,29 @@ class CreateAuditPage(Screen, FloatLayout):
     # Function called after user selects yes on the confirmation popup
     def submit_audit(self, callback):
         # Create a new audit using the supplied text the admin has entered.
-        self.audit_template.with_title(self.audit_title.text)
+        audit_template = AuditTemplateBuilder()
+        audit_template.with_title(self.audit_title.text)
         for question in self.question_list.values():
             q = Question(text=question.question_text.text, yes=question.yes_severity, no=question.no_severity,
                          other=question.other_severity)
-            self.audit_template.with_question(q)
+            audit_template.with_question(q)
 
-        self.audit_template.build().save()
+        audit_template.build().save()
 
+    # shows the confirmation popup and sets the yes button function
     def back(self, manager):
         show = ConfirmationPop()
         show.yes.bind(on_press=self.clear_page)
         show.manager = manager
         show.open()
 
+    # deletes the question with the passed in q_id from the stack_list and the question_list
     def del_question(self, q_id):
         self.stack_list.remove_widget(self.question_list[str(q_id)])
         del self.question_list[str(q_id)]
         self.stack_list.height -= 200
 
+    # deletes all questions from the stack_list and the question_list, sets all counters to their default values
     def clear_page(self, callback):
         for question in self.question_list:
             self.stack_list.remove_widget(self.question_list[question])
