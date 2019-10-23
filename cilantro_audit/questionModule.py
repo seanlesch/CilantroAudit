@@ -18,9 +18,7 @@ class QuestionModule(FloatLayout):
     no_severity = Severity.default()
     other_severity = Severity.default()
 
-    ##do stuff when delete button is pressed
-    def del_press(self):
-        pass
+    q_id = 0
 
     ##do stuff when the yes button is pressed
     def yes_btn_press(self):

@@ -21,7 +21,7 @@ class ConfirmationPop(Popup):
     yes = ObjectProperty(None)
 
     def return_admin_page(self):
-        self.dismiss();
+        self.dismiss()
         self.manager.current = 'AdminScreen'
 
 
@@ -34,7 +34,7 @@ class CreateAuditPage(Screen, FloatLayout):
     # The id for the title section of the audit.
     audit_title = ObjectProperty()
     # A dictionary used to store and access questions.
-    question_list = []
+    question_list = {}
     # An object to store the AuditTemplate in the backend
     audit_template = AuditTemplateBuilder()
 
@@ -45,13 +45,16 @@ class CreateAuditPage(Screen, FloatLayout):
     def add_question(self):
         self.stack_list.height += 200
         q_temp = QuestionModule()
-        # q_temp = TextInput(text="New Question " + str(self.q_counter), size_hint=(1, None), height=100)
+        q_temp.q_id = self.q_counter
+        self.q_counter += 1
         self.stack_list.add_widget(q_temp)
-        self.question_list.append(q_temp)
+        q_temp.delete_question.bind(on_press=lambda x: self.del_question(q_temp.q_id))
+        self.question_list[str(q_temp.q_id)] = q_temp
 
     # submit_audit gathers all the information from the questions and sends it to the database
     def submit_audit_pop(self, manager):
         show = ConfirmationPop()
+        show.yes.bind(on_press=self.clear_page)
         show.yes.bind(on_press=self.submit_audit)
         show.manager = manager
         show.open()
@@ -60,7 +63,7 @@ class CreateAuditPage(Screen, FloatLayout):
     def submit_audit(self, callback):
         # Create a new audit using the supplied text the admin has entered.
         self.audit_template.with_title(self.audit_title.text)
-        for question in self.question_list:
+        for question in self.question_list.values():
             q = Question(text=question.question_text.text, yes=question.yes_severity, no=question.no_severity,
                          other=question.other_severity)
             self.audit_template.with_question(q)
@@ -69,11 +72,22 @@ class CreateAuditPage(Screen, FloatLayout):
 
     def back(self, manager):
         show = ConfirmationPop()
+        show.yes.bind(on_press=self.clear_page)
         show.manager = manager
         show.open()
 
-    def exit(self, callback):
-        exit(1)
+    def del_question(self, q_id):
+        self.stack_list.remove_widget(self.question_list[str(q_id)])
+        del self.question_list[str(q_id)]
+        self.stack_list.height -= 200
+
+    def clear_page(self, callback):
+        for question in self.question_list:
+            self.stack_list.remove_widget(self.question_list[question])
+            self.stack_list.height -= 200
+        self.question_list.clear()
+        self.q_counter = 0
+        self.audit_title.text = ""
 
 
 class TestApp(App):
