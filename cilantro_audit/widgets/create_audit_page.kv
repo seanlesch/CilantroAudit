@@ -1,0 +1,72 @@
+<CreateAuditPage>:
+
+    stack_list: stack_list
+    audit_title: audit_title
+    size: root.width, root.height
+
+    ScrollView:
+        size_hint: 1, .89
+        pos_hint: {"top": 1}
+
+        StackLayout:
+            id: stack_list
+            size_hint_y: None
+
+            GridLayout:
+                row_force_default: True
+                row_default_height: 30
+                cols: 2
+                rows: 1
+                size_hint_y: None
+
+                Label:
+                    text: "Audit Name:"
+
+                TextInput:
+                    id: audit_title
+                    multiline: False
+
+    Button:
+        text: "Add Question"
+        size_hint: .15, .1
+        on_press: root.add_question()
+
+    Button:
+        text: "Submit"
+        size_hint: .15, .1
+        pos_hint: {"right": 1, "y": 0}
+        on_press: root.submit_audit_pop(root.manager)
+
+    Button:
+        text: "Back"
+        size_hint: .15, .1
+        pos_hint: {"right": .85, "bottom": 0}
+        on_press: root.back(root.manager)
+
+
+<ConfirmationPop>:
+
+    auto_dismiss: False
+    title: "Confirmation"
+    size_hint: .5, .5
+    yes: yes
+
+    FloatLayout:
+
+        Label:
+            text: "Are you sure?"
+            size_hint: 0.6, 0.2
+            pos_hint: {"x": .2, "top": 1}
+
+        Button:
+            id: yes
+            text: "Yes"
+            size_hint: .3, .3
+            pos_hint: {"x": 0, "y": 0}
+            on_press: root.return_admin_page()
+
+        Button:
+            text: "No"
+            size_hint: .3, .3
+            pos_hint: {"right": 1, "y": 0}
+            on_press: root.dismiss()
