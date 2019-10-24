@@ -70,3 +70,23 @@
             size_hint: .3, .3
             pos_hint: {"right": 1, "y": 0}
             on_press: root.dismiss()
+
+<ErrorPop>:
+
+    auto_dismiss: False
+    title: "Submit Error"
+    size_hint: .5, .5
+    error_message: error_message
+
+    FloatLayout:
+
+        Label:
+            id: error_message
+            size_hint: 0.6, 0.2
+            pos_hint: {"x": .2, "top": .9}
+
+        Button:
+            text: "OK"
+            size_hint: .3, .3
+            pos_hint: {"center_x": .5, "y": 0}
+            on_press: root.dismiss()

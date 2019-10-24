@@ -4,7 +4,7 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 
@@ -24,6 +24,10 @@ class ConfirmationPop(Popup):
     def return_admin_page(self):
         self.dismiss()
         self.manager.current = 'AdminScreen'
+
+
+class ErrorPop(Popup):
+    error_message = ObjectProperty(None)
 
 
 # This class contains the functions and variables used in the audit creation page.
@@ -52,9 +56,15 @@ class CreateAuditPage(Screen, FloatLayout):
 
     # shows the confirmation popup and sets the yes button functions
     def submit_audit_pop(self, manager):
-        show = ConfirmationPop()
-        show.yes.bind(on_press=self.clear_page)
-        show.yes.bind(on_press=self.submit_audit)
+        error_message = self.check_audit()
+        if error_message != "":
+            show = ErrorPop()
+            show.error_message.text = error_message
+        else:
+            show = ConfirmationPop()
+            show.yes.bind(on_press=self.clear_page)
+            show.yes.bind(on_press=self.submit_audit)
+
         show.manager = manager
         show.open()
 
@@ -91,6 +101,20 @@ class CreateAuditPage(Screen, FloatLayout):
         self.question_list.clear()
         self.q_counter = 0
         self.audit_title.text = ""
+
+    # checks the audit template for errors
+    def check_audit(self):
+        error_message = ""
+        if self.audit_title.text == "":
+            error_message += "Please enter a title for the audit.\n"
+        if self.question_list == {}:
+            error_message += "An audit template must have one question.\n"
+        else:
+            for question in self.question_list.values():
+                if question.question_text.text == "":
+                    error_message += "Please enter question text for every question.\n"
+                    break
+        return error_message
 
 
 class TestApp(App):
