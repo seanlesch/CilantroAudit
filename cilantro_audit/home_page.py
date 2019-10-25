@@ -8,7 +8,7 @@ import kivy
 
 from auditor_page import AuditorPage
 from create_audit_page import CreateAuditPage
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, ADMIN_SCREEN
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, ADMIN_SCREEN, HOME_SCREEN, AUDITOR_SCREEN
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
@@ -39,9 +39,9 @@ class CilantroAudit(App):
 
     # Initialize screen manager and other necessary fields
     def build(self):
-        sm.add_widget(HomePage(name="HomeScreen"))
+        sm.add_widget(HomePage(name=HOME_SCREEN))
         sm.add_widget(AdminPage(name=ADMIN_SCREEN))
-        sm.add_widget(AuditorPage(name="AuditorScreen"))
+        sm.add_widget(AuditorPage(name=AUDITOR_SCREEN))
         sm.add_widget(CreateAuditPage(name="CreateAuditPage"))
 
         self.title = 'CilantroAudit'

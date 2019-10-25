@@ -21,4 +21,6 @@ KIVY_REQUIRED_VERSION = "1.11.1"
 TEST_DB = "testdb"
 PROD_DB = "proddb"
 
+HOME_SCREEN = "HomeScreen"
 ADMIN_SCREEN = "AdminScreen"
+AUDITOR_SCREEN = "AuditorScreen"
