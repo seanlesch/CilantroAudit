@@ -25,10 +25,10 @@ class CompletedAuditsListPage(Screen):
     auditor_col = ObjectProperty()
 
     def build(self):
-        self.audit_list.bind(minimum_height=self.audit_list.setter('height'))
-        self.title_col.bind(minimum_height=self.title_col.setter('height'))
-        self.date_col.bind(minimum_height=self.date_col.setter('height'))
-        self.auditor_col.bind(minimum_height=self.auditor_col.setter('height'))
+        # self.audit_list.bind(minimum_height=self.audit_list.setter('height'))
+        # self.title_col.bind(minimum_height=self.title_col.setter('height'))
+        # self.date_col.bind(minimum_height=self.date_col.setter('height'))
+        # self.auditor_col.bind(minimum_height=self.auditor_col.setter('height'))
         return kvfile
 
     def load_completed_audits(self):
@@ -40,14 +40,17 @@ class CompletedAuditsListPage(Screen):
 
         for title in audit_titles:
             btn = Button(text=title, size_hint_y=None, height=40)
+            self.title_col.bind(minimum_height=self.audit_list.setter('height'))
             self.title_col.add_widget(btn)
 
         for datetime in audit_dates:
             lbl = Label(text=str(datetime), size_hint_y=None, height=40)
+            self.date_col.bind(minimum_height=self.audit_list.setter('height'))
             self.date_col.add_widget(lbl)
 
         for auditor in audit_auditors:
             lbl = Label(text=auditor, size_hint_y=None, height=40)
+            self.auditor_col.bind(minimum_height=self.audit_list.setter('height'))
             self.auditor_col.add_widget(lbl)
 
 
