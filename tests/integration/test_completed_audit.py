@@ -33,29 +33,30 @@ class CompletedAuditTests(unittest.TestCase):
         a2_response = Response.other()
         a2_comment = "There was no dust on the machine to clean."
 
-        CompletedAuditBuilder() \
-            .with_title(title) \
-            .with_auditor(auditor) \
-            .with_answer(
-            Answer(
-                text=a0_text,
-                severity=a0_severity,
-                response=a0_response,
-            )
-        ).with_answer(
-            Answer(
-                text=a1_text,
-                severity=a1_severity,
-                response=a1_response,
-            )
-        ).with_answer(
-            Answer(
-                text=a2_text,
-                severity=a2_severity,
-                response=a2_response,
-                comment=a2_comment,
-            )
-        ).build().save()
+        for _ in range(50):
+            CompletedAuditBuilder() \
+                .with_title(title) \
+                .with_auditor(auditor) \
+                .with_answer(
+                Answer(
+                    text=a0_text,
+                    severity=a0_severity,
+                    response=a0_response,
+                )
+            ).with_answer(
+                Answer(
+                    text=a1_text,
+                    severity=a1_severity,
+                    response=a1_response,
+                )
+            ).with_answer(
+                Answer(
+                    text=a2_text,
+                    severity=a2_severity,
+                    response=a2_response,
+                    comment=a2_comment,
+                )
+            ).build().save()
 
         audits = CompletedAudit.objects(title=title)
 

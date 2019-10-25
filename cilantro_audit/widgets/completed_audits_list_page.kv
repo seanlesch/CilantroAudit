@@ -1,6 +1,9 @@
 <CompletedAuditsListPage>
 
     audit_list: audit_list
+    title_col: title_col
+    date_col: date_col
+    auditor_col: auditor_col
 
     GridLayout:
         id: page_layout
@@ -10,19 +13,52 @@
             id: navigation_options
             cols: 1
 
+            Button:
+                text: 'Return to Admin Page'
+                size_hint_y: None
+                size: 400, 50
+
         GridLayout:
             id: list_layout
             rows: 2
+            size_hint_x: 1.8
 
-            Label:
-                text: 'Completed Audits'
-                size_hint_y: 0.1
+            GridLayout:
+                id: headers
+                cols: 3
+                size_hint_y: None
+
+                Label:
+                    id: title_header
+                    text: 'Title'
+
+                Label:
+                    id: date_header
+                    text: 'Date'
+
+                Label:
+                    id: auditor_header
+                    text: 'Auditor'
 
             ScrollView:
                 id: scrollable_list
 
                 GridLayout:
                     id: audit_list
-                    cols: 1
+                    cols: 3
                     spacing: 10
                     size_hint_y: None
+
+                    GridLayout:
+                        id: title_col
+                        cols: 1
+
+                    GridLayout:
+                        id: date_col
+                        cols: 1
+
+                    GridLayout:
+                        id: auditor_col
+                        cols: 1
+
+

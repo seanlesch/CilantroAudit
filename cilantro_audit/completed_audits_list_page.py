@@ -1,4 +1,5 @@
 import kivy
+from kivy.uix.label import Label
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 from kivy.uix.button import Button
@@ -19,19 +20,35 @@ connect(TEST_DB)
 
 class CompletedAuditsListPage(Screen):
     audit_list = ObjectProperty()
+    title_col = ObjectProperty()
+    date_col = ObjectProperty()
+    auditor_col = ObjectProperty()
 
     def build(self):
+        self.audit_list.bind(minimum_height=self.audit_list.setter('height'))
+        self.title_col.bind(minimum_height=self.title_col.setter('height'))
+        self.date_col.bind(minimum_height=self.date_col.setter('height'))
+        self.auditor_col.bind(minimum_height=self.auditor_col.setter('height'))
         return kvfile
 
     def load_completed_audits(self):
-        audit_titles = CompletedAudit.objects().only('title')
+        audits = CompletedAudit.objects().only('title', 'datetime', 'auditor')
 
-        audit_titles = list(map(lambda set: set.title, audit_titles))
+        audit_titles = list(map(lambda set: set.title, audits))
+        audit_dates = list(map(lambda set: set.datetime, audits))
+        audit_auditors = list(map(lambda set: set.auditor, audits))
 
         for title in audit_titles:
             btn = Button(text=title, size_hint_y=None, height=40)
-            self.audit_list.bind(minimum_height=self.audit_list.setter('height'))
-            self.audit_list.add_widget(btn)
+            self.title_col.add_widget(btn)
+
+        for datetime in audit_dates:
+            lbl = Label(text=str(datetime), size_hint_y=None, height=40)
+            self.date_col.add_widget(lbl)
+
+        for auditor in audit_auditors:
+            lbl = Label(text=auditor, size_hint_y=None, height=40)
+            self.auditor_col.add_widget(lbl)
 
 
 class TestApp(App):
