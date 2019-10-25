@@ -1,7 +1,7 @@
 from mongoengine import Document, StringField, EmbeddedDocument, EmbeddedDocumentField, EmbeddedDocumentListField, \
     ValidationError
 
-from cilantro_audit.constants import SEVERITY_VALUES, QUESTION_MAX_LENGTH, QUESTION_MIN_LENGTH, TITLE_MIN_LENGTH, \
+from cilantro_audit.constants import SEVERITY_VALUES, TEXT_MAX_LENGTH, TEXT_MIN_LENGTH, TITLE_MIN_LENGTH, \
     TITLE_MAX_LENGTH
 
 
@@ -49,7 +49,7 @@ class Severity(EmbeddedDocument):
 
 
 class Question(EmbeddedDocument):
-    text = StringField(required=True, max_length=QUESTION_MAX_LENGTH, min_length=QUESTION_MIN_LENGTH)
+    text = StringField(required=True, max_length=TEXT_MAX_LENGTH, min_length=TEXT_MIN_LENGTH)
     yes = EmbeddedDocumentField(Severity, required=True, default=Severity.default())
     no = EmbeddedDocumentField(Severity, required=True, default=Severity.default())
     other = EmbeddedDocumentField(Severity, required=True, default=Severity.default())

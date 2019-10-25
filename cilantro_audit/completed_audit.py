@@ -3,7 +3,7 @@ from mongoengine import Document, StringField, DateTimeField, EmbeddedDocument, 
 from cilantro_audit.audit_template import Severity
 from datetime import datetime
 
-from cilantro_audit.constants import QUESTION_MIN_LENGTH, QUESTION_MAX_LENGTH, COMMENT_MIN_LENGTH, COMMENT_MAX_LENGTH, \
+from cilantro_audit.constants import TEXT_MIN_LENGTH, TEXT_MAX_LENGTH, COMMENT_MIN_LENGTH, COMMENT_MAX_LENGTH, \
     TITLE_MAX_LENGTH, TITLE_MIN_LENGTH, AUDITOR_MAX_LENGTH, AUDITOR_MIN_LENGTH
 
 
@@ -30,7 +30,7 @@ class Response(EmbeddedDocument):
 
 
 class Answer(EmbeddedDocument):
-    text = StringField(required=True, max_length=QUESTION_MAX_LENGTH, min_length=QUESTION_MIN_LENGTH)
+    text = StringField(required=True, max_length=TEXT_MAX_LENGTH, min_length=TEXT_MIN_LENGTH)
     severity = EmbeddedDocumentField(Severity, required=True)
     response = EmbeddedDocumentField(Response, required=True)
     comment = StringField(max_length=COMMENT_MAX_LENGTH, min_length=COMMENT_MIN_LENGTH)

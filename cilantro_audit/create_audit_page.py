@@ -11,7 +11,7 @@ from mongoengine import connect
 from question_module import QuestionModule
 from audit_template import AuditTemplateBuilder, Question
 
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, ADMIN_SCREEN
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
@@ -24,7 +24,7 @@ class ConfirmationPop(Popup):
 
     def return_admin_page(self):
         self.dismiss();
-        self.manager.current = 'AdminScreen'
+        self.manager.current = ADMIN_SCREEN
 
 
 # This class contains the functions and variables used in the audit creation page.
