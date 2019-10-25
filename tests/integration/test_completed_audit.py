@@ -3,15 +3,16 @@ from datetime import datetime
 from mongoengine import connect
 from cilantro_audit.audit_template import Severity
 from cilantro_audit.completed_audit import CompletedAudit, CompletedAuditBuilder, Answer, Response
+from cilantro_audit.constants import TEST_DB
 
-connect("testdb")
+connect(TEST_DB)
 
 
 class CompletedAuditTests(unittest.TestCase):
 
     def __del__(self):
-        db = connect("testdb")
-        db.drop_database("testdb")
+        db = connect(TEST_DB)
+        db.drop_database(TEST_DB)
 
     def test_storage_and_retrieval(self):
         title = "Boiler Room Shenanigans"

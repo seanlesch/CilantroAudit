@@ -1,15 +1,16 @@
 import unittest
 from mongoengine import connect
 from cilantro_audit.audit_template import AuditTemplate, AuditTemplateBuilder, Question, Severity
+from cilantro_audit.constants import TEST_DB
 
-connect("testdb")
+connect(TEST_DB)
 
 
 class AuditTemplateTests(unittest.TestCase):
 
     def __del__(self):
-        db = connect("testdb")
-        db.drop_database("testdb")
+        db = connect(TEST_DB)
+        db.drop_database(TEST_DB)
 
     def test_storage_and_retrieval(self):
         title = "Test Storage And Retrieval"
