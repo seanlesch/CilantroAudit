@@ -3,6 +3,7 @@ from datetime import datetime
 from mongoengine import ValidationError
 from cilantro_audit.audit_template import Severity
 from cilantro_audit.completed_audit import CompletedAudit, Answer, Response
+from cilantro_audit.constants import TITLE_MAX_LENGTH
 
 VALID_ANSWER = Answer(
     text="Text",
@@ -109,8 +110,11 @@ class CompletedAuditTests(unittest.TestCase):
         )
 
     def test_title_max_length(self):
-        character_maximum = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2"
-        too_many_characters = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2f"
+        character_maximum = ""
+        too_many_characters = "a"
+        for _ in range(0, TITLE_MAX_LENGTH):
+            character_maximum += "a"
+            too_many_characters += "a"
         self.assertEqual(
             None,
             CompletedAudit(

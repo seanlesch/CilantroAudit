@@ -1,6 +1,7 @@
 import unittest
 from mongoengine import ValidationError
 from cilantro_audit.audit_template import Question, Severity
+from cilantro_audit.constants import QUESTION_MAX_LENGTH
 
 
 class QuestionTests(unittest.TestCase):
@@ -31,8 +32,11 @@ class QuestionTests(unittest.TestCase):
         self.assertRaises(ValidationError, Question().validate)
 
     def test_text_max_length(self):
-        character_maximum = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2"
-        too_many_characters = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2f"
+        character_maximum = ""
+        too_many_characters = "a"
+        for _ in range(0, QUESTION_MAX_LENGTH):
+            character_maximum += "a"
+            too_many_characters += "a"
         self.assertEqual(None, Question(text=character_maximum).validate())
         self.assertRaises(ValidationError, Question(text=too_many_characters).validate)
 
