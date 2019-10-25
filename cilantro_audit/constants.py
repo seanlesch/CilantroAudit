@@ -1,3 +1,5 @@
+from kivy.utils import get_color_from_hex
+
 AUDITOR_MIN_LENGTH = 1
 AUDITOR_MAX_LENGTH = 50
 
@@ -26,7 +28,7 @@ ADMIN_SCREEN = "AdminScreen"
 AUDITOR_SCREEN = "AuditorScreen"
 CREATE_AUDIT_PAGE = "CreateAuditPage"
 
-RGBA_RED = 2, 0, 0, 1
-RGBA_GREEN = 0, 2, 0, 1
-RGBA_YELLOW = 2, 1, 0, 1
+RGB_RED = get_color_from_hex("#FF4500")
+RGB_GREEN = get_color_from_hex("#4CBB17")
+RGB_YELLOW = get_color_from_hex("#FFFF00")
 
