@@ -1,9 +1,9 @@
 from kivy.app import App
-from kivy.uix.floatlayout import FloatLayout
-from kivy.properties import ObjectProperty
 from kivy.lang import Builder
-from audit_template import Severity, Question
+from kivy.properties import ObjectProperty
+from kivy.uix.floatlayout import FloatLayout
 
+from cilantro_audit.audit_template import Severity
 from cilantro_audit.constants import RGB_GREEN, RGB_YELLOW, RGB_RED
 
 Builder.load_file("./widgets/question_module.kv")

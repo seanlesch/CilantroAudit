@@ -1,7 +1,7 @@
 import kivy
-from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
+
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION
 
 kivy.require(KIVY_REQUIRED_VERSION)
