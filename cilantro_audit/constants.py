@@ -25,3 +25,8 @@ HOME_SCREEN = "HomeScreen"
 ADMIN_SCREEN = "AdminScreen"
 AUDITOR_SCREEN = "AuditorScreen"
 CREATE_AUDIT_PAGE = "CreateAuditPage"
+
+RGBA_RED = 2, 0, 0, 1
+RGBA_GREEN = 0, 2, 0, 1
+RGBA_YELLOW = 2, 1, 0, 1
+
