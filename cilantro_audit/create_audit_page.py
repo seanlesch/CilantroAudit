@@ -11,7 +11,7 @@ from mongoengine import connect
 from question_module import QuestionModule
 from audit_template import AuditTemplateBuilder, Question
 
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
@@ -40,7 +40,7 @@ class CreateAuditPage(Screen, FloatLayout):
     # An object to store the AuditTemplate in the backend
     audit_template = AuditTemplateBuilder()
 
-    connect("testdb")
+    connect(PROD_DB)
 
     # The add_question method creates a new instance of the question widget, adds it to the StackLayout, and adds it
     # to the question list dictionary.
