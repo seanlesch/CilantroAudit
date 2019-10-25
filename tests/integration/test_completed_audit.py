@@ -14,10 +14,10 @@ class CompletedAuditTests(unittest.TestCase):
 
     def __del__(self):
         db = connect(TEST_DB)
-        db.drop_database(TEST_DB)
+        #db.drop_database(TEST_DB)
 
     def test_storage_and_retrieval(self):
-        title = "Boiler Room Shenanigans"
+        title = "3. Boiler Room Shenanigans"
         auditor = "Erik The Auditor"
 
         a0_text = "Did you stick your head in the boiler?"
