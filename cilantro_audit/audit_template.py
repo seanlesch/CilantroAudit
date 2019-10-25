@@ -1,4 +1,5 @@
-from mongoengine import Document, StringField, EmbeddedDocument, EmbeddedDocumentField, EmbeddedDocumentListField
+from mongoengine import Document, StringField, EmbeddedDocument, EmbeddedDocumentField, EmbeddedDocumentListField, \
+    ValidationError
 
 
 class SeverityEnum:
@@ -6,6 +7,11 @@ class SeverityEnum:
     YELLOW = "YELLOW"
     GREEN = "GREEN"
 
+SEVERITY_VALUES = [
+    "RED",
+    "YELLOW",
+    "GREEN",
+]
 
 class Severity(EmbeddedDocument):
     severity = StringField(required=True)
@@ -38,6 +44,11 @@ class Severity(EmbeddedDocument):
             return Severity.red()
         else:
             return Severity.green()
+
+    def validate(self, clean=True):
+        super().validate(clean)
+        if self.severity not in SEVERITY_VALUES:
+            raise ValidationError("Severity must be one of { \"RED\", \"YELLOW\", \"GREEN\" }")
 
 
 class Question(EmbeddedDocument):
