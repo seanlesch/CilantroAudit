@@ -2,7 +2,7 @@ import unittest
 from mongoengine import ValidationError
 from cilantro_audit.completed_audit import Answer, Response
 from cilantro_audit.audit_template import Severity
-from cilantro_audit.constants import QUESTION_MAX_LENGTH, COMMENT_MAX_LENGTH
+from cilantro_audit.constants import QUESTION_MAX_LENGTH, COMMENT_MAX_LENGTH, QUESTION_MIN_LENGTH, COMMENT_MIN_LENGTH
 
 
 class AnswerTests(unittest.TestCase):
@@ -126,8 +126,10 @@ class AnswerTests(unittest.TestCase):
         )
 
     def test_text_min_length(self):
-        character_minimum = "."
-        empty_string = ""
+        character_minimum = ""
+        for _ in range(0, QUESTION_MIN_LENGTH):
+            character_minimum += "a"
+        too_few_characters = character_minimum[1:]
         self.assertEqual(
             None,
             Answer(
@@ -139,7 +141,7 @@ class AnswerTests(unittest.TestCase):
         self.assertRaises(
             ValidationError,
             Answer(
-                text=empty_string,
+                text=too_few_characters,
                 severity=Severity.red(),
                 response=Response.yes(),
             ).validate
@@ -171,8 +173,10 @@ class AnswerTests(unittest.TestCase):
         )
 
     def test_comment_min_length(self):
-        character_minimum = "."
-        empty_string = ""
+        character_minimum = ""
+        for _ in range(0, COMMENT_MIN_LENGTH):
+            character_minimum += "a"
+        too_few_characters = character_minimum[1:]
         self.assertEqual(
             None,
             Answer(
@@ -188,6 +192,6 @@ class AnswerTests(unittest.TestCase):
                 text="With Text",
                 severity=Severity.red(),
                 response=Response.other(),
-                comment=empty_string,
+                comment=too_few_characters,
             ).validate
         )
