@@ -1,0 +1,26 @@
+<CompletedAuditsListPage>
+
+    GridLayout:
+        id: page_layout
+        cols: 2
+
+        GridLayout:
+            id: navigation_options
+            cols: 1
+
+        GridLayout:
+            id: list_layout
+            rows: 2
+
+            Label:
+                text: 'Completed Audits'
+                size_hint_y: 0.1
+
+            ScrollView:
+                id: scrollable_list
+
+                GridLayout:
+                    id: audit_list
+                    cols: 1
+                    spacing: 10
+                    size_hint_y: None
