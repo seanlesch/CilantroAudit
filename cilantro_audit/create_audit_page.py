@@ -11,7 +11,9 @@ from mongoengine import connect
 from question_module import QuestionModule
 from audit_template import AuditTemplateBuilder, Question
 
-kivy.require("1.11.1")
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION
+
+kivy.require(KIVY_REQUIRED_VERSION)
 
 # Loads in the .kv file which contains the CreateAuditPage layout.
 Builder.load_file("./widgets/create_audit_page.kv")

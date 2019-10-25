@@ -8,8 +8,9 @@ import kivy
 
 from auditor_page import AuditorPage
 from create_audit_page import CreateAuditPage
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION
 
-kivy.require('1.11.1')
+kivy.require(KIVY_REQUIRED_VERSION)
 
 Builder.load_file('./widgets/home_page.kv')
 Builder.load_file('./widgets/admin_page.kv')

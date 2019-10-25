@@ -9,3 +9,5 @@ SEVERITY_VALUES = [
     "YELLOW",
     "GREEN",
 ]
+
+KIVY_REQUIRED_VERSION = "1.11.1"
