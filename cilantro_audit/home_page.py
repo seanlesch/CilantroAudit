@@ -44,7 +44,7 @@ class CilantroAudit(App):
         sm.add_widget(AuditorPage(name=AUDITOR_SCREEN))
         sm.add_widget(CreateAuditPage(name=CREATE_AUDIT_PAGE))
 
-        self.title = 'CilantroAudit'
+        self.title = 'CilantroAudi'
         return sm
 
     # Set the text field inside of the popup to be focused
