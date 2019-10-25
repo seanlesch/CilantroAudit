@@ -16,7 +16,7 @@ class ViewAuditsPage(App):
         page_layout = GridLayout(cols=1)
 
         # Retrieve audits from database
-        audits_list = ['Audit 1', 'Audit 2', 'Audit 3', 'Audit 4', 'Audit 5']
+        audits_list = ['Audit 1', 'Audit 2', 'Audit 3', 'Audit 4', 'Audit 5', 'Audit 6']
 
         # Add audit buttons to the page
         for audit in audits_list:
