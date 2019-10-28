@@ -8,8 +8,9 @@ import kivy
 
 from auditor_page import AuditorPage
 from create_audit_page import CreateAuditPage
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, ADMIN_SCREEN, HOME_SCREEN, AUDITOR_SCREEN, CREATE_AUDIT_PAGE
 
-kivy.require('1.11.1')
+kivy.require(KIVY_REQUIRED_VERSION)
 
 Builder.load_file('./widgets/home_page.kv')
 Builder.load_file('./widgets/admin_page.kv')
@@ -30,7 +31,7 @@ class AdminLoginPopup(Popup):
 
     def validate_password(self, value):
         if value == '12345':
-            sm.current = 'AdminScreen'
+            sm.current = ADMIN_SCREEN
             self.dismiss()
 
 
@@ -38,10 +39,10 @@ class CilantroAudit(App):
 
     # Initialize screen manager and other necessary fields
     def build(self):
-        sm.add_widget(HomePage(name="HomeScreen"))
-        sm.add_widget(AdminPage(name="AdminScreen"))
-        sm.add_widget(AuditorPage(name="AuditorScreen"))
-        sm.add_widget(CreateAuditPage(name="CreateAuditPage"))
+        sm.add_widget(HomePage(name=HOME_SCREEN))
+        sm.add_widget(AdminPage(name=ADMIN_SCREEN))
+        sm.add_widget(AuditorPage(name=AUDITOR_SCREEN))
+        sm.add_widget(CreateAuditPage(name=CREATE_AUDIT_PAGE))
 
         self.title = 'CilantroAudit'
         return sm

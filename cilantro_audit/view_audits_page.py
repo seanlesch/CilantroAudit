@@ -3,7 +3,9 @@ from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 
-kivy.require('1.11.1')
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION
+
+kivy.require(KIVY_REQUIRED_VERSION)
 
 
 class ViewAuditsPage(App):

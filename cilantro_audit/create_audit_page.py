@@ -11,7 +11,9 @@ from mongoengine import connect
 from question_module import QuestionModule
 from audit_template import AuditTemplateBuilder, Question
 
-kivy.require("1.11.1")
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, ADMIN_SCREEN
+
+kivy.require(KIVY_REQUIRED_VERSION)
 
 # Loads in the .kv file which contains the CreateAuditPage layout.
 Builder.load_file("./widgets/create_audit_page.kv")
@@ -22,7 +24,7 @@ class ConfirmationPop(Popup):
 
     def return_admin_page(self):
         self.dismiss();
-        self.manager.current = 'AdminScreen'
+        self.manager.current = ADMIN_SCREEN
 
 
 # This class contains the functions and variables used in the audit creation page.
@@ -38,7 +40,7 @@ class CreateAuditPage(Screen, FloatLayout):
     # An object to store the AuditTemplate in the backend
     audit_template = AuditTemplateBuilder()
 
-    connect("testdb")
+    connect(PROD_DB)
 
     # The add_question method creates a new instance of the question widget, adds it to the StackLayout, and adds it
     # to the question list dictionary.
