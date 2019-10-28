@@ -1,5 +1,7 @@
 import unittest
+
 from mongoengine import connect
+
 from cilantro_audit.audit_template import AuditTemplate, AuditTemplateBuilder, Question, Severity
 from cilantro_audit.constants import TEST_DB
 

@@ -1,5 +1,7 @@
 import unittest
+
 from mongoengine import ValidationError
+
 from cilantro_audit.audit_template import Question, Severity
 from cilantro_audit.constants import TEXT_MAX_LENGTH, TEXT_MIN_LENGTH
 

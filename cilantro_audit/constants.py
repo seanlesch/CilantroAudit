@@ -37,4 +37,3 @@ CREATE_AUDIT_PAGE = "CreateAuditPage"
 RGB_RED = get_color_from_hex("#FF4500")
 RGB_GREEN = get_color_from_hex("#00FA9A")
 RGB_YELLOW = get_color_from_hex("#FFFF00")
-

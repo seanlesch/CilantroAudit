@@ -1,6 +1,8 @@
 import unittest
 from datetime import datetime
+
 from mongoengine import ValidationError
+
 from cilantro_audit.audit_template import Severity
 from cilantro_audit.completed_audit import CompletedAudit, Answer, Response
 from cilantro_audit.constants import TITLE_MAX_LENGTH, TITLE_MIN_LENGTH

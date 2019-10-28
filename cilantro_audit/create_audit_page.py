@@ -1,17 +1,15 @@
 import kivy
-
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.properties import ObjectProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
-from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 
-from question_module import QuestionModule
-from audit_template import AuditTemplateBuilder, Question
-
+from cilantro_audit.audit_template import AuditTemplateBuilder, Question
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, ADMIN_SCREEN
+from cilantro_audit.question_module import QuestionModule
 
 kivy.require(KIVY_REQUIRED_VERSION)
 

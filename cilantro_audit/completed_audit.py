@@ -1,8 +1,9 @@
-from mongoengine import Document, StringField, DateTimeField, EmbeddedDocument, EmbeddedDocumentField, \
-    EmbeddedDocumentListField, ValidationError
-from cilantro_audit.audit_template import Severity
 from datetime import datetime
 
+from mongoengine import Document, StringField, DateTimeField, EmbeddedDocument, EmbeddedDocumentField, \
+    EmbeddedDocumentListField, ValidationError
+
+from cilantro_audit.audit_template import Severity
 from cilantro_audit.constants import TEXT_MIN_LENGTH, TEXT_MAX_LENGTH, COMMENT_MIN_LENGTH, COMMENT_MAX_LENGTH, \
     TITLE_MAX_LENGTH, TITLE_MIN_LENGTH, AUDITOR_MAX_LENGTH, AUDITOR_MIN_LENGTH
 

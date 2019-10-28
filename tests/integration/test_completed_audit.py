@@ -1,6 +1,8 @@
 import unittest
 from datetime import datetime
+
 from mongoengine import connect
+
 from cilantro_audit.audit_template import Severity
 from cilantro_audit.completed_audit import CompletedAudit, CompletedAuditBuilder, Answer, Response
 from cilantro_audit.constants import TEST_DB

@@ -1,14 +1,13 @@
+import kivy
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.popup import Popup
-from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.screenmanager import Screen
+from kivy.uix.screenmanager import ScreenManager
 
-import kivy
-
-from auditor_page import AuditorPage
-from create_audit_page import CreateAuditPage
+from cilantro_audit.auditor_page import AuditorPage
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, ADMIN_SCREEN, HOME_SCREEN, AUDITOR_SCREEN, CREATE_AUDIT_PAGE
+from cilantro_audit.create_audit_page import CreateAuditPage
 
 kivy.require(KIVY_REQUIRED_VERSION)
 

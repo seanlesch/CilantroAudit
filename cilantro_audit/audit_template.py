@@ -34,6 +34,7 @@ class Severity(EmbeddedDocument):
     Cycles through the different options:
     GREEN -> YELLOW -> RED -> GREEN -> ...
     """
+
     def next(self):
         if SeverityEnum.GREEN == self.severity:
             return Severity.yellow()
