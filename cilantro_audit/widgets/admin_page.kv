@@ -7,21 +7,41 @@
             font_size: 40
             pos: 0, 150
 
-        Button:
-            text: "Create Audit"
-            font_size: 30
-            size: 250, 200
-            size_hint: None, None
-            pos_hint:{"center_x":0.5,"center_y":0.5}
-            on_press: root.manager.current = 'CreateAuditTemplatePage'
+        FloatLayout:
 
-        Button:
-            text: "Return to Home Page"
-            font_size: 30
-            size: 300, 100
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
             size_hint: None, None
-            pos_hint:{"center_x": 0.5, "center_y": 0.25}
-            on_press: root.manager.current = 'HomeScreen'
+
+            Button:
+                text: "Create Audit"
+                font_size: 25
+                size: 250, 200
+                size_hint: None, None
+                pos_hint: {"center_x": -0.8, "center_y": 0.5}
+                on_press: root.manager.current = 'CreateAuditTemplatePage'
+
+            Button:
+                text: "Return to Home Page"
+                font_size: 25
+                size: 250, 200
+                size_hint: None, None
+                pos_hint: {"center_x": 1.7, "center_y": 0.5}
+                on_press: root.manager.current = 'HomeScreen'
+
+            Button:
+                text: "View Submitted \nAudits"
+                halign: 'center'
+                font_size: 25
+                size: 250, 100
+                size_hint: None, None
+                pos_hint: {"center_x": -0.8, "center_y": -1.0}
+
+            Button:
+                text: "View Flag Trends"
+                font_size: 25
+                size: 250, 100
+                size_hint: None, None
+                pos_hint: {"center_x": 1.7, "center_y": -1.0}
 
         Button:
             text: "Exit"
