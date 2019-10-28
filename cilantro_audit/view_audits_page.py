@@ -1,48 +1,37 @@
 import kivy
 from kivy.app import App
+from kivy.core.text import Label
+from kivy.lang import Builder
 from kivy.uix.button import Button
-from kivy.uix.gridlayout import GridLayout
+from kivy.uix.screenmanager import Screen
+from kivy.uix.screenmanager import ScreenManager
 
+# Required version
 kivy.require('1.11.1')
 
 
-class ViewAuditsPage(App):
+class Manager(ScreenManager):
+    pass
 
-    def build(self):
-        # Initialize page information and layout
-        self.title = 'CilantroAudit - View Audits Page'
-        page_layout = GridLayout(cols=1)
 
-        # Retrieve audits from database
-        audits_list = ['Audit 1', 'Audit 2', 'Audit 3', 'Audit 4', 'Audit 5']
+class ThisPage(Screen):
+    pass
 
-        # Add audit buttons to the page
-        for audit in audits_list:
-            page_layout.add_widget(Button(text=audit,
-                                          font_size=20,
-                                          on_press=self.go_to_page))
 
-        # Add bottom bar to the page
-        bottom_layout = GridLayout(cols=2)
-        bottom_layout.add_widget(Button(text='Return To Homepage',
-                                        font_size=20,
-                                        on_press=self.go_to_page))
-        bottom_layout.add_widget(Button(text='Exit',
-                                        font_size=20,
-                                        size_hint=(.4, .2),
-                                        on_press=self.exit))
-        page_layout.add_widget(bottom_layout)
+class AnotherPage(Screen):
+    pass
 
-        return page_layout
 
-    @staticmethod
-    def go_to_page(self):
-        return
+class ViewSubmittedAudits(App):
+    title = 'CilantroAudit - Submitted Audits'
+    layout = Builder.load_file('./widgets/view_audits_page.kv')
 
-    @staticmethod
     def exit(self):
         exit(1)
 
+    def build(self):
+        return self.layout
+
 
 if __name__ == '__main__':
-    ViewAuditsPage().run()
+    ViewSubmittedAudits().run()

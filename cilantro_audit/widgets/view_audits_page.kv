@@ -1,0 +1,189 @@
+#:kivy 1.11.1
+
+Manager:
+    ThisPage:
+    AnotherPage:
+
+
+<ThisPage>:
+    name: 'this_page'
+
+    BoxLayout:
+        name: 'root_container'
+        orientation: 'vertical'
+
+        ### HEADER ###
+        BoxLayout:
+            name: 'header'
+            size_hint: 1.0, 0.1
+
+            canvas.before:
+                Color:
+                    rgb: 0.275, 0.314, 0.275, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            Button:
+                text: 'Back'
+                size_hint: 0.3, 1.0
+                on_release:
+                    root.manager.transition.direction = 'right'
+                    root.manager.transition.duration = 0.3
+                    root.manager.current = 'another_page'
+
+            Label:
+                text: 'Submitted Audits'
+                font_size: 20
+                color: 1.0, 1.0, 1.0, 1
+
+            Button:
+                text: 'Exit'
+                size_hint: 0.3, 1.0
+                on_release:
+                    root.manager.current = 'another_page'
+                    app.exit()
+
+        ### BODY ###
+        BoxLayout:
+            name: 'body'
+            orientation: 'vertical'
+
+            canvas.before:
+                Color:
+                    rgb: 0.275, 0.314, 0.275, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            Label:
+                name: 'top-row'
+                size_hint: 1.0, 0.1
+
+            BoxLayout:
+                Label:
+                    name: 'left-col'
+                    size_hint: 0.3, 1.0
+
+                ScrollView:
+                    StackLayout:
+                        id: audits_list
+                        height: self.minimum_height
+                        size_hint_y: None
+
+                        Button:
+                            text: 'Audit 1'
+                            size_hint_y: None
+                            on_release:
+                                root.manager.transition.direction = 'up'
+                                root.manager.transition.duration = 0.3
+                                root.manager.current = 'another_page'
+
+                        Button:
+                            text: 'Audit 2'
+                            size_hint_y: None
+                            on_release:
+                                root.manager.transition.direction = 'up'
+                                root.manager.transition.duration = 0.3
+                                root.manager.current = 'another_page'
+
+                        Button:
+                            text: 'Audit 3'
+                            size_hint_y: None
+                            on_release:
+                                root.manager.transition.direction = 'up'
+                                root.manager.transition.duration = 0.3
+                                root.manager.current = 'another_page'
+
+                        Button:
+                            text: 'Audit 4'
+                            size_hint_y: None
+                            on_release:
+                                root.manager.transition.direction = 'up'
+                                root.manager.transition.duration = 0.3
+                                root.manager.current = 'another_page'
+
+                        Button:
+                            text: 'Audit 5'
+                            size_hint_y: None
+                            on_release:
+                                root.manager.transition.direction = 'up'
+                                root.manager.transition.duration = 0.3
+                                root.manager.current = 'another_page'
+
+                        Button:
+                            text: 'Audit 6'
+                            size_hint_y: None
+                            on_release:
+                                root.manager.transition.direction = 'up'
+                                root.manager.transition.duration = 0.3
+                                root.manager.current = 'another_page'
+
+                        Button:
+                            text: 'Audit 7'
+                            size_hint_y: None
+                            on_release:
+                                root.manager.transition.direction = 'up'
+                                root.manager.transition.duration = 0.3
+                                root.manager.current = 'another_page'
+
+                        Button:
+                            text: 'Audit 8'
+                            size_hint_y: None
+                            on_release:
+                                root.manager.transition.direction = 'up'
+                                root.manager.transition.duration = 0.3
+                                root.manager.current = 'another_page'
+
+                        Button:
+                            text: 'Audit 9'
+                            size_hint_y: None
+                            on_release:
+                                root.manager.transition.direction = 'up'
+                                root.manager.transition.duration = 0.3
+                                root.manager.current = 'another_page'
+
+                        Button:
+                            text: 'Audit 10'
+                            size_hint_y: None
+                            on_release:
+                                root.manager.transition.direction = 'up'
+                                root.manager.transition.duration = 0.3
+                                root.manager.current = 'another_page'
+
+                Label:
+                    name: 'right-col'
+                    size_hint: 0.3, 1.0
+
+            Label:
+                name: 'bottom-row'
+                size_hint: 1.0, 0.1
+
+        ### FOOTER ###
+        BoxLayout:
+            name: 'footer'
+            size_hint: 1.0, 0.1
+
+            canvas.before:
+                Color:
+                    rgb: 0.2, 0.2, 0.2, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            Button:
+                text: 'Return Home'
+                on_release:
+                    root.manager.transition.direction = 'down'
+                    root.manager.transition.duration = 0.3
+                    root.manager.current = 'another_page'
+
+
+<AnotherPage>:
+    name: 'another_page'
+
+    Button:
+        text: 'Another Page'
+        font_size: 40
+        on_release:
+            root.manager.current = 'this_page'
