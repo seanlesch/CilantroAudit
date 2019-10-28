@@ -2,6 +2,7 @@ import kivy
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
+from kivy.uix.screenmanager import ScreenManager
 
 # Required version
 kivy.require('1.11.1')
@@ -24,7 +25,10 @@ class ViewSubmittedAudits(App):
     def build(self):
         self.title = 'CilantroAudit - Submitted Audits'
         self.load_kv('./widgets/view_audits_page.kv')
-        return self.root
+        sm = ScreenManager()
+        sm.add_widget(self.root)
+        sm.add_widget(AnotherPage())
+        return sm
 
 
 if __name__ == '__main__':
