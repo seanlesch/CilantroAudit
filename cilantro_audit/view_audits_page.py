@@ -1,6 +1,7 @@
 import kivy
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
 from kivy.uix.screenmanager import ScreenManager
 
@@ -21,14 +22,13 @@ class AnotherPage(Screen):
 
 
 class ViewSubmittedAudits(App):
-    title = 'CilantroAudit - Submitted Audits'
-    kv = Builder.load_file('./widgets/view_audits_page.kv')
-
     def exit(self):
         exit(1)
 
     def build(self):
-        return self.kv
+        self.title = 'CilantroAudit - Submitted Audits'
+        self.load_kv('./widgets/view_audits_page.kv')
+        return self.root
 
 
 if __name__ == '__main__':
