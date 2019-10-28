@@ -31,7 +31,7 @@ class ErrorPop(Popup):
 
 
 # This class contains the functions and variables used in the audit creation page.
-class CreateAuditPage(Screen, FloatLayout):
+class CreateAuditTemplatePage(Screen, FloatLayout):
     # This counter tracks the number of questions added to the form
     q_counter = 0
     # The id for the StackLayout, Used to add questions to the layout.
@@ -129,7 +129,7 @@ class CreateAuditPage(Screen, FloatLayout):
 
 class TestApp(App):
     def build(self):
-        return CreateAuditPage()
+        return CreateAuditTemplatePage()
 
 
 if __name__ == "__main__":
