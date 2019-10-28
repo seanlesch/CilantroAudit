@@ -1,7 +1,5 @@
 import kivy
 from kivy.app import App
-from kivy.lang import Builder
-from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
 from kivy.uix.screenmanager import ScreenManager
 
