@@ -1,4 +1,8 @@
-from mongoengine import Document, StringField, EmbeddedDocument, EmbeddedDocumentField, EmbeddedDocumentListField
+from mongoengine import Document, StringField, EmbeddedDocument, EmbeddedDocumentField, EmbeddedDocumentListField, \
+    ValidationError
+
+from cilantro_audit.constants import SEVERITY_VALUES, TEXT_MAX_LENGTH, TEXT_MIN_LENGTH, TITLE_MIN_LENGTH, \
+    TITLE_MAX_LENGTH
 
 
 class SeverityEnum:
@@ -39,9 +43,14 @@ class Severity(EmbeddedDocument):
         else:
             return Severity.green()
 
+    def validate(self, clean=True):
+        super().validate(clean)
+        if self.severity not in SEVERITY_VALUES:
+            raise ValidationError("Severity must be one of { \"RED\", \"YELLOW\", \"GREEN\" }")
+
 
 class Question(EmbeddedDocument):
-    text = StringField(required=True, max_length=50, min_length=1)
+    text = StringField(required=True, max_length=TEXT_MAX_LENGTH, min_length=TEXT_MIN_LENGTH)
     yes = EmbeddedDocumentField(Severity, required=True, default=Severity.default())
     no = EmbeddedDocumentField(Severity, required=True, default=Severity.default())
     other = EmbeddedDocumentField(Severity, required=True, default=Severity.default())
@@ -67,5 +76,5 @@ class AuditTemplateBuilder:
 
 
 class AuditTemplate(Document):
-    title = StringField(required=True, max_length=50, min_length=1)
+    title = StringField(required=True, max_length=TITLE_MAX_LENGTH, min_length=TITLE_MIN_LENGTH)
     questions = EmbeddedDocumentListField(Question, required=True)

@@ -1,28 +1,28 @@
+import kivy
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.popup import Popup
-from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.screenmanager import Screen
+from kivy.uix.screenmanager import ScreenManager
 
-import kivy
+from cilantro_audit.auditor_page import AuditorPage
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, ADMIN_SCREEN, HOME_SCREEN, AUDITOR_SCREEN, CREATE_AUDIT_PAGE
+from cilantro_audit.create_audit_page import CreateAuditPage
 
-from create_audit_page import CreateAuditPage
+kivy.require(KIVY_REQUIRED_VERSION)
 
-kivy.require('1.11.1')
-
-# Config.set('graphics', 'resizable', '0')
-homePageLayout = Builder.load_file('./widgets/homepage.kv')
-homePageLayout = Builder.load_file('./widgets/adminpage.kv')
+Builder.load_file('./widgets/home_page.kv')
+Builder.load_file('./widgets/admin_page.kv')
 
 # Create the screen manager
 sm = ScreenManager()
 
 
-class HomeScreen(Screen):
+class HomePage(Screen):
     pass
 
 
-class AdminScreen(Screen):
+class AdminPage(Screen):
     pass
 
 
@@ -30,17 +30,18 @@ class AdminLoginPopup(Popup):
 
     def validate_password(self, value):
         if value == '12345':
-            sm.current = 'AdminScreen'
+            sm.current = ADMIN_SCREEN
             self.dismiss()
 
 
-class HomePage(App):
+class CilantroAudit(App):
 
     # Initialize screen manager and other necessary fields
     def build(self):
-        sm.add_widget(HomeScreen(name="HomeScreen"))
-        sm.add_widget(AdminScreen(name="AdminScreen"))
-        sm.add_widget(CreateAuditPage(name="CreateAuditPage"))
+        sm.add_widget(HomePage(name=HOME_SCREEN))
+        sm.add_widget(AdminPage(name=ADMIN_SCREEN))
+        sm.add_widget(AuditorPage(name=AUDITOR_SCREEN))
+        sm.add_widget(CreateAuditPage(name=CREATE_AUDIT_PAGE))
 
         self.title = 'CilantroAudit'
         return sm
@@ -61,4 +62,4 @@ class HomePage(App):
 
 
 if __name__ == '__main__':
-    HomePage().run()
+    CilantroAudit().run()

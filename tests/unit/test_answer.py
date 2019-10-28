@@ -1,7 +1,10 @@
 import unittest
+
 from mongoengine import ValidationError
-from cilantro_audit.completed_audit import Answer, Response
+
 from cilantro_audit.audit_template import Severity
+from cilantro_audit.completed_audit import Answer, Response
+from cilantro_audit.constants import TEXT_MAX_LENGTH, COMMENT_MAX_LENGTH, TEXT_MIN_LENGTH, COMMENT_MIN_LENGTH
 
 
 class AnswerTests(unittest.TestCase):
@@ -102,12 +105,15 @@ class AnswerTests(unittest.TestCase):
         )
 
     def test_text_max_length(self):
-        character_limit = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2"
-        character_maximum = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2f"
+        character_maximum = ""
+        too_many_characters = "a"
+        for _ in range(0, TEXT_MAX_LENGTH):
+            character_maximum += "a"
+            too_many_characters += "a"
         self.assertEqual(
             None,
             Answer(
-                text=character_limit,
+                text=character_maximum,
                 severity=Severity.red(),
                 response=Response.yes(),
             ).validate()
@@ -115,15 +121,17 @@ class AnswerTests(unittest.TestCase):
         self.assertRaises(
             ValidationError,
             Answer(
-                text=character_maximum,
+                text=too_many_characters,
                 severity=Severity.red(),
                 response=Response.yes(),
             ).validate
         )
 
     def test_text_min_length(self):
-        character_minimum = "."
-        empty_string = ""
+        character_minimum = ""
+        for _ in range(0, TEXT_MIN_LENGTH):
+            character_minimum += "a"
+        too_few_characters = character_minimum[1:]
         self.assertEqual(
             None,
             Answer(
@@ -135,22 +143,25 @@ class AnswerTests(unittest.TestCase):
         self.assertRaises(
             ValidationError,
             Answer(
-                text=empty_string,
+                text=too_few_characters,
                 severity=Severity.red(),
                 response=Response.yes(),
             ).validate
         )
 
     def test_comment_max_length(self):
-        character_limit = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2"
-        character_maximum = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh22"
+        character_maximum = ""
+        too_many_characters = "a"
+        for _ in range(0, COMMENT_MAX_LENGTH):
+            character_maximum += "a"
+            too_many_characters += "a"
         self.assertEqual(
             None,
             Answer(
                 text="With Text",
                 severity=Severity.red(),
                 response=Response.other(),
-                comment=character_limit,
+                comment=character_maximum,
             ).validate()
         )
         self.assertRaises(
@@ -159,13 +170,15 @@ class AnswerTests(unittest.TestCase):
                 text="With Text",
                 severity=Severity.red(),
                 response=Response.other(),
-                comment=character_maximum,
+                comment=too_many_characters,
             ).validate
         )
 
     def test_comment_min_length(self):
-        character_minimum = "."
-        empty_string = ""
+        character_minimum = ""
+        for _ in range(0, COMMENT_MIN_LENGTH):
+            character_minimum += "a"
+        too_few_characters = character_minimum[1:]
         self.assertEqual(
             None,
             Answer(
@@ -181,6 +194,6 @@ class AnswerTests(unittest.TestCase):
                 text="With Text",
                 severity=Severity.red(),
                 response=Response.other(),
-                comment=empty_string,
+                comment=too_few_characters,
             ).validate
         )

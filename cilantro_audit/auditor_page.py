@@ -1,25 +1,18 @@
 import kivy
-from kivy.app import App
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.screenmanager import Screen
 
-kivy.require('1.11.1')
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION
+
+kivy.require(KIVY_REQUIRED_VERSION)
 
 auditorPageLayout = Builder.load_file('./widgets/auditor_page.kv')
-sm = ScreenManager()
 
 
-class AuditorScreen(Screen):
-    pass
-
-
-class AuditorPage(App):
+class AuditorPage(Screen):
 
     def build(self):
-        self.title = 'CilantroAudit - Auditor Page'
-        sm.add_widget(AuditorScreen(name="AuditorScreen"))
-        return sm
+        return auditorPageLayout
 
     def submit_new_audit(self):
         return
@@ -29,9 +22,6 @@ class AuditorPage(App):
 
     def return_to_homepage(self):
         return
-
-    def exit(self):
-        exit(1)
 
 
 if __name__ == '__main__':

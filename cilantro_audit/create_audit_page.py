@@ -1,17 +1,17 @@
 import kivy
-
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.properties import ObjectProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
-from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 
-from questionModule import QuestionModule
-from audit_template import AuditTemplateBuilder, Question
+from cilantro_audit.audit_template import AuditTemplateBuilder, Question
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, ADMIN_SCREEN
+from cilantro_audit.question_module import QuestionModule
 
-kivy.require("1.11.1")
+kivy.require(KIVY_REQUIRED_VERSION)
 
 # Loads in the .kv file which contains the CreateAuditPage layout.
 Builder.load_file("./widgets/create_audit_page.kv")
@@ -23,7 +23,7 @@ class ConfirmationPop(Popup):
 
     def return_admin_page(self):
         self.dismiss()
-        self.manager.current = 'AdminScreen'
+        self.manager.current = ADMIN_SCREEN
 
 
 class ErrorPop(Popup):
@@ -41,7 +41,7 @@ class CreateAuditPage(Screen, FloatLayout):
     # A dictionary used to store and access questions.
     question_list = {}
 
-    connect("testdb")
+    connect(PROD_DB)
 
     # The add_question method creates a new instance of the question widget, adds it to the StackLayout, and adds it
     # to the question list dictionary.
