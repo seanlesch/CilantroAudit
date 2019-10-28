@@ -8,7 +8,7 @@ from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 
 from cilantro_audit.audit_template import AuditTemplateBuilder, Question
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, ADMIN_SCREEN
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, ADMIN_SCREEN, TITLE_MAX_LENGTH, TEXT_MAX_LENGTH
 from cilantro_audit.question_module import QuestionModule
 
 kivy.require(KIVY_REQUIRED_VERSION)
@@ -105,15 +105,25 @@ class CreateAuditPage(Screen, FloatLayout):
     # checks the audit template for errors
     def check_audit(self):
         error_message = ""
+        q_missing = False
+        q_long = False
         if self.audit_title.text == "":
-            error_message += "Please enter a title for the audit.\n"
+            error_message += "- Please enter a title for the audit.\n"
+        if len(self.audit_title.text) > TITLE_MAX_LENGTH:
+            error_message += "- The audit title is too long.\n"
         if self.question_list == {}:
-            error_message += "An audit template must have one question.\n"
+            error_message += "- An audit template must have one question.\n"
         else:
             for question in self.question_list.values():
-                if question.question_text.text == "":
-                    error_message += "Please enter question text for every question.\n"
+                if question.question_text.text == "" and not q_missing:
+                    error_message += "- Please enter question text for every question.\n"
+                    q_missing = True
+                elif len(question.question_text.text) > TEXT_MAX_LENGTH and not q_long:
+                    error_message += "- A question's text is too long.\n"
+                    q_long = True
+                if q_long and q_missing:
                     break
+
         return error_message
 
 
