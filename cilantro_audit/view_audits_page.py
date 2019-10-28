@@ -7,10 +7,6 @@ from kivy.uix.screenmanager import ScreenManager
 kivy.require('1.11.1')
 
 
-class Manager(ScreenManager):
-    pass
-
-
 class ThisPage(Screen):
     pass
 
@@ -26,7 +22,10 @@ class ViewSubmittedAudits(App):
     def build(self):
         self.title = 'CilantroAudit - Submitted Audits'
         self.load_kv('./widgets/view_audits_page.kv')
-        return self.root
+        sm = ScreenManager()
+        sm.add_widget(self.root)
+        sm.add_widget(AnotherPage())
+        return sm
 
 
 if __name__ == '__main__':
