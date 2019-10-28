@@ -24,13 +24,13 @@ class AnotherPage(Screen):
 
 class ViewSubmittedAudits(App):
     title = 'CilantroAudit - Submitted Audits'
-    layout = Builder.load_file('./widgets/view_audits_page.kv')
+    kv = Builder.load_file('./widgets/view_audits_page.kv')
 
     def exit(self):
         exit(1)
 
     def build(self):
-        return self.layout
+        return self.kv
 
 
 if __name__ == '__main__':
