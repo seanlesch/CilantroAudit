@@ -14,7 +14,7 @@ from cilantro_audit.question_module import QuestionModule
 kivy.require(KIVY_REQUIRED_VERSION)
 
 # Loads in the .kv file which contains the CreateAuditPage layout.
-Builder.load_file("./widgets/create_audit_page.kv")
+Builder.load_file("./widgets/create_audit_template_page.kv")
 
 
 # The popup used for both the back and submit buttons
@@ -51,7 +51,7 @@ class CreateAuditTemplatePage(Screen, FloatLayout):
         q_temp.q_id = self.q_counter
         self.q_counter += 1
         self.stack_list.add_widget(q_temp)
-        q_temp.delete_question.bind(on_press=lambda x: self.del_question(q_temp.q_id))
+        q_temp.delete_question.bind(on_press=lambda _: self.del_question(q_temp.q_id))
         self.question_list[str(q_temp.q_id)] = q_temp
 
     # shows the confirmation popup and sets the yes button functions
