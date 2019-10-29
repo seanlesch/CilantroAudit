@@ -10,7 +10,6 @@ kivy.require('1.11.1')
 
 
 class Manager(ScreenManager):
-
     pass
 
 
