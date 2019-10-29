@@ -13,16 +13,31 @@ class Manager(ScreenManager):
     pass
 
 
-class HomePage(Screen):
+class Root(Screen):
+    pass
+
+
+class Header(Screen):
+    pass
+
+
+class Body(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         Clock.schedule_once(self.callback)
 
     def callback(self, *args):
         for i in range(0, 10):
-            btn = Button(text=str(i + 1),
-                         size_hint_y=None)
+            btn = AuditButton(text=str(i + 1))
             self.ids["audits_list"].add_widget(btn)
+
+
+class Footer(Screen):
+    pass
+
+
+class AuditButton(Button):
+    pass
 
 
 class AnotherPage(Screen):
