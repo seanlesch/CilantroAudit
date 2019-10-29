@@ -1,9 +1,13 @@
 #:kivy 1.11.1
 
+Manager:
+    HomePage:
+        name: 'home_page'
+    AnotherPage:
+        name: 'another_page'
 
-ThisPage:
-    name: 'this_page'
 
+<HomePage>:
     BoxLayout:
         orientation: 'vertical'
 
@@ -64,89 +68,9 @@ ThisPage:
                     name: 'middle-col'
 
                     StackLayout:
-                        name: 'audits_list'
+                        id: audits_list
                         height: self.minimum_height
                         size_hint_y: None
-
-                        Button:
-                            text: 'Audit 1'
-                            size_hint_y: None
-                            on_release:
-                                root.manager.transition.direction = 'up'
-                                root.manager.transition.duration = 0.3
-                                root.manager.current = 'another_page'
-
-                        Button:
-                            text: 'Audit 2'
-                            size_hint_y: None
-                            on_release:
-                                root.manager.transition.direction = 'up'
-                                root.manager.transition.duration = 0.3
-                                root.manager.current = 'another_page'
-
-                        Button:
-                            text: 'Audit 3'
-                            size_hint_y: None
-                            on_release:
-                                root.manager.transition.direction = 'up'
-                                root.manager.transition.duration = 0.3
-                                root.manager.current = 'another_page'
-
-                        Button:
-                            text: 'Audit 4'
-                            size_hint_y: None
-                            on_release:
-                                root.manager.transition.direction = 'up'
-                                root.manager.transition.duration = 0.3
-                                root.manager.current = 'another_page'
-
-                        Button:
-                            text: 'Audit 5'
-                            size_hint_y: None
-                            on_release:
-                                root.manager.transition.direction = 'up'
-                                root.manager.transition.duration = 0.3
-                                root.manager.current = 'another_page'
-
-                        Button:
-                            text: 'Audit 6'
-                            size_hint_y: None
-                            on_release:
-                                root.manager.transition.direction = 'up'
-                                root.manager.transition.duration = 0.3
-                                root.manager.current = 'another_page'
-
-                        Button:
-                            text: 'Audit 7'
-                            size_hint_y: None
-                            on_release:
-                                root.manager.transition.direction = 'up'
-                                root.manager.transition.duration = 0.3
-                                root.manager.current = 'another_page'
-
-                        Button:
-                            text: 'Audit 8'
-                            size_hint_y: None
-                            on_release:
-                                root.manager.transition.direction = 'up'
-                                root.manager.transition.duration = 0.3
-                                root.manager.current = 'another_page'
-
-                        Button:
-                            text: 'Audit 9'
-                            size_hint_y: None
-                            on_release:
-                                root.manager.transition.direction = 'up'
-                                root.manager.transition.duration = 0.3
-                                root.manager.current = 'another_page'
-
-                        Button:
-                            text: 'Audit 10'
-                            size_hint_y: None
-                            on_release:
-                                root.manager.transition.direction = 'up'
-                                root.manager.transition.duration = 0.3
-                                root.manager.current = 'another_page'
 
                 Label:
                     name: 'right-col'
@@ -177,10 +101,8 @@ ThisPage:
 
 
 <AnotherPage>:
-    name: 'another_page'
-
     Button:
         text: 'Another Page'
         font_size: 40
         on_release:
-            root.manager.current = 'this_page'
+            root.manager.current = 'home_page'
