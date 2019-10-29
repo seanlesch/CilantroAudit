@@ -10,30 +10,27 @@ kivy.require('1.11.1')
 
 
 class Manager(ScreenManager):
+
     pass
 
 
-class Root(Screen):
-    pass
-
-
-class Header(Screen):
-    pass
-
-
-class Body(Screen):
+class RootPage(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         Clock.schedule_once(self.callback)
 
     def callback(self, *args):
-        for i in range(0, 10):
-            btn = AuditButton(text=str(i + 1))
+        for i in range(1, 10):
+            btn = AuditButton(text="Audit " + str(i))
             self.ids["audits_list"].add_widget(btn)
 
+    # def get_audit_templates(self):
+    #     for i in range(1, 10):
+    #         btn = AuditButton(text="Audit " + str(i))
+    #         self.ids["audits_list"].add_widget(btn)
 
-class Footer(Screen):
-    pass
+    def exit(self):
+        exit(1)
 
 
 class AuditButton(Button):
@@ -44,15 +41,12 @@ class AnotherPage(Screen):
     pass
 
 
-class ViewSubmittedAudits(App):
-    def exit(self):
-        exit(1)
-
+class ViewAuditTemplates(App):
     def build(self):
         self.title = 'CilantroAudit - Submitted Audits'
-        self.load_kv('./widgets/view_audits_page.kv')
+        self.load_kv('./widgets/view_audit_templates.kv')
         return self.root
 
 
 if __name__ == '__main__':
-    ViewSubmittedAudits().run()
+    ViewAuditTemplates().run()
