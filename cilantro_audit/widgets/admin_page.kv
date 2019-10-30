@@ -30,11 +30,12 @@
 
             Button:
                 text: "View Submitted \nAudits"
-                halign: 'center'
+                align: 'center'
                 font_size: 25
                 size: 250, 100
                 size_hint: None, None
                 pos_hint: {"center_x": -0.8, "center_y": -1.0}
+                on_press: root.manager.current = "CompletedAuditsListPage"
 
             Button:
                 text: "View Flag Trends"
