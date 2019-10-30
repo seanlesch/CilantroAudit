@@ -6,7 +6,7 @@ from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivy.app import App
 
-from constants import KIVY_REQUIRED_VERSION, TEST_DB
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB
 
 from mongoengine import connect
 from cilantro_audit.completed_audit import CompletedAudit
@@ -15,7 +15,7 @@ kivy.require(KIVY_REQUIRED_VERSION)
 
 kvfile = Builder.load_file('./widgets/completed_audits_list_page.kv')
 
-connect(TEST_DB)
+connect(PROD_DB)
 
 
 class CompletedAuditsListPage(Screen):
@@ -25,10 +25,6 @@ class CompletedAuditsListPage(Screen):
     auditor_col = ObjectProperty()
 
     def build(self):
-        # self.audit_list.bind(minimum_height=self.audit_list.setter('height'))
-        # self.title_col.bind(minimum_height=self.title_col.setter('height'))
-        # self.date_col.bind(minimum_height=self.date_col.setter('height'))
-        # self.auditor_col.bind(minimum_height=self.auditor_col.setter('height'))
         return kvfile
 
     def load_completed_audits(self):

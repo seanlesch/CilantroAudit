@@ -42,6 +42,7 @@ class CilantroAudit(App):
         sm.add_widget(AdminPage(name=ADMIN_SCREEN))
         sm.add_widget(AuditorPage(name=AUDITOR_SCREEN))
         sm.add_widget(CreateAuditPage(name=CREATE_AUDIT_PAGE))
+        sm.add_widget(CreateAuditPage(name="CompletedAuditsListPage"))
 
         self.title = 'CilantroAudit'
         return sm

@@ -1,4 +1,7 @@
+
 <CompletedAuditsListPage>:
+
+#:import ADMIN_SCREEN cilantro_audit.constants.ADMIN_SCREEN
 
     audit_list: audit_list
     title_col: title_col
@@ -7,16 +10,8 @@
 
     GridLayout:
         id: page_layout
-        cols: 2
-
-        GridLayout:
-            id: navigation_options
-            cols: 1
-
-            Button:
-                text: 'Return to Admin Page'
-                size_hint_y: None
-                size: 400, 50
+        rows: 2
+        spacing: 10
 
         GridLayout:
             id: list_layout
@@ -62,3 +57,13 @@
                         id: auditor_col
                         cols: 1
 
+        GridLayout:
+            id: navigation_options
+            cols: 1
+            size_hint_y: 0.1
+
+            Button:
+                text: 'Return to Admin Page'
+                size_hint_y: None
+                size: 400, 50
+                on_press: root.manager.current = ADMIN_SCREEN
