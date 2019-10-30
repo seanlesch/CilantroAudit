@@ -14,10 +14,10 @@ class CompletedAuditTests(unittest.TestCase):
 
     def __del__(self):
         db = connect(TEST_DB)
-        #db.drop_database(TEST_DB)
+        db.drop_database(TEST_DB)
 
     def test_storage_and_retrieval(self):
-        title = "3. Boiler Room Shenanigans"
+        title = "Boiler Room Shenanigans"
         auditor = "Erik The Auditor"
 
         a0_text = "Did you stick your head in the boiler?"
@@ -33,30 +33,29 @@ class CompletedAuditTests(unittest.TestCase):
         a2_response = Response.other()
         a2_comment = "There was no dust on the machine to clean."
 
-        for _ in range(50):
-            CompletedAuditBuilder() \
-                .with_title(title) \
-                .with_auditor(auditor) \
-                .with_answer(
-                Answer(
-                    text=a0_text,
-                    severity=a0_severity,
-                    response=a0_response,
-                )
-            ).with_answer(
-                Answer(
-                    text=a1_text,
-                    severity=a1_severity,
-                    response=a1_response,
-                )
-            ).with_answer(
-                Answer(
-                    text=a2_text,
-                    severity=a2_severity,
-                    response=a2_response,
-                    comment=a2_comment,
-                )
-            ).build().save()
+        CompletedAuditBuilder() \
+            .with_title(title) \
+            .with_auditor(auditor) \
+            .with_answer(
+            Answer(
+                text=a0_text,
+                severity=a0_severity,
+                response=a0_response,
+            )
+        ).with_answer(
+            Answer(
+                text=a1_text,
+                severity=a1_severity,
+                response=a1_response,
+            )
+        ).with_answer(
+            Answer(
+                text=a2_text,
+                severity=a2_severity,
+                response=a2_response,
+                comment=a2_comment,
+            )
+        ).build().save()
 
         audits = CompletedAudit.objects(title=title)
 

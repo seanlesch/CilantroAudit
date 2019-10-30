@@ -5,6 +5,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from kivy.uix.screenmanager import ScreenManager
 
+from cilantro_audit.admin_page import AdminPage
 from cilantro_audit.auditor_page import AuditorPage
 from cilantro_audit.completed_audits_list_page import CompletedAuditsListPage
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, ADMIN_SCREEN, HOME_SCREEN, AUDITOR_SCREEN, CREATE_AUDIT_PAGE
@@ -19,10 +20,6 @@ Builder.load_file('./widgets/admin_page.kv')
 sm = ScreenManager()
 
 class HomePage(Screen):
-    pass
-
-
-class AdminPage(Screen):
     pass
 
 
@@ -42,7 +39,7 @@ class CilantroAudit(App):
         sm.add_widget(AdminPage(name=ADMIN_SCREEN))
         sm.add_widget(AuditorPage(name=AUDITOR_SCREEN))
         sm.add_widget(CreateAuditPage(name=CREATE_AUDIT_PAGE))
-        #sm.add_widget(CompletedAuditsListPage(name="CompletedAuditsListPage"))
+        sm.add_widget(CompletedAuditsListPage(name="CompletedAuditsListPage"))
 
         self.title = 'CilantroAudit'
         return sm
