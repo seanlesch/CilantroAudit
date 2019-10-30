@@ -4,13 +4,13 @@ from kivy.clock import Clock
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
 from kivy.uix.screenmanager import ScreenManager
-from audit_template import AuditTemplate
 from mongoengine import connect
 
+from cilantro_audit.audit_template import AuditTemplate
 # Required version
-kivy.require('1.11.1')
+kivy.require(KIVY_REQUIRED_VERSION)
 
-connect("toost")
+connect(PROD_DB)
 
 class Manager(ScreenManager):
     pass
@@ -26,11 +26,6 @@ class RootPage(Screen):
         for title in titles:
             btn = AuditButton(text=title)
             self.ids["audits_list"].add_widget(btn)
-
-    # def get_audit_templates(self):
-    #     for i in range(1, 10):
-    #         btn = AuditButton(text="Audit " + str(i))
-    #         self.ids["audits_list"].add_widget(btn)
 
     def exit(self):
         exit(1)
