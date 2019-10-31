@@ -1,0 +1,41 @@
+<CreateCompletedAuditPage>:
+    stack_list: stack_list
+    title_label: title_label
+    size: root.width, root.height
+
+    ScrollView:
+        size_hint: 1, .89
+        pos_hint: {"top": 1}
+
+        StackLayout:
+            id: stack_list
+            size_hint_y: None
+
+            GridLayout:
+                row_force_default: True
+                row_default_height: 30
+                cols: 2
+                rows: 1
+                spacing: 200
+                size_hint_y: None
+
+                Label:
+                    text: "Audit Name:"
+
+                Label:
+                    id: title_label
+                    text: root.audit_title
+                    color: 1, 1, 1, 1
+                    text_size: root.width-100, None
+
+    Button:
+        text: "Submit"
+        size_hint: .15, .1
+        pos_hint: {"right": 1, "y": 0}
+        on_press: root.submit_audit_pop(root.manager)
+
+    Button:
+        text: "Back"
+        size_hint: .15, .1
+        pos_hint: {"right": .85, "bottom": 0}
+        on_press: root.back(root.manager)

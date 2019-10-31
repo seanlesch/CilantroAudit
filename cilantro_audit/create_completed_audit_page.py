@@ -3,13 +3,13 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 
-from cilantro_audit.audit_template import AuditTemplate, Question
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, ADMIN_SCREEN, TITLE_MAX_LENGTH, TEXT_MAX_LENGTH
-from cilantro_audit.question_module import QuestionModule
+from cilantro_audit.audit_template import AuditTemplate
+from cilantro_audit.completed_audit import CompletedAuditBuilder, Answer, Response
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, TEST_DB
+from cilantro_audit.answer_module import AnswerModule
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
@@ -18,40 +18,66 @@ kivy.require(KIVY_REQUIRED_VERSION)
 Builder.load_file("./widgets/create_completed_audit_page.kv")
 
 
-# This class contains the functions and variables used in the audit creation page.
 class CreateCompletedAuditPage(Screen, FloatLayout):
     # The id for the StackLayout, Used to add questions to the layout.
     stack_list = ObjectProperty()
+    # the actual label holding the audit title
+    title_label = ObjectProperty()
     # The id for the title section of the audit.
     audit_title = ObjectProperty()
+    audit_title = "BLAH BBLAH IN ROOM BLAH"
 
-    connect("toost")
+    connect(TEST_DB)
 
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.stack_list.bind(minimum_height=self.stack_list.setter("height"))
+        self.questions = []
+        self.populate_audit()
+
+    # put all questions on the screen for the auditor to respond to
     def populate_audit(self):
-        target = "something"
+        target = "TEST TEST"
         try:
-            template = AuditTemplate.objects().filter(title__exact=target).first() #for now, while there can be duplicates
+            template = AuditTemplate.objects().filter(title=target).first() #for now, while there can be duplicates
         except AttributeError:
             # TO DO - SOMETHING
             pass
 
+        self.audit_title = template.title
+        for question in template.questions:
+            self.stack_list.height += 200
+            a_temp = AnswerModule()
+            a_temp.question = question
+            self.stack_list.add_widget(a_temp)
+            self.questions.append(a_temp)
 
-    # pull an audittemplate
-    # put the title up dey
-    # for each question in audittemplate's qlist:
-    #   make one of our question modules
-    #   fill it with that question's info stuff things
-    #   plop that boi on the screen
+    # Return the associated severity with question's response
+    def question_severity(self, question):
+        if (question.response == Response.yes()):
+            return question.yes
+        elif (question.response == Response.no()):
+            return question.no
+        return question.other
 
-   """
-        self.stack_list.height += 200
-        q_temp = QuestionModule()
-        q_temp.q_id = self.q_counter
-        self.q_counter += 1
-        self.stack_list.add_widget(q_temp)
-        q_temp.delete_question.bind(on_press=lambda _: self.del_question(q_temp.q_id))
-        self.question_list[str(q_temp.q_id)] = q_temp
-    """
+    # Function called after user selects yes on the confirmation popup
+    def submit_audit(self, callback):
+        completed_audit = CompletedAuditBuilder()
+        completed_audit.with_title(self.audit_title)
+        completed_audit.with_auditor("EMPTY") # no auditor name rn
+        for a in self.questions:
+            temp_answer = Answer(text=a.question.text, severity=self.question_severity(a), response=a.response, comment = " ") #no comment rn
+            completed_audit.with_answer(temp_answer)
+
+        completed_audit.build().save()
+
+    def submit_audit_pop(self, manager):
+        # Confirm, submit and send back to prev page
+        pass
+
+    def back(self, manager):
+        # Confirm then send back to prev page - can we just reuse the ones in create_audit_template.py?
+        pass
 
 class TestApp(App):
     def build(self):
