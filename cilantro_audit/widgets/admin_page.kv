@@ -1,5 +1,9 @@
 <AdminPage>:
 
+#:import HOME_SCREEN cilantro_audit.constants.HOME_SCREEN
+#:import CREATE_AUDIT_PAGE cilantro_audit.constants.CREATE_AUDIT_PAGE
+#:import COMPLETED_AUDITS_LIST_PAGE cilantro_audit.constants.COMPLETED_AUDITS_LIST_PAGE
+
     FloatLayout:
 
         Label:
@@ -18,7 +22,7 @@
                 size: 250, 200
                 size_hint: None, None
                 pos_hint: {"center_x": -0.8, "center_y": 0.5}
-                on_press: root.manager.current = 'CreateAuditPage'
+                on_press: root.manager.current = CREATE_AUDIT_PAGE
 
             Button:
                 text: "Return to Home Page"
@@ -26,7 +30,7 @@
                 size: 250, 200
                 size_hint: None, None
                 pos_hint: {"center_x": 1.7, "center_y": 0.5}
-                on_press: root.manager.current = 'HomeScreen'
+                on_press: root.manager.current = HOME_SCREEN
 
             Button:
                 text: "View Submitted \nAudits"
@@ -35,7 +39,7 @@
                 size: 250, 100
                 size_hint: None, None
                 pos_hint: {"center_x": -0.8, "center_y": -1.0}
-                on_press: root.manager.current = 'CompletedAuditsListPage'
+                on_press: root.manager.current = COMPLETED_AUDITS_LIST_PAGE
 
             Button:
                 text: "View Flag Trends"
