@@ -11,7 +11,7 @@ from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, SEVERITY_PR
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
-kvfile = Builder.load_file('./widgets/completed_audits_list_page.kv')
+kvfile = Builder.load_file("./widgets/completed_audits_list_page.kv")
 
 connect(PROD_DB)
 
@@ -26,10 +26,10 @@ class CompletedAuditsListPage(Screen):
 
     def __init__(self, **kw):
         super().__init__(**kw)
-        self.date_col.bind(minimum_height=self.audit_list.setter('height'))
-        self.title_col.bind(minimum_height=self.audit_list.setter('height'))
-        self.auditor_col.bind(minimum_height=self.audit_list.setter('height'))
-        self.severity_col.bind(minimum_height=self.audit_list.setter('height'))
+        self.date_col.bind(minimum_height=self.audit_list.setter("height"))
+        self.title_col.bind(minimum_height=self.audit_list.setter("height"))
+        self.auditor_col.bind(minimum_height=self.audit_list.setter("height"))
+        self.severity_col.bind(minimum_height=self.audit_list.setter("height"))
         self.audits = []
         self.load_completed_audits()
 
@@ -77,5 +77,5 @@ class CompletedAuditsListPage(Screen):
             self.severity_col.add_widget(lbl)
 
     def load_completed_audits(self):
-        self.audits = list(CompletedAudit.objects().only('title', 'datetime', 'auditor', 'severity'))
+        self.audits = list(CompletedAudit.objects().only("title", "datetime", "auditor", "severity"))
         self.refresh_completed_audits()

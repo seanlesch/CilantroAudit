@@ -38,6 +38,7 @@ HOME_SCREEN = "HomeScreen"
 ADMIN_SCREEN = "AdminScreen"
 AUDITOR_SCREEN = "AuditorScreen"
 CREATE_AUDIT_PAGE = "CreateAuditPage"
+COMPLETED_AUDITS_LIST_PAGE = "CompletedAuditsListPage"
 
 # Colors
 RGB_RED = get_color_from_hex("#FF4500")
