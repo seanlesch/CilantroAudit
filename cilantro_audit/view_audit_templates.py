@@ -38,7 +38,7 @@ class AuditButton(Button):
 
 class ViewAuditTemplates(App):
     def build(self):
-        self.title = 'CilantroAudit - Submitted Audits'
+        self.title = 'CilantroAudit - Audit Templates'
         self.load_kv('./widgets/view_audit_templates.kv')
 
         # Initialize this page and set the data
