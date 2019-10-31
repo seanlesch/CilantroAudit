@@ -78,7 +78,6 @@ class CompletedAuditTests(unittest.TestCase):
         a2_response = Response.other()
         a2_comment = "There was no dust on the machine to clean."
 
-        self.assertEqual(Severity.red(), audit.severity)
         self.assertEqual(a0_text, audit.answers[0].text)
         self.assertEqual(a0_severity, audit.answers[0].severity)
         self.assertEqual(a0_response, audit.answers[0].response)

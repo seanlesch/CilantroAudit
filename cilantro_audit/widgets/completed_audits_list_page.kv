@@ -3,10 +3,11 @@
 
 #:import ADMIN_SCREEN cilantro_audit.constants.ADMIN_SCREEN
 
-    audit_list: audit_list
-    title_col: title_col
     date_col: date_col
+    title_col: title_col
+    audit_list: audit_list
     auditor_col: auditor_col
+    severity_col: severity_col
     refresh_button: refresh_button
 
     GridLayout:
@@ -22,7 +23,7 @@
 
             GridLayout:
                 id: headers
-                cols: 3
+                cols: 4
                 spacing: 10
                 size_hint_y: 0.1
 
@@ -44,12 +45,18 @@
                     spacing: 10
                     on_press: root.manager.get_screen('CompletedAuditsListPage').sort_by_auditor()
 
+                Button:
+                    id: auditor_header
+                    text: 'Severity'
+                    spacing: 10
+                    on_press: root.manager.get_screen('CompletedAuditsListPage').sort_by_severity()
+
             ScrollView:
                 id: scrollable_list
 
                 GridLayout:
                     id: audit_list
-                    cols: 3
+                    cols: 4
                     spacing: 10
                     size_hint_y: None
 
@@ -64,6 +71,12 @@
                     GridLayout:
                         id: auditor_col
                         cols: 1
+
+                    GridLayout:
+                        id: severity_col
+                        cols: 1
+
+
 
         GridLayout:
             id: navigation_options

@@ -23,6 +23,12 @@ SEVERITY_VALUES = [
     "GREEN",
 ]
 
+SEVERITY_PRECEDENCE = {
+    "RED": 0,
+    "YELLOW": 1,
+    "GREEN": 2,
+}
+
 # Database Names
 TEST_DB = "testdb"
 PROD_DB = "prod"
