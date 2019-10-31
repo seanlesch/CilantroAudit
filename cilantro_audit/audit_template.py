@@ -4,10 +4,12 @@ from mongoengine import Document, StringField, EmbeddedDocument, EmbeddedDocumen
 from cilantro_audit.constants import SEVERITY_VALUES, TEXT_MAX_LENGTH, TEXT_MIN_LENGTH, TITLE_MIN_LENGTH, \
     TITLE_MAX_LENGTH
 
+
 class SeverityEnum:
     RED = "RED"
     YELLOW = "YELLOW"
     GREEN = "GREEN"
+
 
 class Severity(EmbeddedDocument):
     severity = StringField(required=True)
@@ -40,8 +42,6 @@ class Severity(EmbeddedDocument):
             return Severity.red()
         else:
             return Severity.green()
-
-
 
     def validate(self, clean=True):
         super().validate(clean)

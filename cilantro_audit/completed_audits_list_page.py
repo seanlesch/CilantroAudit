@@ -1,21 +1,20 @@
 import kivy
-from kivy.uix.label import Label
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 from kivy.uix.button import Button
-from kivy.uix.screenmanager import Screen, ScreenManager
-from kivy.app import App
-
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, SEVERITY_PRECEDENCE
-
+from kivy.uix.label import Label
+from kivy.uix.screenmanager import Screen
 from mongoengine import connect
+
 from cilantro_audit.completed_audit import CompletedAudit
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, SEVERITY_PRECEDENCE
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
 kvfile = Builder.load_file('./widgets/completed_audits_list_page.kv')
 
 connect(PROD_DB)
+
 
 class CompletedAuditsListPage(Screen):
     date_col = ObjectProperty()
@@ -80,4 +79,3 @@ class CompletedAuditsListPage(Screen):
     def load_completed_audits(self):
         self.audits = list(CompletedAudit.objects().only('title', 'datetime', 'auditor', 'severity'))
         self.refresh_completed_audits()
-

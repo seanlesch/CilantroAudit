@@ -19,6 +19,7 @@ Builder.load_file('./widgets/admin_page.kv')
 # Create the screen manager
 sm = ScreenManager()
 
+
 class HomePage(Screen):
     pass
 

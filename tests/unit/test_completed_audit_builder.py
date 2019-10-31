@@ -142,4 +142,3 @@ class CompletedAuditBuilderTests(unittest.TestCase):
             .with_answer(GREEN_ANSWER) \
             .build()
         self.assertEqual(Severity.red(), audit.severity)
-
