@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import kivy
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
@@ -14,6 +16,12 @@ kivy.require(KIVY_REQUIRED_VERSION)
 kvfile = Builder.load_file("./widgets/completed_audits_list_page.kv")
 
 connect(PROD_DB)
+
+EPOCH = datetime.utcfromtimestamp(0)
+
+
+def invert_datetime(dt):
+    return -(dt - EPOCH).total_seconds()
 
 
 class CompletedAuditsListPage(Screen):
@@ -37,28 +45,28 @@ class CompletedAuditsListPage(Screen):
 
     def sort_by_title(self):
         self.audits = sorted(self.audits, key=lambda obj: (
-        obj.title, SEVERITY_PRECEDENCE[obj.severity.severity], obj.datetime, obj.auditor))
+            obj.title, SEVERITY_PRECEDENCE[obj.severity.severity], invert_datetime(obj.datetime), obj.auditor))
         self.refresh_completed_audits()
 
     """Sorts list items by datetime."""
 
     def sort_by_date(self):
         self.audits = sorted(self.audits, key=lambda obj: (
-        obj.datetime, SEVERITY_PRECEDENCE[obj.severity.severity], obj.title, obj.auditor))
+            invert_datetime(obj.datetime), SEVERITY_PRECEDENCE[obj.severity.severity], obj.title, obj.auditor))
         self.refresh_completed_audits()
 
     """Sorts list items by auditor name."""
 
     def sort_by_auditor(self):
         self.audits = sorted(self.audits, key=lambda obj: (
-        obj.auditor, SEVERITY_PRECEDENCE[obj.severity.severity], obj.datetime, obj.title))
+            obj.auditor, SEVERITY_PRECEDENCE[obj.severity.severity], invert_datetime(obj.datetime), obj.title))
         self.refresh_completed_audits()
 
     """Sorts list items by severity RED -> YELLOW -> GREEN"""
 
     def sort_by_severity(self):
         self.audits = sorted(self.audits, key=lambda obj: (
-        SEVERITY_PRECEDENCE[obj.severity.severity], obj.datetime, obj.title, obj.auditor))
+            SEVERITY_PRECEDENCE[obj.severity.severity], invert_datetime(obj.datetime), obj.title, obj.auditor))
         self.refresh_completed_audits()
 
     """Loads completed audits from the database and populates the list."""
