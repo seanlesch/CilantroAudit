@@ -34,32 +34,42 @@ class CompletedAuditsListPage(Screen):
         self.load_completed_audits()
 
     """Sorts list items by title."""
+
     def sort_by_title(self):
-        self.audits = sorted(self.audits, key=lambda obj: (obj.title, SEVERITY_PRECEDENCE[obj.severity.severity], obj.datetime, obj.auditor))
+        self.audits = sorted(self.audits, key=lambda obj: (
+        obj.title, SEVERITY_PRECEDENCE[obj.severity.severity], obj.datetime, obj.auditor))
         self.refresh_completed_audits()
 
     """Sorts list items by datetime."""
+
     def sort_by_date(self):
-        self.audits = sorted(self.audits, key=lambda obj: (obj.datetime, SEVERITY_PRECEDENCE[obj.severity.severity], obj.title, obj.auditor))
+        self.audits = sorted(self.audits, key=lambda obj: (
+        obj.datetime, SEVERITY_PRECEDENCE[obj.severity.severity], obj.title, obj.auditor))
         self.refresh_completed_audits()
 
     """Sorts list items by auditor name."""
+
     def sort_by_auditor(self):
-        self.audits = sorted(self.audits, key=lambda obj: (obj.auditor, SEVERITY_PRECEDENCE[obj.severity.severity], obj.datetime, obj.title))
+        self.audits = sorted(self.audits, key=lambda obj: (
+        obj.auditor, SEVERITY_PRECEDENCE[obj.severity.severity], obj.datetime, obj.title))
         self.refresh_completed_audits()
 
     """Sorts list items by severity RED -> YELLOW -> GREEN"""
+
     def sort_by_severity(self):
-        self.audits = sorted(self.audits, key=lambda obj: (SEVERITY_PRECEDENCE[obj.severity.severity], obj.datetime, obj.title, obj.auditor))
+        self.audits = sorted(self.audits, key=lambda obj: (
+        SEVERITY_PRECEDENCE[obj.severity.severity], obj.datetime, obj.title, obj.auditor))
         self.refresh_completed_audits()
 
     """Loads completed audits from the database and populates the list."""
+
     def load_completed_audits(self):
         self.audits = list(CompletedAudit.objects().only("title", "datetime", "auditor", "severity"))
         self.sort_by_severity()
         self.refresh_completed_audits()
 
     """Refreshes the list of audits on the screen."""
+
     def refresh_completed_audits(self):
         self.date_col.clear_widgets()
         self.title_col.clear_widgets()
@@ -86,4 +96,3 @@ class CompletedAuditsListPage(Screen):
         for severity in audit_severities:
             lbl = Label(text=severity.severity, size_hint_y=None, height=40)
             self.severity_col.add_widget(lbl)
-
