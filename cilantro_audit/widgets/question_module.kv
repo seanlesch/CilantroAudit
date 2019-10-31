@@ -1,5 +1,7 @@
 <QuestionModule>
 
+#:import GREEN cilantro_audit.constants.RGB_GREEN
+
 ## variables to be passed back into python code
     question_text: question_text
     delete_question: delete_question
@@ -23,7 +25,6 @@
         background_color: 2, 0, 0, 1
         text: "Delete"
         pos_hint: {"top": 0.95, "center_x": 0.93}
-        on_press: root.del_press()
 
     ##yes/no information label
     Label:
@@ -35,7 +36,7 @@
     ##"yes" button
     Button:
         id: yes_button
-        background_color: 0, 2, 0, 1
+        background_color: GREEN
         size: 40, 40
         size_hint: None, None
         pos_hint: {"top": 0.3, "center_x": 0.2}
@@ -49,7 +50,7 @@
     ##"no" button
     Button:
         id: no_button
-        background_color: 0, 2, 0, 1
+        background_color: GREEN
         size: 40, 40
         size_hint: None, None
         pos_hint: {"top": 0.3, "center_x": 0.4}
@@ -65,7 +66,7 @@
     ##"other" button
     Button:
         id: other_button
-        background_color: 0, 2, 0, 1
+        background_color: GREEN
         size: 40, 40
         size_hint: None, None
         pos_hint: {"top": 0.3, "center_x": 0.6}

@@ -1,5 +1,7 @@
 import unittest
+
 from mongoengine import ValidationError
+
 from cilantro_audit.audit_template import Severity, SeverityEnum
 
 
@@ -20,3 +22,8 @@ class SeverityTests(unittest.TestCase):
         self.assertEqual(Severity.yellow(), Severity.green().next())
         self.assertEqual(Severity.red(), Severity.yellow().next())
         self.assertEqual(Severity.green(), Severity.red().next())
+
+    def test_severity_validations(self):
+        self.assertRaises(ValidationError, Severity("REED").validate)
+        self.assertRaises(ValidationError, Severity("YEELOW").validate)
+        self.assertRaises(ValidationError, Severity("GREEEN").validate)
