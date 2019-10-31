@@ -1,0 +1,122 @@
+#:kivy 1.11.1
+
+
+Manager:
+    RootPage:
+    AnotherPage:
+
+
+<RootPage>:
+    name: 'root_page'
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        BoxLayout:
+            name: 'header'
+            size_hint: 1, 0.1
+
+            orientation: 'horizontal'
+
+            canvas.before:
+                Color:
+                    rgb: 0.275, 0.314, 0.275, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            Button:
+                text: 'Back'
+                size_hint: 0.3, 1.0
+                on_release:
+                    root.manager.current = 'another_page'
+                    root.manager.transition.duration = 0.3
+                    root.manager.transition.direction = 'right'
+
+            Label:
+                text: 'Audit Templates'
+                font_size: 20
+                color: 1.0, 1.0, 1.0, 1
+
+            Button:
+                text: 'Exit'
+                size_hint: 0.3, 1.0
+                on_release:
+                    root.exit()
+
+        BoxLayout:
+            name: 'body'
+            size_hint: 1, 0.8
+            orientation: 'vertical'
+
+            canvas.before:
+                Color:
+                    rgb: 0.275, 0.314, 0.275, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            Label:
+                name: 'top-row'
+                size_hint: 1.0, 0.1
+
+            BoxLayout:
+                orientation: 'horizontal'
+
+                Label:
+                    name: 'left-col'
+                    size_hint: 0.3, 1.0
+
+                ScrollView:
+                    name: 'middle-col'
+
+                    StackLayout:
+                        id: audits_list
+                        height: self.minimum_height
+                        size_hint_y: None
+
+                Label:
+                    name: 'right-col'
+                    size_hint: 0.3, 1.0
+
+            Label:
+                name: 'bottom-row'
+                size_hint: 1.0, 0.1
+
+        BoxLayout:
+            name: 'footer'
+            size_hint: 1, 0.1
+            orientation: 'horizontal'
+
+            canvas.before:
+                Color:
+                    rgb: 0.2, 0.2, 0.2, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            Button:
+                text: 'Return Home'
+                on_release:
+                    root.manager.current = 'another_page'
+                    root.manager.transition.duration = 0.3
+                    root.manager.transition.direction = 'down'
+
+
+<AuditButton@Button>:
+    name: 'button_template'
+
+    size_hint_y: None
+    on_release:
+        root.manager.current = 'another_page'
+        root.manager.transition.duration = 0.3
+        root.manager.transition.direction = 'right'
+
+<AnotherPage>:
+    name: 'another_page'
+
+    Button:
+        text: 'Another Page'
+        font_size: 40
+        on_release:
+            root.manager.current = 'root_page'
