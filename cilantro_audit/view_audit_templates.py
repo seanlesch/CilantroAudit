@@ -22,7 +22,7 @@ class Manager(ScreenManager):
     pass
 
 
-class RootPage(Screen):
+class ThisPage(Screen):
     def get_audit_templates(self):
         titles = list(map(lambda template: template.title, AuditTemplate.objects().only('title')))
         for title in titles:
@@ -42,7 +42,7 @@ class ViewAuditTemplates(App):
         self.load_kv('./widgets/view_audit_templates.kv')
 
         # Initialize this page and set the data
-        root_page = RootPage()
+        root_page = ThisPage()
         root_page.get_audit_templates()
 
         # Add all associated pages to the root manager

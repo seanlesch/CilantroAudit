@@ -4,8 +4,8 @@
 Manager:
 
 
-<RootPage>:
-    name: 'root_page'
+<ThisPage>:
+    name: 'this_page'
 
     BoxLayout:
         orientation: 'vertical'
@@ -106,6 +106,6 @@ Manager:
 
     size_hint_y: None
     on_release:
-        root.manager.current = 'RootPage'
+        root.manager.current = 'ThisPage'
         root.manager.transition.duration = 0.3
         root.manager.transition.direction = 'right'
