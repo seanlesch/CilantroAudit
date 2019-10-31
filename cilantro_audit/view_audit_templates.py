@@ -4,11 +4,15 @@ from kivy.clock import Clock
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
 from kivy.uix.screenmanager import ScreenManager
+from mongoengine import connect
+from cilantro_audit.constants import PROD_DB
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION
 from cilantro_audit.audit_template import AuditTemplate
 
-from mongoengine import connect
-
+# Required Version
 kivy.require(KIVY_REQUIRED_VERSION)
+
+# Default Database Connection
 connect(PROD_DB)
 
 
