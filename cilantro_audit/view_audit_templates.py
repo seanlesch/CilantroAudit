@@ -36,10 +36,6 @@ class AuditButton(Button):
     pass
 
 
-class AnotherPage(Screen):
-    pass
-
-
 class ViewAuditTemplates(App):
     def build(self):
         self.title = 'CilantroAudit - Submitted Audits'
