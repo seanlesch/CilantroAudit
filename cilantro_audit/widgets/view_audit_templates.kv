@@ -2,8 +2,6 @@
 
 
 Manager:
-    RootPage:
-    AnotherPage:
 
 
 <RootPage>:
@@ -29,7 +27,7 @@ Manager:
                 text: 'Back'
                 size_hint: 0.3, 1.0
                 on_release:
-                    root.manager.current = 'another_page'
+                    root.manager.current = 'AuditorPage'
                     root.manager.transition.duration = 0.3
                     root.manager.transition.direction = 'right'
 
@@ -98,7 +96,7 @@ Manager:
             Button:
                 text: 'Return Home'
                 on_release:
-                    root.manager.current = 'another_page'
+                    root.manager.current = 'HomePage'
                     root.manager.transition.duration = 0.3
                     root.manager.transition.direction = 'down'
 
@@ -108,15 +106,6 @@ Manager:
 
     size_hint_y: None
     on_release:
-        root.manager.current = 'another_page'
+        root.manager.current = 'RootPage'
         root.manager.transition.duration = 0.3
         root.manager.transition.direction = 'right'
-
-<AnotherPage>:
-    name: 'another_page'
-
-    Button:
-        text: 'Another Page'
-        font_size: 40
-        on_release:
-            root.manager.current = 'root_page'

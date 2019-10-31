@@ -1,12 +1,14 @@
 import kivy
 from kivy.app import App
-from kivy.clock import Clock
+from mongoengine import connect
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
 from kivy.uix.screenmanager import ScreenManager
-from mongoengine import connect
-from cilantro_audit.constants import PROD_DB
+
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION
+from cilantro_audit.constants import PROD_DB
+from cilantro_audit.home_page import HomePage
+from cilantro_audit.auditor_page import AuditorPage
 from cilantro_audit.audit_template import AuditTemplate
 
 # Required Version
@@ -21,15 +23,10 @@ class Manager(ScreenManager):
 
 
 class RootPage(Screen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        Clock.schedule_once(self.callback)
-
-    def callback(self, *args):
+    def get_audit_templates(self):
         titles = list(map(lambda template: template.title, AuditTemplate.objects().only('title')))
         for title in titles:
-            btn = AuditButton(text=title)
-            self.ids["audits_list"].add_widget(btn)
+            self.ids["audits_list"].add_widget(AuditButton(text=title))
 
     def exit(self):
         exit(1)
@@ -47,6 +44,16 @@ class ViewAuditTemplates(App):
     def build(self):
         self.title = 'CilantroAudit - Submitted Audits'
         self.load_kv('./widgets/view_audit_templates.kv')
+
+        # Initialize this page and set the data
+        root_page = RootPage()
+        root_page.get_audit_templates()
+
+        # Add all associated pages to the root manager
+        self.root.add_widget(root_page)
+        self.root.add_widget(HomePage(name="HomePage"))
+        self.root.add_widget(AuditorPage(name="AuditorPage"))
+
         return self.root
 
 
