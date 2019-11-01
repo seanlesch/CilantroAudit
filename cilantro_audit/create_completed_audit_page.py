@@ -1,15 +1,16 @@
 import kivy
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 
 from cilantro_audit.audit_template import AuditTemplate
 from cilantro_audit.completed_audit import CompletedAuditBuilder, Answer, Response
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, TEST_DB
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB
 from cilantro_audit.answer_module import AnswerModule
+from cilantro_audit.create_audit_template_page import ConfirmationPop, ErrorPop
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
@@ -24,10 +25,9 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
     # the actual label holding the audit title
     title_label = ObjectProperty()
     # The id for the title section of the audit.
-    audit_title = ObjectProperty()
-    audit_title = "BLAH BBLAH IN ROOM BLAH"
+    audit_title = StringProperty()
 
-    connect(TEST_DB)
+    connect(PROD_DB)
 
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -37,7 +37,7 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
 
     # put all questions on the screen for the auditor to respond to
     def populate_audit(self):
-        target = "TEST TEST"
+        target = "TEST AUDIT"
         try:
             template = AuditTemplate.objects().filter(title=target).first() #for now, while there can be duplicates
         except AttributeError:
@@ -49,16 +49,17 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
             self.stack_list.height += 200
             a_temp = AnswerModule()
             a_temp.question = question
+            a_temp.question_text = question.text
             self.stack_list.add_widget(a_temp)
             self.questions.append(a_temp)
 
     # Return the associated severity with question's response
     def question_severity(self, question):
         if (question.response == Response.yes()):
-            return question.yes
+            return question.question.yes
         elif (question.response == Response.no()):
-            return question.no
-        return question.other
+            return question.question.no
+        return question.question.other
 
     # Function called after user selects yes on the confirmation popup
     def submit_audit(self, callback):
@@ -72,12 +73,41 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
         completed_audit.build().save()
 
     def submit_audit_pop(self, manager):
-        # Confirm, submit and send back to prev page
-        pass
+        error_message = self.check_audit()
+        if error_message != "":
+            show = ErrorPop()
+            show.error_message.text = error_message
+        else:
+            show = ConfirmationPop()
+            show.yes.bind(on_press=self.submit_audit)
+            #show.yes.bind(on_press=self.clear_page)
+        show.manager = manager
+        show.open()
 
+    # On press method for the back button
     def back(self, manager):
-        # Confirm then send back to prev page - can we just reuse the ones in create_audit_template.py?
-        pass
+        show = ConfirmationPop()
+        show.yes.bind(on_press=self.clear_page)
+        show.manager = manager
+        show.open()
+
+    # Empties stack list and question list, should enable leaving early without a problem...
+    def clear_page(self, callback):
+        self.audit_title = ""
+        for question in self.questions:
+            self.stack_list.remove_widget(question)
+            self.stack_list.height -= 200
+        self.questions.clear()
+
+    # Ensures that the completedAudit has everything filled out before trying to .save() it
+    def check_audit(self):
+        error_message = ""
+        for question in self.questions:
+            if (question.response == None):
+                error_message += "Must respond to all questions."
+        # will need an auditor name check when that is implemented
+        return error_message
+
 
 class TestApp(App):
     def build(self):

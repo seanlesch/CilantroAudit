@@ -1,6 +1,6 @@
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.floatlayout import FloatLayout
 from mongoengine import connect
@@ -16,19 +16,13 @@ class AnswerModule(FloatLayout):
     gets text from the auditTemplate, gets yes/no/other from auditor via checkbox
     """
     question_label = ObjectProperty()
-    question_text = ObjectProperty()
+    question_text = StringProperty()
     yes_box = ObjectProperty()
     no_box = ObjectProperty()
     other_box = ObjectProperty()
 
     question = None
     response = None
-
-    # Will need other's comment input eventually
-    question_text = "Larger sentence to get a better idea of how a large string would be presented " + \
-                    " in kivy and also blah blah blah blahajd fjlsjkd jfskfjalfja dkfjksajfa dlfkjalfja" + \
-                    " alsdjfalkds jfadlkfjafsjakdsfjakldjfakldjfak;jdak;jfa;lkjdsfk; lajdf;al kdjf;akljsdfl" + \
-                    " alsdjfalk askdfjlasfj akdfklajfd adfj jal f jaldf jal fja ljkd jfal djaks jf j la jfa j"
 
     def yes_box_press(self):
         self.response = Response.yes()
