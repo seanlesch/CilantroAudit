@@ -3,6 +3,13 @@
     title_label: title_label
     size: root.width, root.height
 
+    Label:
+        id: title_label
+        text: "Audit Name:  " + root.audit_title
+        color: 1, 1, 1, 1
+        text_size: root.width-100, None
+        pos_hint: {"top": 1.45}
+
     ScrollView:
         size_hint: 1, .89
         pos_hint: {"top": 1}
@@ -18,15 +25,6 @@
                 rows: 1
                 spacing: 200
                 size_hint_y: None
-
-                Label:
-                    text: "Audit Name:"
-
-                Label:
-                    id: title_label
-                    text: root.audit_title
-                    color: 1, 1, 1, 1
-                    text_size: root.width-100, None
 
     Button:
         text: "Submit"
