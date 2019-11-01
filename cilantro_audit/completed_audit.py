@@ -47,6 +47,7 @@ class CompletedAuditBuilder:
         self.title = None
         self.datetime = None
         self.auditor = None
+        self.max_severity = Severity.green()
         self.answers = []
 
     def with_title(self, title):
@@ -59,6 +60,10 @@ class CompletedAuditBuilder:
 
     def with_answer(self, answer):
         self.answers.append(answer)
+        if answer.severity == Severity.red():
+            self.max_severity = Severity.red()
+        elif self.max_severity == Severity.green() and answer.severity == Severity.yellow():
+            self.max_severity = Severity.yellow()
         return self
 
     def build(self):
@@ -66,6 +71,7 @@ class CompletedAuditBuilder:
             title=self.title,
             datetime=datetime.utcnow(),
             auditor=self.auditor,
+            severity=self.max_severity,
             answers=self.answers,
         )
         audit.validate()
@@ -76,4 +82,5 @@ class CompletedAudit(Document):
     title = StringField(required=True, max_length=TITLE_MAX_LENGTH, min_length=TITLE_MIN_LENGTH)
     datetime = DateTimeField(required=True)
     auditor = StringField(required=True, max_length=AUDITOR_MAX_LENGTH, min_length=AUDITOR_MIN_LENGTH)
+    severity = EmbeddedDocumentField(Severity, required=True)
     answers = EmbeddedDocumentListField(Answer, required=True)
