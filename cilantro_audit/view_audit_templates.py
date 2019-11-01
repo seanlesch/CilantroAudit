@@ -7,6 +7,8 @@ from kivy.uix.screenmanager import ScreenManager
 
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION
 from cilantro_audit.constants import PROD_DB
+from cilantro_audit.constants import HOME_SCREEN
+from cilantro_audit.constants import AUDITOR_SCREEN
 from cilantro_audit.home_page import HomePage
 from cilantro_audit.auditor_page import AuditorPage
 from cilantro_audit.audit_template import AuditTemplate
@@ -22,7 +24,7 @@ class Manager(ScreenManager):
     pass
 
 
-class ThisPage(Screen):
+class ViewAuditTemplatesScreen(Screen):
     def get_audit_templates(self):
         titles = list(map(lambda template: template.title, AuditTemplate.objects().only('title')))
         for title in titles:
@@ -39,13 +41,13 @@ class ViewAuditTemplates(App):
         self.load_kv('./widgets/view_audit_templates.kv')
 
         # Initialize this page and set the data
-        root_page = ThisPage()
-        root_page.get_audit_templates()
+        this_page = ViewAuditTemplatesScreen()
+        this_page.get_audit_templates()
 
         # Add all associated pages to the root manager
-        self.root.add_widget(root_page)
-        self.root.add_widget(HomePage(name="HomePage"))
-        self.root.add_widget(AuditorPage(name="AuditorPage"))
+        self.root.add_widget(this_page)
+        self.root.add_widget(HomePage(name=HOME_SCREEN))
+        self.root.add_widget(AuditorPage(name=AUDITOR_SCREEN))
 
         return self.root
 

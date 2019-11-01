@@ -4,7 +4,7 @@
 Manager:
 
 
-<ThisPage>:
+<ViewAuditTemplatesScreen>:
     name: 'this_page'
 
     BoxLayout:
@@ -27,7 +27,7 @@ Manager:
                 text: 'Back'
                 size_hint: 0.3, 1.0
                 on_release:
-                    app.root.current = 'AuditorPage'
+                    app.root.current = 'AuditorScreen'
                     app.root.transition.duration = 0.3
                     app.root.transition.direction = 'right'
 
@@ -95,7 +95,7 @@ Manager:
             Button:
                 text: 'Return Home'
                 on_release:
-                    app.root.current = 'HomePage'
+                    app.root.current = 'HomeScreen'
                     app.root.transition.duration = 0.3
                     app.root.transition.direction = 'down'
 
