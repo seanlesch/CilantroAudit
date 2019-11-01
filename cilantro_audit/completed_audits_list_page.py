@@ -1,6 +1,7 @@
-from datetime import datetime
-
 import kivy
+import time
+
+from datetime import datetime
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 from kivy.uix.button import Button
@@ -18,6 +19,16 @@ kvfile = Builder.load_file("./widgets/completed_audits_list_page.kv")
 connect(PROD_DB)
 
 EPOCH = datetime.utcfromtimestamp(0)
+
+
+def format_datetime(dt):
+    return dt.strftime("%m/%d/%Y (%H:%M:%S)")
+
+
+def utc_to_local(utc):
+    epoch = time.mktime(utc.timetuple())
+    offset = datetime.fromtimestamp(epoch) - datetime.utcfromtimestamp(epoch)
+    return utc + offset
 
 
 def invert_datetime(dt):
@@ -93,8 +104,8 @@ class CompletedAuditsListPage(Screen):
             btn = Button(text=title, size_hint_y=None, height=40)
             self.title_col.add_widget(btn)
 
-        for datetime in audit_dates:
-            lbl = Label(text=str(datetime), size_hint_y=None, height=40)
+        for dt in audit_dates:
+            lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
             self.date_col.add_widget(lbl)
 
         for auditor in audit_auditors:
