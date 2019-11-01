@@ -75,6 +75,9 @@ AUDITORS = [
 SEVERITIES = [
     Severity.red(),
     Severity.yellow(),
+    Severity.yellow(),
+    Severity.green(),
+    Severity.green(),
     Severity.green(),
 ]
 
