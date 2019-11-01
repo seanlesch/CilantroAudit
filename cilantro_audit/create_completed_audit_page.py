@@ -26,6 +26,8 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
     title_label = ObjectProperty()
     # The id for the title section of the audit.
     audit_title = StringProperty()
+    # The auditor's name that is conducting the audit.
+    auditor_name = ObjectProperty()
 
     connect(PROD_DB)
 
@@ -39,7 +41,7 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
     def populate_audit(self):
         target = "TEST AUDIT"
         try:
-            template = AuditTemplate.objects().filter(title=target).first() #for now, while there can be duplicates
+            template = AuditTemplate.objects().filter(title=target).first()  # for now, while there can be duplicates
         except AttributeError:
             # TO DO - SOMETHING
             pass
@@ -55,9 +57,9 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
 
     # Return the associated severity with question's response
     def question_severity(self, question):
-        if (question.response == Response.yes()):
+        if question.response == Response.yes():
             return question.question.yes
-        elif (question.response == Response.no()):
+        elif question.response == Response.no():
             return question.question.no
         return question.question.other
 
@@ -65,9 +67,11 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
     def submit_audit(self, callback):
         completed_audit = CompletedAuditBuilder()
         completed_audit.with_title(self.audit_title)
-        completed_audit.with_auditor("EMPTY") # no auditor name rn
+        # The object returned from the .kv is a TextField, with a member text
+        completed_audit.with_auditor(self.auditor_name.text)
         for a in self.questions:
-            temp_answer = Answer(text=a.question.text, severity=self.question_severity(a), response=a.response, comment = " ") #no comment rn
+            temp_answer = Answer(text=a.question.text, severity=self.question_severity(a), response=a.response,
+                                 comment=" ")  # Comments TODO
             completed_audit.with_answer(temp_answer)
 
         completed_audit.build().save()
@@ -103,9 +107,9 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
     def check_audit(self):
         error_message = ""
         for question in self.questions:
-            if (question.response == None):
+            if question.response is None:
                 error_message = "Must respond to all questions."
-                break # like this for now because there are changes to be made still
+                break  # like this for now because there are changes to be made still
         # will need an auditor name check when that is implemented
         return error_message
 

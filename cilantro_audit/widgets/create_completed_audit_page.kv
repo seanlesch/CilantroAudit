@@ -1,6 +1,7 @@
 <CreateCompletedAuditPage>:
     stack_list: stack_list
     title_label: title_label
+    auditor_name: auditor_name
     size: root.width, root.height
 
     Label:
@@ -10,9 +11,38 @@
         text_size: root.width-100, None
         pos_hint: {"top": 1.45}
 
+    GridLayout:
+        cols: 2
+        rows: 2
+        row_force_default: True
+        row_default_height: 30
+        size_hint_y: None
+        size_hint_x: .25
+        pos_hint: {"top": .95}
+
+        Label:
+            id: title_label
+            text: "Audit Name:  " + root.audit_title
+            color: 1, 1, 1, 1
+            text_size: root.width, None
+            pos_hint: {"top": 1.45}
+
+        Label:
+            id: blank_label_for_testing
+
+        Label:
+            id: name_label
+            text: "Your Name: "
+            pos_hint: {"top": 1.45}
+
+        TextInput:
+            id: auditor_name
+            multiline: False
+            pos_hint: {"top": 1.45}
+
     ScrollView:
-        size_hint: 1, .89
-        pos_hint: {"top": 1}
+        size_hint: .8, .89
+        pos_hint: {"top": .8}
 
         StackLayout:
             id: stack_list
