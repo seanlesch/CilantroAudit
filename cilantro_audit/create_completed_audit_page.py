@@ -79,8 +79,8 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
             show.error_message.text = error_message
         else:
             show = ConfirmationPop()
+            show.yes.bind(on_press=self.clear_page)
             show.yes.bind(on_press=self.submit_audit)
-            #show.yes.bind(on_press=self.clear_page)
         show.manager = manager
         show.open()
 
@@ -104,7 +104,8 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
         error_message = ""
         for question in self.questions:
             if (question.response == None):
-                error_message += "Must respond to all questions."
+                error_message = "Must respond to all questions."
+                break # like this for now because there are changes to be made still
         # will need an auditor name check when that is implemented
         return error_message
 
