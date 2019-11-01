@@ -5,7 +5,7 @@ from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
 from kivy.uix.screenmanager import ScreenManager
 
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, HOME_SCREEN, AUDITOR_SCREEN
 from cilantro_audit.constants import PROD_DB
 from cilantro_audit.home_page import HomePage
 from cilantro_audit.auditor_page import AuditorPage
@@ -44,8 +44,8 @@ class ViewAuditTemplates(App):
 
         # Add all associated pages to the root manager
         self.root.add_widget(root_page)
-        self.root.add_widget(HomePage(name="HomePage"))
-        self.root.add_widget(AuditorPage(name="AuditorPage"))
+        self.root.add_widget(HomePage(name=HOME_SCREEN))
+        self.root.add_widget(AuditorPage(name=AUDITOR_SCREEN))
 
         return self.root
 
