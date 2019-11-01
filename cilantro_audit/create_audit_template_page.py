@@ -7,7 +7,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 
-from cilantro_audit.audit_template import AuditTemplateBuilder, Question
+from cilantro_audit.audit_template import AuditTemplateBuilder, Question, AuditTemplate
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, ADMIN_SCREEN, TITLE_MAX_LENGTH, TEXT_MAX_LENGTH
 from cilantro_audit.question_module import QuestionModule
 
@@ -109,8 +109,10 @@ class CreateAuditTemplatePage(Screen, FloatLayout):
         q_long = False
         if self.audit_title.text == "":
             error_message += "- Please enter a title for the audit.\n"
-        if len(self.audit_title.text) > TITLE_MAX_LENGTH:
+        elif len(self.audit_title.text) > TITLE_MAX_LENGTH:
             error_message += "- The audit title is too long.\n"
+        elif AuditTemplate.objects(title=self.audit_title.text):
+            error_message += "- That audit template title already exists.\n"
         if self.question_list == {}:
             error_message += "- An audit template must have one question.\n"
         else:
