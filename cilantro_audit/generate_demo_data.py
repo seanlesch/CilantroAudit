@@ -1,6 +1,7 @@
 from mongoengine import connect
 
 import random
+import time
 
 from cilantro_audit.audit_template import Severity, Question, AuditTemplateBuilder
 from cilantro_audit.completed_audit import Response, CompletedAuditBuilder, Answer
@@ -10,6 +11,10 @@ db = connect(PROD_DB)
 db.drop_database(PROD_DB)
 
 connect(PROD_DB)
+
+DELAY = 0.300
+NUM_TEMPLATES = 10
+NUM_COMPLETED_PER_TEMPLATE = 5
 
 TITLES = [
     "Boiler Room",
@@ -129,7 +134,8 @@ def random_answer_from_question(question):
 
 
 if __name__ == '__main__':
-    for _ in range(10):
+    for _ in range(NUM_TEMPLATES):
+        time.sleep(DELAY)
         title = random_title()
         q0 = random_question()
         q1 = random_question()
@@ -147,7 +153,8 @@ if __name__ == '__main__':
             .build() \
             .save()
 
-        for _ in range(5):
+        for _ in range(NUM_COMPLETED_PER_TEMPLATE):
+            time.sleep(1.000)
             CompletedAuditBuilder() \
                 .with_title(title) \
                 .with_auditor(random.choice(AUDITORS)) \
