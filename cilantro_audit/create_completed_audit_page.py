@@ -33,13 +33,12 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
 
     def __init__(self, **kw):
         super().__init__(**kw)
-        self.stack_list.bind(minimum_height=self.stack_list.setter("height"))
         self.questions = []
         self.populate_audit()
 
     # put all questions on the screen for the auditor to respond to
     def populate_audit(self):
-        target = "TEST AUDIT"
+        target = "Lobby"
         try:
             template = AuditTemplate.objects().filter(title=target).first()  # for now, while there can be duplicates
         except AttributeError:
