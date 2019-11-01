@@ -28,9 +28,6 @@ class ThisPage(Screen):
         for title in titles:
             self.ids["audits_list"].add_widget(AuditButton(text=title))
 
-    def exit(self):
-        exit(1)
-
 
 class AuditButton(Button):
     pass
