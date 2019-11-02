@@ -3,6 +3,7 @@
 
 <ViewAuditTemplates>:
     name: 'ViewAuditTemplates'
+    templates_list: templates_list
 
     BoxLayout:
         orientation: 'vertical'
@@ -29,7 +30,7 @@
                     app.root.transition.direction = 'right'
 
             Label:
-                text: 'Audit Templates'
+                text: 'Available Audits'
                 color: 1.0, 1.0, 1.0, 1
 
             Button:
@@ -65,7 +66,7 @@
                     name: 'middle-col'
 
                     StackLayout:
-                        id: audits_list
+                        id: templates_list
                         height: self.minimum_height
                         size_hint_y: None
 
