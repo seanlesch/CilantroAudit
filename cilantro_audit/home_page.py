@@ -6,9 +6,10 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.screenmanager import ScreenManager
 
 from cilantro_audit.auditor_page import AuditorPage
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, ADMIN_SCREEN, HOME_SCREEN, AUDITOR_SCREEN,\
-    CREATE_AUDIT_TEMPLATE_PAGE
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, ADMIN_SCREEN, HOME_SCREEN, AUDITOR_SCREEN, \
+    CREATE_AUDIT_TEMPLATE_PAGE, VIEW_AUDIT_TEMPLATES
 from cilantro_audit.create_audit_template_page import CreateAuditTemplatePage
+from view_audit_templates import ViewAuditTemplates
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
@@ -43,6 +44,7 @@ class CilantroAudit(App):
         sm.add_widget(AdminPage(name=ADMIN_SCREEN))
         sm.add_widget(AuditorPage(name=AUDITOR_SCREEN))
         sm.add_widget(CreateAuditTemplatePage(name=CREATE_AUDIT_TEMPLATE_PAGE))
+        sm.add_widget(ViewAuditTemplates(name=VIEW_AUDIT_TEMPLATES))
 
         self.title = 'CilantroAudit'
         return sm

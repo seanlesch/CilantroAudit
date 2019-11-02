@@ -1,11 +1,8 @@
 #:kivy 1.11.1
 
 
-Manager:
-
-
-<ThisPage>:
-    name: 'this_page'
+<ViewAuditTemplates>:
+    name: 'ViewAuditTemplates'
 
     BoxLayout:
         orientation: 'vertical'
@@ -105,6 +102,6 @@ Manager:
 
     size_hint_y: None
     on_release:
-        app.root.current = 'this_page'
+        app.root.current = 'ViewAuditTemplates'
         app.root.transition.duration = 0.3
         app.root.transition.direction = 'right'
