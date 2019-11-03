@@ -33,12 +33,10 @@
         Label:
             id: name_label
             text: "Your Name: "
-            pos_hint: {"top": 1.45}
 
         TextInput:
             id: auditor_name
             multiline: False
-            pos_hint: {"top": 1.45}
 
     ScrollView:
         size_hint: .8, .89
@@ -49,13 +47,12 @@
             size_hint_y: None
             minimum_height: 10
 
-            GridLayout:
-                row_force_default: True
-                row_default_height: 30
-                cols: 2
-                rows: 1
-                spacing: 200
-                size_hint_y: None
+            #GridLayout:
+            #    row_force_default: True
+            #    row_default_height: 30
+            #    cols: 2
+            #    spacing: 200
+            #    size_hint_y: None
 
     Button:
         text: "Submit"

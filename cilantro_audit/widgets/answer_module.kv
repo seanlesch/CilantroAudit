@@ -7,53 +7,55 @@
     no_box: no_box
     other_box: other_box
 
-    size_hint: 1, None
-    height: 200
-
-    # Question text - nasty hard-code but positioning is annoying
-    Label:
-        id: question_label
-        text: root.question_text
-        color: 1, 1, 1, 1
-        size_hint: 0.8, 0.45
+    GridLayout:
+        id: page_layout
+        rows: 2
+        size_hint: 1, None
+        height: 200
         pos_hint: {"top": 0.9 , "center_x": 0.5}
-        text_size: root.width-100, None
 
-    Button:
-        id: yes_box
-        background_color: GREY_LIGHT
-        size: 60, 60
-        size_hint: None, None
-        pos_hint: {"top": 0.35, "center_x": 0.1}
-        on_press: root.yes_box_press()
+        # Question text - nasty hard-code but positioning is annoying
+        Label:
+            id: question_label
+            text: root.question_text
+            color: 1, 1, 1, 1
+            pos_hint: {"top": 0.9 , "center_x": 0.5}
+            text_size: root.width-100, None
 
-    ##yes label
-    Label:
-        text: "Yes"
-        pos_hint: {"top": 0.7 , "center_x": 0.14}
+        GridLayout:
+            cols: 6
+            size_hint: None, None
+            col_default_width: cm(1)
 
-    Button:
-        id: no_box
-        background_color: GREY_LIGHT
-        size: 60, 60
-        size_hint: None, None
-        pos_hint: {"top": 0.35, "center_x": 0.3}
-        on_press: root.no_box_press()
+            Button:
+                id: yes_box
+                background_color: GREY_LIGHT
+                size: 60, 60
+                size_hint: None, None
+                on_press: root.yes_box_press()
 
-    ##no label
-    Label:
-        text: "No"
-        pos_hint: {"top": 0.7 , "center_x": 0.34}
+            ##yes label
+            Label:
+                text: "Yes"
 
-    Button:
-        id: other_box
-        background_color: GREY_LIGHT
-        size: 60, 60
-        size_hint: None, None
-        pos_hint: {"top": 0.35, "center_x": 0.5}
-        on_press: root.other_box_press()
+            Button:
+                id: no_box
+                background_color: GREY_LIGHT
+                size: 60, 60
+                size_hint: None, None
+                on_press: root.no_box_press()
 
-    ##other label
-    Label:
-        text: "Other"
-        pos_hint: {"top": 0.7 , "center_x": 0.55}
+            ##no label
+            Label:
+                text: "No"
+
+            Button:
+                id: other_box
+                background_color: GREY_LIGHT
+                size: 60, 60
+                size_hint: None, None
+                on_press: root.other_box_press()
+
+            ##other label
+            Label:
+                text: "Other"
