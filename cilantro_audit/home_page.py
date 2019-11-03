@@ -26,6 +26,10 @@ class HomePage(Screen):
     pass
 
 
+class AdminPage(Screen):
+    pass
+
+
 class AdminLoginPopup(Popup):
 
     def validate_password(self, value):
