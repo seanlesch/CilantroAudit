@@ -5,11 +5,13 @@ from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from kivy.uix.screenmanager import ScreenManager
 
+from cilantro_audit.admin_page import AdminPage
 from cilantro_audit.auditor_page import AuditorPage
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, ADMIN_SCREEN, HOME_SCREEN, AUDITOR_SCREEN, \
-    CREATE_AUDIT_TEMPLATE_PAGE, VIEW_AUDIT_TEMPLATES
 from cilantro_audit.create_audit_template_page import CreateAuditTemplatePage
 from cilantro_audit.view_audit_templates import ViewAuditTemplates
+
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, ADMIN_SCREEN, HOME_SCREEN, AUDITOR_SCREEN, \
+    CREATE_AUDIT_TEMPLATE_PAGE, VIEW_AUDIT_TEMPLATES
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
@@ -21,10 +23,6 @@ sm = ScreenManager()
 
 
 class HomePage(Screen):
-    pass
-
-
-class AdminPage(Screen):
     pass
 
 
