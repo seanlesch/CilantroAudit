@@ -10,6 +10,7 @@
                 size: 250, 100
                 size_hint: None, None
                 pos_hint: {"center_x": -0.8, "center_y": 0.8}
+                on_press: root.manager.current = 'ViewAuditTemplates'
 
             Button:
                 text: "View Submitted Audits"
@@ -17,6 +18,7 @@
                 size: 250, 100
                 size_hint: None, None
                 pos_hint: {"center_x": 1.8, "center_y": 0.8}
+                
 
             Button:
                 text: "Return to Homepage"
