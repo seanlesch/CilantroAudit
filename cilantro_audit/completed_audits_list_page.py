@@ -121,9 +121,18 @@ class CompletedAuditsListPage(Screen):
     def search_button(self):
         self.search_audit_pop()
 
+    def test_meth():
+        print("nice")
+
     # The popup used for both the back and submit buttons
     class SearchPop(Popup):
-        pass
+        search_text = ObjectProperty(None)
+        # cau = CompletedAuditsListPage()
+
+        def search_button(self):
+            print(self.search_text.text)
+            self.dismiss()
+            # CompletedAuditsListPage.sort_by_date()
 
     """shows the search popup and sets the yes button functions"""
     def search_audit_pop(self):
