@@ -119,19 +119,14 @@ class CompletedAuditsListPage(Screen):
             self.severity_col.add_widget(lbl)
 
     def search_button(self):
-        search_audit_pop()
+        self.search_audit_pop()
 
-# The popup used for both the back and submit buttons
-class SearchPop(Popup):
-    pass
+    # The popup used for both the back and submit buttons
+    class SearchPop(Popup):
+        pass
 
-"""shows the search popup and sets the yes button functions"""
-def search_audit_pop():
-    show = SearchPop()
+    """shows the search popup and sets the yes button functions"""
+    def search_audit_pop(self):
+        show = self.SearchPop()
+        show.open()
 
-    popupWindow = Popup(title="Search Criteria", content=show, size_hint=(0.5, 0.5), auto_dismiss=False)
-
-    popupWindow.open()
-
-    return popupWindow
-        
