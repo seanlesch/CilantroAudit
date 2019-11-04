@@ -1,0 +1,98 @@
+
+<CompletedAuditsListPage>:
+
+#:import ADMIN_SCREEN cilantro_audit.constants.ADMIN_SCREEN
+#:import THIS_PAGE cilantro_audit.constants.COMPLETED_AUDITS_LIST_PAGE
+
+    date_col: date_col
+    title_col: title_col
+    audit_list: audit_list
+    auditor_col: auditor_col
+    severity_col: severity_col
+    refresh_button: refresh_button
+
+    GridLayout:
+        id: page_layout
+        rows: 2
+        spacing: 10
+
+        GridLayout:
+            id: list_layout
+            rows: 2
+            size_hint_x: 1.8
+            spacing: 10
+
+            GridLayout:
+                id: headers
+                cols: 4
+                spacing: 10
+                size_hint_y: 0.1
+
+                Button:
+                    id: title_header
+                    text: 'Title'
+                    spacing: 10
+                    on_press: root.manager.get_screen(THIS_PAGE).sort_by_title()
+
+                Button:
+                    id: date_header
+                    text: 'Date'
+                    spacing: 10
+                    on_press: root.manager.get_screen(THIS_PAGE).sort_by_date()
+
+                Button:
+                    id: auditor_header
+                    text: 'Auditor'
+                    spacing: 10
+                    on_press: root.manager.get_screen(THIS_PAGE).sort_by_auditor()
+
+                Button:
+                    id: auditor_header
+                    text: 'Severity'
+                    spacing: 10
+                    on_press: root.manager.get_screen(THIS_PAGE).sort_by_severity()
+
+            ScrollView:
+                id: scrollable_list
+
+                GridLayout:
+                    id: audit_list
+                    cols: 4
+                    spacing: 10
+                    size_hint_y: None
+
+                    GridLayout:
+                        id: title_col
+                        cols: 1
+
+                    GridLayout:
+                        id: date_col
+                        cols: 1
+
+                    GridLayout:
+                        id: auditor_col
+                        cols: 1
+
+                    GridLayout:
+                        id: severity_col
+                        cols: 1
+
+
+
+        GridLayout:
+            id: navigation_options
+            cols: 2
+            size_hint_y: 0.1
+
+            Button:
+                text: 'Return to Admin Page'
+                size_hint_y: None
+                size: 400, 50
+                on_press: root.manager.current = ADMIN_SCREEN
+
+            Button:
+                id: refresh_button
+                text: 'Refresh List'
+                size_hint_y: None
+                size: 400, 50
+                on_press: root.manager.get_screen(THIS_PAGE).load_completed_audits()

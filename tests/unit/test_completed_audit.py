@@ -28,6 +28,7 @@ class CompletedAuditTests(unittest.TestCase):
                 title="Title",
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[VALID_ANSWER],
             ).validate()
         )
@@ -36,6 +37,7 @@ class CompletedAuditTests(unittest.TestCase):
             CompletedAudit(
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[VALID_ANSWER],
             ).validate
         )
@@ -47,6 +49,7 @@ class CompletedAuditTests(unittest.TestCase):
                 title="Title",
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[VALID_ANSWER],
             ).validate()
         )
@@ -56,6 +59,7 @@ class CompletedAuditTests(unittest.TestCase):
                 title="Title",
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
             ).validate
         )
 
@@ -66,6 +70,7 @@ class CompletedAuditTests(unittest.TestCase):
                 title="Title",
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[
                     VALID_ANSWER,
                     VALID_ANSWER,
@@ -80,6 +85,7 @@ class CompletedAuditTests(unittest.TestCase):
                 title="Title",
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[
                     VALID_ANSWER,
                     VALID_ANSWER,
@@ -100,6 +106,7 @@ class CompletedAuditTests(unittest.TestCase):
                 title=character_minimum,
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[VALID_ANSWER],
             ).validate()
         )
@@ -109,6 +116,7 @@ class CompletedAuditTests(unittest.TestCase):
                 title=too_few_characters,
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[VALID_ANSWER],
             ).validate
         )
@@ -125,6 +133,7 @@ class CompletedAuditTests(unittest.TestCase):
                 title=character_maximum,
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[VALID_ANSWER],
             ).validate()
         )
@@ -134,6 +143,7 @@ class CompletedAuditTests(unittest.TestCase):
                 title=too_many_characters,
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[VALID_ANSWER],
             ).validate
         )
