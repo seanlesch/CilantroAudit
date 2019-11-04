@@ -6,7 +6,7 @@ from kivy.uix.floatlayout import FloatLayout
 from mongoengine import connect
 
 from cilantro_audit.completed_audit import Response
-from cilantro_audit.constants import RGB_GREEN, RGB_GREY_LIGHT
+from cilantro_audit.constants import RGB_GREEN, RGB_GREY_LIGHT, COMMENT_MAX_LENGTH
 
 Builder.load_file("./widgets/answer_module.kv")
 
@@ -20,6 +20,7 @@ class AnswerModule(FloatLayout):
     yes_box = ObjectProperty()
     no_box = ObjectProperty()
     other_box = ObjectProperty()
+    other_comments = ObjectProperty()
 
     question = None
     response = None
@@ -41,6 +42,21 @@ class AnswerModule(FloatLayout):
         self.yes_box.background_color = RGB_GREY_LIGHT
         self.no_box.background_color = RGB_GREY_LIGHT
         self.other_box.background_color = RGB_GREEN
+
+    def other_has_comments(self):
+        if self.response is Response.other():
+            if self.other_comments.text:
+                return True
+            else:
+                return False
+        else:
+            return True
+
+    # Verify the length of the comment does not exceed database defined limit.
+    def verify_comment_length(self):
+        if len(self.other_comments.text) > COMMENT_MAX_LENGTH:
+            self.other_comments.text = self.other_comments.text[0:COMMENT_MAX_LENGTH]
+        print(self.other_comments.text)
 
 
 class TestApp(App):

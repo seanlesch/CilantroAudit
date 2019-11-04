@@ -1,11 +1,14 @@
 <AnswerModule>:
 
 #:import GREY_LIGHT cilantro_audit.constants.RGB_GREY_LIGHT
+#:import COMMENT_MAX_LENGTH cilantro_audit.constants.COMMENT_MAX_LENGTH
+#:import COMMENT_MIN_LENGTH cilantro_audit.constants.COMMENT_MIN_LENGTH
 
     question_label: question_label
     yes_box: yes_box
     no_box: no_box
     other_box: other_box
+    other_comments: other_comments
 
     GridLayout:
         id: page_layout
@@ -23,7 +26,7 @@
             text_size: root.width-100, None
 
         GridLayout:
-            cols: 6
+            cols: 7
             size_hint: None, None
             col_default_width: cm(1)
 
@@ -59,3 +62,23 @@
             ##other label
             Label:
                 text: "Other"
+
+            GridLayout:
+                rows: 2
+                cols: 1
+
+                Label:
+                    text: "Comments"
+                    padding_y:
+
+                TextInput:
+                    id: other_comments
+                    size_hint: None, None
+                    size: 250, 50
+                    # Limits comment length to database defined max length. From
+                    # https://stackoverflow.com/questions/25296508/set-the-width-property-for-textinput
+                    # On every input we check filter the text to a substring that is at most
+                    # COMMENT_MAX_LENGTH long.
+                    input_filter: lambda text, from_undo: text[:COMMENT_MAX_LENGTH - len(self.text)]
+                    hint_text: "Comment is required if 'Other' is checked"
+

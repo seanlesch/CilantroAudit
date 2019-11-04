@@ -38,7 +38,7 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
 
     # put all questions on the screen for the auditor to respond to
     def populate_audit(self):
-        target = "Lobby"
+        target = "Bathroom #1"
         try:
             template = AuditTemplate.objects().filter(title=target).first()  # for now, while there can be duplicates
         except AttributeError:
@@ -70,7 +70,7 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
         completed_audit.with_auditor(self.auditor_name.text)
         for a in self.questions:
             temp_answer = Answer(text=a.question.text, severity=self.question_severity(a), response=a.response,
-                                 comment=" ")  # Comments TODO
+                                 comment=a.other_comments.text)
             completed_audit.with_answer(temp_answer)
 
         completed_audit.build().save()
@@ -106,9 +106,15 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
     def check_audit(self):
         error_message = ""
         for question in self.questions:
+            # Check if all questions are answered
             if question.response is None:
                 error_message = "Must respond to all questions."
                 break  # like this for now because there are changes to be made still
+            # Check if 'other' responses have comments.
+            if question.other_has_comments() is False:
+                error_message = "Answers with 'Other' must have comments."
+                break
+
         # will need an auditor name check when that is implemented
         return error_message
 
