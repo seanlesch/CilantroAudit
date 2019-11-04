@@ -77,11 +77,12 @@
                         id: severity_col
                         cols: 1
 
-
+            
 
         GridLayout:
             id: navigation_options
-            cols: 2
+            cols: 4
+            spacing: 10
             size_hint_y: 0.1
 
             Button:
@@ -96,3 +97,40 @@
                 size_hint_y: None
                 size: 400, 50
                 on_press: root.manager.get_screen(THIS_PAGE).load_completed_audits()
+
+            Button:
+                text: 'Search'
+                size_hint_y: None
+                size: 400, 50
+                on_press: root.search_button()
+
+            Button:
+                text: 'Clear Search Results'
+                size_hint_y: None
+                size: 400, 50
+                on_press: None
+
+<SearchPop>:
+    auto_dismiss: False
+    title: "Search Criteria"
+    size_hint: .5, .5
+    # yes: yes
+
+
+    Label:
+        text: "Please enter the title of the audit you are looking for."
+        size_hint: 0.6, 0.2
+        pos_hint: {"x": .2, "top": 1}
+
+    Button:
+        # id: yes
+        text: "Search"
+        size_hint: .3, .3
+        pos_hint: {"x": 0, "y": 0}
+        on_press: None
+
+    Button:
+        text: "Cancel"
+        size_hint: .3, .3
+        pos_hint: {"right": 1, "y": 0}
+        on_press: root.close_search_pop()

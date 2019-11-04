@@ -8,11 +8,11 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from mongoengine import connect
+from kivy.uix.popup import Popup
+from kivy.uix.floatlayout import FloatLayout
 
 from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, SEVERITY_PRECEDENCE
-
-# Test change.
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
@@ -117,3 +117,21 @@ class CompletedAuditsListPage(Screen):
         for severity in audit_severities:
             lbl = Label(text=severity.severity, size_hint_y=None, height=40)
             self.severity_col.add_widget(lbl)
+
+    def search_button(self):
+        search_audit_pop()
+
+# The popup used for both the back and submit buttons
+class SearchPop(Popup):
+    pass
+
+"""shows the search popup and sets the yes button functions"""
+def search_audit_pop():
+    show = SearchPop()
+
+    popupWindow = Popup(title="Search Criteria", content=show, size_hint=(0.5, 0.5), auto_dismiss=False)
+
+    popupWindow.open()
+
+    return popupWindow
+        
