@@ -40,19 +40,19 @@
 
     ScrollView:
         size_hint: .8, .89
-        pos_hint: {"top": .89}
+        pos_hint: {"top": .8}
 
         StackLayout:
             id: stack_list
             size_hint_y: None
             minimum_height: 10
 
-            #GridLayout:
-            #    row_force_default: True
-            #    row_default_height: 30
-            #    cols: 2
-            #    spacing: 200
-            #    size_hint_y: None
+            GridLayout:
+                row_force_default: True
+                row_default_height: 30
+                cols: 2
+                spacing: 200
+                size_hint_y: None
 
     Button:
         text: "Submit"
