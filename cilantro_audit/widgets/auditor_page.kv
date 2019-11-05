@@ -1,4 +1,4 @@
-<AuditorScreen>:
+<AuditorPage>:
     FloatLayout:
         FloatLayout:
             pos_hint: {"center_x": 0.5, "center_y": 0.6}
@@ -10,7 +10,6 @@
                 size: 250, 100
                 size_hint: None, None
                 pos_hint: {"center_x": -0.8, "center_y": 0.8}
-                on_press: app.submit_new_audit()
 
             Button:
                 text: "View Submitted Audits"
@@ -18,7 +17,6 @@
                 size: 250, 100
                 size_hint: None, None
                 pos_hint: {"center_x": 1.8, "center_y": 0.8}
-                on_press: app.view_submitted_audits()
 
             Button:
                 text: "Return to Homepage"
@@ -26,7 +24,7 @@
                 size: 250, 100
                 size_hint: None, None
                 pos_hint: {"center_x": 0.5, "center_y": -0.3}
-                on_press: app.return_to_homepage()
+                on_press: root.manager.current = 'HomeScreen'
 
             Button:
                 text: "Exit"

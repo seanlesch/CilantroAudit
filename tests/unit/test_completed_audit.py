@@ -1,8 +1,11 @@
 import unittest
 from datetime import datetime
+
 from mongoengine import ValidationError
+
 from cilantro_audit.audit_template import Severity
 from cilantro_audit.completed_audit import CompletedAudit, Answer, Response
+from cilantro_audit.constants import TITLE_MAX_LENGTH, TITLE_MIN_LENGTH
 
 VALID_ANSWER = Answer(
     text="Text",
@@ -25,6 +28,7 @@ class CompletedAuditTests(unittest.TestCase):
                 title="Title",
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[VALID_ANSWER],
             ).validate()
         )
@@ -33,6 +37,7 @@ class CompletedAuditTests(unittest.TestCase):
             CompletedAudit(
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[VALID_ANSWER],
             ).validate
         )
@@ -44,6 +49,7 @@ class CompletedAuditTests(unittest.TestCase):
                 title="Title",
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[VALID_ANSWER],
             ).validate()
         )
@@ -53,6 +59,7 @@ class CompletedAuditTests(unittest.TestCase):
                 title="Title",
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
             ).validate
         )
 
@@ -63,6 +70,7 @@ class CompletedAuditTests(unittest.TestCase):
                 title="Title",
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[
                     VALID_ANSWER,
                     VALID_ANSWER,
@@ -77,6 +85,7 @@ class CompletedAuditTests(unittest.TestCase):
                 title="Title",
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[
                     VALID_ANSWER,
                     VALID_ANSWER,
@@ -87,36 +96,44 @@ class CompletedAuditTests(unittest.TestCase):
         )
 
     def test_title_min_length(self):
-        character_minimum = "1"
-        empty_string = ""
+        character_minimum = ""
+        for _ in range(0, TITLE_MIN_LENGTH):
+            character_minimum += "a"
+        too_few_characters = character_minimum[1:]
         self.assertEqual(
             None,
             CompletedAudit(
                 title=character_minimum,
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[VALID_ANSWER],
             ).validate()
         )
         self.assertRaises(
             ValidationError,
             CompletedAudit(
-                title=empty_string,
+                title=too_few_characters,
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[VALID_ANSWER],
             ).validate
         )
 
     def test_title_max_length(self):
-        character_maximum = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2"
-        too_many_characters = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2f"
+        character_maximum = ""
+        too_many_characters = "a"
+        for _ in range(0, TITLE_MAX_LENGTH):
+            character_maximum += "a"
+            too_many_characters += "a"
         self.assertEqual(
             None,
             CompletedAudit(
                 title=character_maximum,
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[VALID_ANSWER],
             ).validate()
         )
@@ -126,6 +143,7 @@ class CompletedAuditTests(unittest.TestCase):
                 title=too_many_characters,
                 datetime=datetime.now(),
                 auditor="Auditor",
+                severity=Severity.green(),
                 answers=[VALID_ANSWER],
             ).validate
         )

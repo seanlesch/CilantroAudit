@@ -1,5 +1,7 @@
-<HomeScreen>:
+<HomePage>:
+
     FloatLayout:
+
         Label:
             text: 'Login'
             font_size: 40
@@ -25,6 +27,7 @@
                 size: 250, 200
                 size_hint: None, None
                 pos_hint: {"center_x": 1.7, "center_y": 0.5}
+                on_press: root.manager.current = 'AuditorScreen'
 
             Button:
                 text: 'Exit'
@@ -32,7 +35,7 @@
                 size: 500, 100
                 size_hint: None, None
                 on_press: app.exit()
-                pos_hint: {"center_y": -1, "center_x": 0.45}
+                pos_hint: {"center_x": 0.45, "center_y": -1.0}
 
 <AdminLoginPopup>
 

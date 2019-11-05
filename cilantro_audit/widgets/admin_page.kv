@@ -1,0 +1,57 @@
+<AdminPage>:
+
+#:import HOME_SCREEN cilantro_audit.constants.HOME_SCREEN
+#:import CREATE_AUDIT_PAGE cilantro_audit.constants.CREATE_AUDIT_PAGE
+#:import COMPLETED_AUDITS_LIST_PAGE cilantro_audit.constants.COMPLETED_AUDITS_LIST_PAGE
+
+    FloatLayout:
+
+        Label:
+            text: 'Admin Page'
+            font_size: 40
+            pos: 0, 150
+
+        FloatLayout:
+
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            size_hint: None, None
+
+            Button:
+                text: "Create Audit"
+                font_size: 25
+                size: 250, 200
+                size_hint: None, None
+                pos_hint: {"center_x": -0.8, "center_y": 0.5}
+                on_press: root.manager.current = 'CreateAuditTemplatePage'
+
+            Button:
+                text: "Return to Home Page"
+                font_size: 25
+                size: 250, 200
+                size_hint: None, None
+                pos_hint: {"center_x": 1.7, "center_y": 0.5}
+                on_press: root.manager.current = HOME_SCREEN
+
+            Button:
+                text: "View Submitted \nAudits"
+                align: 'center'
+                font_size: 25
+                size: 250, 100
+                size_hint: None, None
+                pos_hint: {"center_x": -0.8, "center_y": -1.0}
+                on_press: root.manager.current = COMPLETED_AUDITS_LIST_PAGE
+
+            Button:
+                text: "View Flag Trends"
+                font_size: 25
+                size: 250, 100
+                size_hint: None, None
+                pos_hint: {"center_x": 1.7, "center_y": -1.0}
+
+        Button:
+            text: "Exit"
+            font_size: 30
+            size: 300, 100
+            size_hint: None, None
+            pos_hint:{"center_x": 0.5}
+            on_press: app.exit()

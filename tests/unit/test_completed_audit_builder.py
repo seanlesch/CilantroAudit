@@ -1,6 +1,8 @@
 import unittest
 from datetime import datetime
+
 from mongoengine import ValidationError
+
 from cilantro_audit.audit_template import Severity
 from cilantro_audit.completed_audit import CompletedAuditBuilder, Answer, Response
 
@@ -8,6 +10,25 @@ VALID_ANSWER = Answer(
     text="Text",
     severity=Severity.red(),
     response=Response.yes(),
+)
+
+GREEN_ANSWER = Answer(
+    text="Green Answer",
+    severity=Severity.green(),
+    response=Response.yes(),
+)
+
+YELLOW_ANSWER = Answer(
+    text="Yellow Answer",
+    severity=Severity.yellow(),
+    response=Response.other(),
+    comment="Toast",
+)
+
+RED_ANSWER = Answer(
+    text="Red Answer",
+    severity=Severity.red(),
+    response=Response.no(),
 )
 
 INVALID_ANSWER = Answer(
@@ -69,3 +90,55 @@ class CompletedAuditBuilderTests(unittest.TestCase):
             .with_answer(VALID_ANSWER) \
             .build()
         self.assertGreaterEqual(datetime.utcnow(), audit.datetime)
+
+    def test_max_severity_green(self):
+        audit = CompletedAuditBuilder() \
+            .with_title("Title") \
+            .with_auditor("Auditor") \
+            .with_answer(GREEN_ANSWER) \
+            .with_answer(GREEN_ANSWER) \
+            .with_answer(GREEN_ANSWER) \
+            .build()
+        self.assertEqual(Severity.green(), audit.severity)
+
+    def test_max_severity_yellow(self):
+        audit = CompletedAuditBuilder() \
+            .with_title("Title") \
+            .with_auditor("Auditor") \
+            .with_answer(GREEN_ANSWER) \
+            .with_answer(GREEN_ANSWER) \
+            .with_answer(YELLOW_ANSWER) \
+            .with_answer(GREEN_ANSWER) \
+            .build()
+        self.assertEqual(Severity.yellow(), audit.severity)
+
+    def test_max_severity_yellow(self):
+        audit = CompletedAuditBuilder() \
+            .with_title("Title") \
+            .with_auditor("Auditor") \
+            .with_answer(GREEN_ANSWER) \
+            .with_answer(RED_ANSWER) \
+            .with_answer(GREEN_ANSWER) \
+            .with_answer(YELLOW_ANSWER) \
+            .with_answer(GREEN_ANSWER) \
+            .build()
+        self.assertEqual(Severity.red(), audit.severity)
+        audit = CompletedAuditBuilder() \
+            .with_title("Title") \
+            .with_auditor("Auditor") \
+            .with_answer(GREEN_ANSWER) \
+            .with_answer(YELLOW_ANSWER) \
+            .with_answer(GREEN_ANSWER) \
+            .with_answer(RED_ANSWER) \
+            .with_answer(GREEN_ANSWER) \
+            .build()
+        self.assertEqual(Severity.red(), audit.severity)
+        audit = CompletedAuditBuilder() \
+            .with_title("Title") \
+            .with_auditor("Auditor") \
+            .with_answer(GREEN_ANSWER) \
+            .with_answer(GREEN_ANSWER) \
+            .with_answer(RED_ANSWER) \
+            .with_answer(GREEN_ANSWER) \
+            .build()
+        self.assertEqual(Severity.red(), audit.severity)
