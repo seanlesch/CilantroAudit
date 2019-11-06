@@ -137,26 +137,31 @@ class CompletedAuditsListPage(Screen):
 
         audits_found = self.grab_audits_with_title(title_to_search)
 
-        audit_dates = list(map(lambda set: set.datetime, audits_found))
-        audit_titles = list(map(lambda set: set.title, audits_found))
-        audit_auditors = list(map(lambda set: set.auditor, audits_found))
-        audit_severities = list(map(lambda set: set.severity, audits_found))
+        if not audits_found:
+            lbl = Label(text="(No audits found...)", size_hint_y=None, height=40)
+            self.title_col.add_widget(lbl)
 
-        for title in audit_titles:
-            btn = Button(text=title, size_hint_y=None, height=40)
-            self.title_col.add_widget(btn)
+        else:
+            audit_dates = list(map(lambda set: set.datetime, audits_found))
+            audit_titles = list(map(lambda set: set.title, audits_found))
+            audit_auditors = list(map(lambda set: set.auditor, audits_found))
+            audit_severities = list(map(lambda set: set.severity, audits_found))
 
-        for dt in audit_dates:
-            lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
-            self.date_col.add_widget(lbl)
+            for title in audit_titles:
+                btn = Button(text=title, size_hint_y=None, height=40)
+                self.title_col.add_widget(btn)
 
-        for auditor in audit_auditors:
-            lbl = Label(text=auditor, size_hint_y=None, height=40)
-            self.auditor_col.add_widget(lbl)
+            for dt in audit_dates:
+                lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
+                self.date_col.add_widget(lbl)
 
-        for severity in audit_severities:
-            lbl = Label(text=severity.severity, size_hint_y=None, height=40)
-            self.severity_col.add_widget(lbl)
+            for auditor in audit_auditors:
+                lbl = Label(text=auditor, size_hint_y=None, height=40)
+                self.auditor_col.add_widget(lbl)
+
+            for severity in audit_severities:
+                lbl = Label(text=severity.severity, size_hint_y=None, height=40)
+                self.severity_col.add_widget(lbl)
 
     # Creates the search popup
     def search_audit_list_pop(self):
