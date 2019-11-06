@@ -118,24 +118,57 @@ class CompletedAuditsListPage(Screen):
             lbl = Label(text=severity.severity, size_hint_y=None, height=40)
             self.severity_col.add_widget(lbl)
 
-    def search_button(self):
-        self.search_audit_pop()
+    def grab_audits_with_title(self, title):
+        audits_with_title = []
 
-    def test_meth():
-        print("nice")
+        for audit in self.audits:
+            if audit.title == title:
+                audits_with_title.append(audit)
 
-    # The popup used for both the back and submit buttons
-    class SearchPop(Popup):
-        search_text = ObjectProperty(None)
-        # cau = CompletedAuditsListPage()
+        return audits_with_title
 
-        def search_button(self):
-            print(self.search_text.text)
-            self.dismiss()
-            # CompletedAuditsListPage.sort_by_date()
+    def search_completed_audits_list(self, title_to_search):
+        self.date_col.clear_widgets()
+        self.title_col.clear_widgets()
+        self.auditor_col.clear_widgets()
+        self.severity_col.clear_widgets()
 
-    """shows the search popup and sets the yes button functions"""
-    def search_audit_pop(self):
-        show = self.SearchPop()
+        print(title_to_search)
+
+        audits_found = self.grab_audits_with_title(title_to_search)
+
+        audit_dates = list(map(lambda set: set.datetime, audits_found))
+        audit_titles = list(map(lambda set: set.title, audits_found))
+        audit_auditors = list(map(lambda set: set.auditor, audits_found))
+        audit_severities = list(map(lambda set: set.severity, audits_found))
+
+
+
+        for title in audit_titles:
+            btn = Button(text=title, size_hint_y=None, height=40)
+            self.title_col.add_widget(btn)
+
+        for dt in audit_dates:
+            lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
+            self.date_col.add_widget(lbl)
+
+        for auditor in audit_auditors:
+            lbl = Label(text=auditor, size_hint_y=None, height=40)
+            self.auditor_col.add_widget(lbl)
+
+        for severity in audit_severities:
+            lbl = Label(text=severity.severity, size_hint_y=None, height=40)
+            self.severity_col.add_widget(lbl)
+
+    def search_audit_list_pop(self):
+        show = SearchPop()
+
+        # bind(onpress=) will pass 2 arguements (function, ObjectProperty)
+        show.popup_search_button.bind(on_press=lambda _:self.search_completed_audits_list(show.search_text.text))
+
         show.open()
 
+# The popup used for both the back and submit buttons
+class SearchPop(Popup):
+    search_text = ObjectProperty(None)
+    popup_search_button = ObjectProperty(None)

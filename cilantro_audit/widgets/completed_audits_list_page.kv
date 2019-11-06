@@ -77,7 +77,7 @@
                         id: severity_col
                         cols: 1
 
-            
+
 
         GridLayout:
             id: navigation_options
@@ -102,13 +102,13 @@
                 text: 'Search'
                 size_hint_y: None
                 size: 400, 50
-                on_press: root.search_button()
+                on_press: root.search_audit_list_pop()
 
             Button:
                 text: 'Clear Search Results'
                 size_hint_y: None
                 size: 400, 50
-                on_press: None
+                on_press: root.refresh_completed_audits()
 
 <SearchPop>:
     auto_dismiss: True
@@ -116,10 +116,11 @@
     size_hint: .5, .5
 
     search_text: search_text
+    popup_search_button: popup_search_button
 
     GridLayout:
         rows: 3
-        
+
 
 
         Label:
@@ -133,9 +134,9 @@
             rows: 1
 
             Button:
+                id: popup_search_button
                 text: "Search"
                 pos_hint: {"x": 0, "y": 0}
-                on_press: root.search_button()
 
             Button:
                 text: "Cancel"
