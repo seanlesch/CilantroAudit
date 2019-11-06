@@ -118,6 +118,7 @@ class CompletedAuditsListPage(Screen):
             lbl = Label(text=severity.severity, size_hint_y=None, height=40)
             self.severity_col.add_widget(lbl)
 
+    # Returns the audits from audits[] that match the title passed in
     def grab_audits_with_title(self, title):
         audits_with_title = []
 
@@ -127,13 +128,12 @@ class CompletedAuditsListPage(Screen):
 
         return audits_with_title
 
+    # Breaks up the audit queries that match the search and writes them to the screen
     def search_completed_audits_list(self, title_to_search):
         self.date_col.clear_widgets()
         self.title_col.clear_widgets()
         self.auditor_col.clear_widgets()
         self.severity_col.clear_widgets()
-
-        print(title_to_search)
 
         audits_found = self.grab_audits_with_title(title_to_search)
 
@@ -141,8 +141,6 @@ class CompletedAuditsListPage(Screen):
         audit_titles = list(map(lambda set: set.title, audits_found))
         audit_auditors = list(map(lambda set: set.auditor, audits_found))
         audit_severities = list(map(lambda set: set.severity, audits_found))
-
-
 
         for title in audit_titles:
             btn = Button(text=title, size_hint_y=None, height=40)
@@ -160,15 +158,13 @@ class CompletedAuditsListPage(Screen):
             lbl = Label(text=severity.severity, size_hint_y=None, height=40)
             self.severity_col.add_widget(lbl)
 
+    # Creates the search popup
     def search_audit_list_pop(self):
         show = SearchPop()
-
-        # bind(onpress=) will pass 2 arguements (function, ObjectProperty)
         show.popup_search_button.bind(on_press=lambda _:self.search_completed_audits_list(show.search_text.text))
-
         show.open()
 
-# The popup used for both the back and submit buttons
+# Class defining the search popup
 class SearchPop(Popup):
     search_text = ObjectProperty(None)
     popup_search_button = ObjectProperty(None)
