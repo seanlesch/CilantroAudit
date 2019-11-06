@@ -1,0 +1,16 @@
+#:import SlideTransition kivy.uix.screenmanager.SlideTransition
+<CompletedAuditPage>:
+
+    size: root.width, root.height
+
+    ScrollView:
+        size_hint: 1, .89
+        pos_hint: {"top": 1}
+
+    Button:
+        text: "Return"
+        size_hint: .15, .1
+        on_release:
+            root.manager.transition = SlideTransition(direction='right')
+            root.manager.current = 'HomeScreen'
+            root.manager.transition.duration = 0.3
