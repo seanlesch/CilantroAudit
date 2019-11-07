@@ -51,9 +51,24 @@
                     size: self.size
                     pos: self.pos
 
-            Label:
-                name: 'top-row'
+            BoxLayout:
+                orientation: 'horizontal'
                 size_hint: 1.0, 0.1
+
+                Label:
+                    name: 'place-holder'
+
+                Button:
+                    text: 'Refresh Audit List'
+                    on_release:
+                        root.refresh_audit_templates()
+
+                Label:
+                    name: 'place-holder'
+
+            Label:
+                name: 'place-holder'
+                size_hint: None, 0.01
 
             BoxLayout:
                 orientation: 'horizontal'
