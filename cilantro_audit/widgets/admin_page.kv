@@ -3,6 +3,7 @@
 #:import HOME_SCREEN cilantro_audit.constants.HOME_SCREEN
 #:import CREATE_AUDIT_PAGE cilantro_audit.constants.CREATE_AUDIT_PAGE
 #:import COMPLETED_AUDITS_LIST_PAGE cilantro_audit.constants.COMPLETED_AUDITS_LIST_PAGE
+#:import VIEW_FLAG_TRENDS_PAGE cilantro_audit.constants.VIEW_FLAG_TRENDS_PAGE
 
     FloatLayout:
 
@@ -47,6 +48,7 @@
                 size: 250, 100
                 size_hint: None, None
                 pos_hint: {"center_x": 1.7, "center_y": -1.0}
+                on_press: root.manager.current = VIEW_FLAG_TRENDS_PAGE
 
         Button:
             text: "Exit"

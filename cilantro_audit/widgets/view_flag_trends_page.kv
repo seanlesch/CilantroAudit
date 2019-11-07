@@ -1,0 +1,12 @@
+<ViewFlagTrendsPage>:
+
+    GridLayout:
+        id: navigation_options
+        cols: 1
+        size_hint_y: 0.1
+
+        Button:
+            text: 'Return to Admin Page'
+            size_hint_y: None
+            size: 400, 50
+            on_press: root.manager.current = ADMIN_SCREEN
