@@ -1,3 +1,4 @@
+
 <AuditorPage>:
     FloatLayout:
         FloatLayout:
@@ -21,7 +22,10 @@
                 size: 250, 100
                 size_hint: None, None
                 pos_hint: {"center_x": 1.8, "center_y": 0.8}
-                
+                on_release:
+                    root.manager.current = 'AuditorCompletedAuditsListPage'
+                    root.manager.transition.duration = 0.3
+                    root.manager.transition.direction = 'left'
 
             Button:
                 text: "Return to Homepage"
