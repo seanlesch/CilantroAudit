@@ -10,6 +10,7 @@ from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 from kivy.uix.popup import Popup
 from kivy.uix.floatlayout import FloatLayout
+from kivy.clock import Clock
 
 from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, SEVERITY_PRECEDENCE
@@ -163,10 +164,17 @@ class CompletedAuditsListPage(Screen):
                 lbl = Label(text=severity.severity, size_hint_y=None, height=40)
                 self.severity_col.add_widget(lbl)
 
+    # Helper function that makes the popup wait 0.2 seconds so we can assign focus properly
+    def schedule_focus(self, popup):
+        popup.search_text.focus = True
+
     # Creates the search popup
     def search_audit_list_pop(self):
         show = SearchPop()
         show.popup_search_button.bind(on_press=lambda _:self.search_completed_audits_list(show.search_text.text))
+        show.popup_search_button.bind(on_press=show.dismiss)
+        Clock.schedule_once(lambda _: self.schedule_focus(show), 0.2)
+        show.search_text.focus=True
         show.open()
 
 # Class defining the search popup
