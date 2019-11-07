@@ -10,7 +10,6 @@ auditorPageLayout = Builder.load_file('./widgets/auditor_page.kv')
 
 
 class AuditorPage(Screen):
-
     def build(self):
         return auditorPageLayout
 

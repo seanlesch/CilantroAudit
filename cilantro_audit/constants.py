@@ -39,6 +39,7 @@ ADMIN_SCREEN = "AdminScreen"
 AUDITOR_SCREEN = "AuditorScreen"
 CREATE_AUDIT_PAGE = "CreateAuditPage"
 COMPLETED_AUDITS_LIST_PAGE = "CompletedAuditsListPage"
+AUDITOR_COMPLETED_AUDITS_LIST_PAGE = "AuditorCompletedAuditsListPage"
 CREATE_AUDIT_TEMPLATE_PAGE = "CreateAuditTemplatePage"
 VIEW_AUDIT_TEMPLATES = "ViewAuditTemplates"
 
