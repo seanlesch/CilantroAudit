@@ -174,7 +174,6 @@ class CompletedAuditsListPage(Screen):
         show.popup_search_button.bind(on_press=lambda _:self.search_completed_audits_list(show.search_text.text))
         show.popup_search_button.bind(on_press=show.dismiss)
         Clock.schedule_once(lambda _: self.schedule_focus(show), 0.2)
-        show.search_text.focus=True
         show.open()
 
 # Class defining the search popup
