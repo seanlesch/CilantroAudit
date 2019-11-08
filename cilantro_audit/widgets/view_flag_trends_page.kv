@@ -1,12 +1,29 @@
+
 <ViewFlagTrendsPage>:
-
     GridLayout:
-        id: navigation_options
+        rows: 3
         cols: 1
-        size_hint_y: 0.1
 
-        Button:
-            text: 'Return to Admin Page'
-            size_hint_y: None
-            size: 400, 50
-            on_press: root.manager.current = ADMIN_SCREEN
+        GridLayout:
+            name: 'header-grid'
+            rows: 1
+            cols: 3
+            size_hint: 1, 0.1
+
+        GridLayout:
+            name: 'body-grid'
+            cols: 3
+            size_hint: 1, 0.8
+
+        GridLayout:
+            name: 'footer-grid'
+            rows: 1
+            cols: 3
+            size_hint: 1, 0.1
+
+            Button:
+                text: 'Return to Admin Page'
+                on_release:
+                    root.manager.current = ADMIN_SCREEN
+                    root.manager.transition.duration = 0.3
+                    root.manager.transition.direction = 'right'
