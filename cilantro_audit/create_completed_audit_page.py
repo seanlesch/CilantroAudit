@@ -3,12 +3,13 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 
 from cilantro_audit.audit_template import AuditTemplate
 from cilantro_audit.completed_audit import CompletedAuditBuilder, Answer, Response
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, VIEW_AUDIT_TEMPLATES
 from cilantro_audit.answer_module import AnswerModule
 from cilantro_audit.create_audit_template_page import ConfirmationPop, ErrorPop
 
@@ -16,6 +17,15 @@ kivy.require(KIVY_REQUIRED_VERSION)
 
 # Loads in the .kv file which contains the CreateCompletedAuditPage layout.
 Builder.load_file("./widgets/create_completed_audit_page.kv")
+
+
+# The popup used for both the back and submit buttons
+class ConfirmationPop(Popup):
+    yes = ObjectProperty(None)
+
+    def return_admin_page(self):
+        self.dismiss()
+        self.manager.current = VIEW_AUDIT_TEMPLATES
 
 
 class CreateCompletedAuditPage(Screen, FloatLayout):
@@ -27,6 +37,8 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
     audit_title = StringProperty()
     # The auditor's name that is conducting the audit.
     auditor_name = ObjectProperty()
+    # The scrolling panel for view management
+    scrolling_panel = ObjectProperty()
 
     connect(PROD_DB)
 
@@ -51,6 +63,11 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
             a_temp.question_text = question.text
             self.stack_list.add_widget(a_temp)
             self.questions.append(a_temp)
+
+        # https://kivy.org/doc/stable/api-kivy.uix.scrollview.html Y scrolling value, between 0 and 1. If 0,
+        # the content’s bottom side will touch the bottom side of the ScrollView. If 1, the content’s top side will
+        # touch the top side.
+        self.scrolling_panel.scroll_y = 1
 
     # Return the associated severity with question's response
     def question_severity(self, question):
