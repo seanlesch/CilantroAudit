@@ -42,6 +42,7 @@ class ViewAuditTemplates(Screen):
 
     # Gets audit template titles for display in the page. Retrieves only title for faster retrieval time.
     def get_audit_templates(self, screen_manager):
+        self.templates_list.clear_widgets()
         self.screen_manager = screen_manager
 
         titles = list(map(lambda template: template.title, AuditTemplate.objects().only('title')))
