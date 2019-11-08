@@ -18,19 +18,14 @@ Builder.load_file("./widgets/view_audit_templates.kv")
 
 # Will implement opening of an audit to fill out.
 class AuditButton(Button):
-    pass
-
-
-class ScreenButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
         self.screen_manager = kwargs['screen_manager']
         self.text = kwargs['text']
-        self.size_hint_y = 0
-        self.height = 300
 
     def on_press(self, *args):
-        super(ScreenButton, self).on_press(*args)
+        super(AuditButton, self).on_press(*args)
+        self.screen_manager.get_screen(CREATE_COMPLETED_AUDIT_PAGE).populate_audit()
         self.screen_manager.current = CREATE_COMPLETED_AUDIT_PAGE
 
 
@@ -52,13 +47,7 @@ class ViewAuditTemplates(Screen):
 
         titles = list(map(lambda template: template.title, AuditTemplate.objects().only('title')))
         for title in titles:
-            test = ScreenButton(text=title, screen_manager=self.screen_manager)
-            # self.templates_list.add_widget(AuditButton(text=title))
-            self.templates_list.add_widget(test)
-
-    # def load_page(self, audit_button):
-    #     print(self.screen_manager.children)
-    #     self.screen_manager.current = CREATE_COMPLETED_AUDIT_PAGE
+            self.templates_list.add_widget(AuditButton(text=title, screen_manager=self.screen_manager))
 
 
 class TestApp(App):
