@@ -16,7 +16,6 @@ kivy.require(KIVY_REQUIRED_VERSION)
 Builder.load_file("./widgets/view_audit_templates.kv")
 
 
-# Will implement opening of an audit to fill out.
 class AuditButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
