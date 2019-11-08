@@ -1,91 +1,90 @@
 
 <ViewFlagTrendsPage>:
-    questions_list: questions_list
+
+#:import ADMIN_SCREEN cilantro_audit.constants.ADMIN_SCREEN
+#:import VIEW_FLAG_TRENDS_PAGE cilantro_audit.constants.VIEW_FLAG_TRENDS_PAGE
+
+    question_list: question_list
+    refresh_button: refresh_button
+    question_text_col: question_text_col
+    audit_col: audit_col
+    times_flagged_col: times_flagged_col
 
     GridLayout:
-        rows: 3
-        cols: 1
+        id: page_layout
+        rows: 2
+        spacing: 10
 
         GridLayout:
-            name: 'header-grid'
-            rows: 1
-            cols: 3
-            size_hint: 1.0, 0.1
+            id: list_layout
+            rows: 2
+            size_hint_x: 1.8
+            spacing: 10
 
-            Widget:
-                name: 'place-holder'
+            GridLayout:
+                id: headers
+                cols: 3
+                spacing: 10
+                size_hint_y: 0.1
 
-            Label:
-                name: 'page-title'
-                text: 'Flagged Questions List'
+                Button:
+                    id: question_header
+                    text: 'Question'
+                    spacing: 10
+                    on_press: root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).sort_by_question()
 
-            Widget:
-                name: 'place-holder'
+                Button:
+                    id: audit_template_header
+                    text: 'Audit Template'
+                    spacing: 10
+                    on_press: root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).sort_by_audit_template()
 
-        GridLayout:
-            name: 'body-grid'
-            rows: 3
-            cols: 3
-
-            # 1st Row
-            Widget:
-                name: 'place-holder'
-                size_hint: 0.1, 0.1
-
-            Widget:
-                name: 'place-holder'
-                size_hint: 1, 0.1
-
-            Widget:
-                name: 'place-holder'
-                size_hint: 0.1, 0.1
-
-            # 2nd Row
-            Widget:
-                name: 'place-holder'
-                size_hint: 0.1, 1
+                Button:
+                    id: times_flagged_header
+                    text: 'Times Flagged'
+                    spacing: 10
+                    on_press: root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).sort_by_times_flagged()
 
             ScrollView:
-                name: 'scroll-container'
+                id: scrollable_list
 
-                StackLayout:
-                    id: questions_list
-                    height: self.minimum_height
+                GridLayout:
+                    id: question_list
+                    cols: 3
+                    spacing: 10
                     size_hint_y: None
 
+                    GridLayout:
+                        id: question_text_col
+                        cols: 1
 
-            Widget:
-                name: 'place-holder'
-                size_hint: 0.1, 1
+                    GridLayout:
+                        id: audit_col
+                        cols: 1
 
-            # 3rd Row
-            Widget:
-                name: 'place-holder'
-                size_hint: 0.1, 0.1
+                    GridLayout:
+                        id: times_flagged_col
+                        cols: 1
 
-            Widget:
-                name: 'place-holder'
-                size_hint: 1, 0.1
 
-            Widget:
-                name: 'place-holder'
-                size_hint: 0.1, 0.1
 
         GridLayout:
-            name: 'footer-grid'
-            rows: 1
-            cols: 3
-            size_hint: 1, 0.1
+            id: navigation_options
+            cols: 2
+            size_hint_y: 0.1
 
             Button:
                 text: 'Return to Admin Page'
-                on_release:
-                    root.manager.current = ADMIN_SCREEN
-                    root.manager.transition.duration = 0.3
-                    root.manager.transition.direction = 'right'
+                size_hint_y: None
+                size: 400, 50
+                on_press: root.manager.current = ADMIN_SCREEN
 
-            Widget:
-                name: 'place-holder'
+            Button:
+                id: refresh_button
+                text: 'Refresh List'
+                size_hint_y: None
+                size: 400, 50
+                on_press: root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).get_flagged_questions()
 
 
 <QuestionButton@Button>:
