@@ -25,7 +25,7 @@ class AuditButton(Button):
 
     def on_press(self, *args):
         super(AuditButton, self).on_press(*args)
-        self.screen_manager.get_screen(CREATE_COMPLETED_AUDIT_PAGE).populate_audit()
+        self.screen_manager.get_screen(CREATE_COMPLETED_AUDIT_PAGE).populate_audit(self.text)
         self.screen_manager.current = CREATE_COMPLETED_AUDIT_PAGE
 
 
