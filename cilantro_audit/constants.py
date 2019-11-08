@@ -41,6 +41,7 @@ CREATE_AUDIT_PAGE = "CreateAuditPage"
 COMPLETED_AUDITS_LIST_PAGE = "CompletedAuditsListPage"
 AUDITOR_COMPLETED_AUDITS_LIST_PAGE = "AuditorCompletedAuditsListPage"
 CREATE_AUDIT_TEMPLATE_PAGE = "CreateAuditTemplatePage"
+CREATE_COMPLETED_AUDIT_PAGE = "CreateCompletedAuditPage"
 VIEW_AUDIT_TEMPLATES = "ViewAuditTemplates"
 
 # Colors

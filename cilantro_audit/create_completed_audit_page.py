@@ -14,7 +14,6 @@ from cilantro_audit.create_audit_template_page import ConfirmationPop, ErrorPop
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
-
 # Loads in the .kv file which contains the CreateCompletedAuditPage layout.
 Builder.load_file("./widgets/create_completed_audit_page.kv")
 

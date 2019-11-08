@@ -98,8 +98,10 @@ RESPONSES = [
     Response.other(),
 ]
 
+
 def random_title():
     return random.choice(TITLES)
+
 
 def random_question():
     return Question(
@@ -108,6 +110,7 @@ def random_question():
         no=random.choice(SEVERITIES),
         other=random.choice(SEVERITIES),
     )
+
 
 def random_answer_from_question(question):
     text = question.text
@@ -125,12 +128,12 @@ def random_answer_from_question(question):
             response=response,
         )
     elif Response.other() == response:
-            return Answer(
-                text=question.text,
-                severity=question.yes,
-                response=response,
-                comment=random.choice(COMMENTS),
-            )
+        return Answer(
+            text=question.text,
+            severity=question.yes,
+            response=response,
+            comment=random.choice(COMMENTS),
+        )
 
 
 if __name__ == '__main__':

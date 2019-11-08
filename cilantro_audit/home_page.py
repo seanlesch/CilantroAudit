@@ -13,7 +13,9 @@ from cilantro_audit.auditor_completed_audits_list_page import AuditorCompletedAu
 from cilantro_audit.view_audit_templates import ViewAuditTemplates
 
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, ADMIN_SCREEN, HOME_SCREEN, AUDITOR_SCREEN, \
-    CREATE_AUDIT_TEMPLATE_PAGE, COMPLETED_AUDITS_LIST_PAGE, AUDITOR_COMPLETED_AUDITS_LIST_PAGE, VIEW_AUDIT_TEMPLATES
+    CREATE_AUDIT_TEMPLATE_PAGE, COMPLETED_AUDITS_LIST_PAGE, AUDITOR_COMPLETED_AUDITS_LIST_PAGE, VIEW_AUDIT_TEMPLATES, \
+    CREATE_COMPLETED_AUDIT_PAGE
+from create_completed_audit_page import CreateCompletedAuditPage
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
@@ -25,10 +27,6 @@ sm = ScreenManager()
 
 
 class HomePage(Screen):
-    pass
-
-
-class AdminPage(Screen):
     pass
 
 
@@ -51,6 +49,7 @@ class CilantroAudit(App):
         sm.add_widget(CompletedAuditsListPage(name=COMPLETED_AUDITS_LIST_PAGE))
         sm.add_widget(AuditorCompletedAuditsListPage(name=AUDITOR_COMPLETED_AUDITS_LIST_PAGE))
         sm.add_widget(ViewAuditTemplates(name=VIEW_AUDIT_TEMPLATES))
+        sm.add_widget(CreateCompletedAuditPage(name=CREATE_COMPLETED_AUDIT_PAGE))
 
         self.title = 'CilantroAudit'
         return sm
