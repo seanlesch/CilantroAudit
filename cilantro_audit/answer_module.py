@@ -52,12 +52,6 @@ class AnswerModule(FloatLayout):
         else:
             return True
 
-    # Verify the length of the comment does not exceed database defined limit.
-    def verify_comment_length(self):
-        if len(self.other_comments.text) > COMMENT_MAX_LENGTH:
-            self.other_comments.text = self.other_comments.text[0:COMMENT_MAX_LENGTH]
-        print(self.other_comments.text)
-
 
 class TestApp(App):
     def build(self):
