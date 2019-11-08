@@ -1,0 +1,29 @@
+
+<PageLayout>:
+    GridLayout:
+        rows: 3
+        cols: 1
+
+        GridLayout:
+            name: 'header-grid'
+            rows: 1
+            cols: 3
+            size_hint: 1, 0.1
+
+        GridLayout:
+            name: 'body-grid'
+            cols: 3
+            size_hint: 1, 0.8
+
+        GridLayout:
+            name: 'footer-grid'
+            rows: 1
+            cols: 3
+            size_hint: 1, 0.1
+
+            Button:
+                text: 'Btn'
+                on_release:
+                    root.manager.current = ADMIN_SCREEN
+                    root.manager.transition.duration = 0.3
+                    root.manager.transition.direction = 'right'
