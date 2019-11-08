@@ -68,6 +68,8 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
         # the content’s bottom side will touch the bottom side of the ScrollView. If 1, the content’s top side will
         # touch the top side.
         self.scrolling_panel.scroll_y = 1
+        # Reset the auditor name
+        self.auditor_name.text = ''
 
     # Return the associated severity with question's response
     def question_severity(self, question):
