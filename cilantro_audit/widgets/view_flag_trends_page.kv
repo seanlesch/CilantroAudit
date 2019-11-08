@@ -1,5 +1,7 @@
 
 <ViewFlagTrendsPage>:
+    questions_list: questions_list
+
     GridLayout:
         rows: 3
         cols: 1
@@ -8,12 +10,66 @@
             name: 'header-grid'
             rows: 1
             cols: 3
-            size_hint: 1, 0.1
+            size_hint: 1.0, 0.1
+
+            Widget:
+                name: 'place-holder'
+
+            Label:
+                name: 'page-title'
+                text: 'Flagged Questions List'
+
+            Widget:
+                name: 'place-holder'
 
         GridLayout:
             name: 'body-grid'
+            rows: 3
             cols: 3
-            size_hint: 1, 0.8
+
+            # 1st Row
+            Widget:
+                name: 'place-holder'
+                size_hint: 0.1, 0.1
+
+            Widget:
+                name: 'place-holder'
+                size_hint: 1, 0.1
+
+            Widget:
+                name: 'place-holder'
+                size_hint: 0.1, 0.1
+
+            # 2nd Row
+            Widget:
+                name: 'place-holder'
+                size_hint: 0.1, 1
+
+            ScrollView:
+                name: 'scroll-container'
+
+                StackLayout:
+                    id: questions_list
+                    height: self.minimum_height
+                    size_hint_y: None
+
+
+            Widget:
+                name: 'place-holder'
+                size_hint: 0.1, 1
+
+            # 3rd Row
+            Widget:
+                name: 'place-holder'
+                size_hint: 0.1, 0.1
+
+            Widget:
+                name: 'place-holder'
+                size_hint: 1, 0.1
+
+            Widget:
+                name: 'place-holder'
+                size_hint: 0.1, 0.1
 
         GridLayout:
             name: 'footer-grid'
@@ -27,3 +83,14 @@
                     root.manager.current = ADMIN_SCREEN
                     root.manager.transition.duration = 0.3
                     root.manager.transition.direction = 'right'
+
+            Widget:
+                name: 'place-holder'
+
+
+<QuestionButton@Button>:
+    size_hint_y: None
+    on_release:
+        #app.root.current = ''
+        app.root.transition.duration = 0.3
+        app.root.transition.direction = 'right'
