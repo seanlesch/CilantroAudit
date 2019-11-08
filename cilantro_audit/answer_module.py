@@ -44,7 +44,7 @@ class AnswerModule(FloatLayout):
         self.other_box.background_color = RGB_GREEN
 
     def other_has_comments(self):
-        if self.response is Response.other():
+        if self.response.response is Response.other().response:
             if self.other_comments.text:
                 return True
             else:
