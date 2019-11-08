@@ -24,7 +24,7 @@ class ConfirmationPop(Popup):
 
     def return_admin_page(self):
         self.dismiss()
-        self.manager.current = VIEW_AUDIT_TEMPLATES
+        self.manager.current = ADMIN_SCREEN
 
 
 class ErrorPop(Popup):
