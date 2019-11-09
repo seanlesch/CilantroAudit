@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from mongoengine import Document, StringField, DateTimeField, EmbeddedDocument, EmbeddedDocumentField, \
-    EmbeddedDocumentListField, ValidationError
+    EmbeddedDocumentListField, ValidationError, BooleanField, IntField
 
 from cilantro_audit.audit_template import Severity
 from cilantro_audit.constants import TEXT_MIN_LENGTH, TEXT_MAX_LENGTH, COMMENT_MIN_LENGTH, COMMENT_MAX_LENGTH, \
@@ -35,6 +35,7 @@ class Answer(EmbeddedDocument):
     severity = EmbeddedDocumentField(Severity, required=True)
     response = EmbeddedDocumentField(Response, required=True)
     comment = StringField(max_length=COMMENT_MAX_LENGTH, min_length=COMMENT_MIN_LENGTH)
+    resolved = BooleanField(required=True, default=True)
 
     def validate(self, clean=True):
         super().validate(clean)
@@ -49,6 +50,7 @@ class CompletedAuditBuilder:
         self.auditor = None
         self.max_severity = Severity.green()
         self.answers = []
+        self.unresolved_count = 0
 
     def with_title(self, title):
         self.title = title
@@ -59,11 +61,13 @@ class CompletedAuditBuilder:
         return self
 
     def with_answer(self, answer):
-        self.answers.append(answer)
         if answer.severity == Severity.red():
             self.max_severity = Severity.red()
+            answer.resolved = False
+            self.unresolved_count += 1
         elif self.max_severity == Severity.green() and answer.severity == Severity.yellow():
             self.max_severity = Severity.yellow()
+        self.answers.append(answer)
         return self
 
     def build(self):
@@ -73,6 +77,7 @@ class CompletedAuditBuilder:
             auditor=self.auditor,
             severity=self.max_severity,
             answers=self.answers,
+            unresolved_count=self.unresolved_count,
         )
         audit.validate()
         return audit
@@ -84,3 +89,11 @@ class CompletedAudit(Document):
     auditor = StringField(required=True, max_length=AUDITOR_MAX_LENGTH, min_length=AUDITOR_MIN_LENGTH)
     severity = EmbeddedDocumentField(Severity, required=True)
     answers = EmbeddedDocumentListField(Answer, required=True)
+    unresolved_count = IntField(required=True, default=0)
+
+    def validate(self, clean=True):
+        super().validate(clean)
+        unresolved_count = sum(not answer.resolved for answer in self.answers)
+        if self.unresolved_count is not unresolved_count:
+            raise ValidationError("Resolved answer count " + str(unresolved_count) + " does not match expected count" +
+                                  str(self.unresolved_count) + " .")
