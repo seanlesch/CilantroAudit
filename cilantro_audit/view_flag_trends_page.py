@@ -27,9 +27,9 @@ class ViewFlagTrendsPage(Screen):
 
     def __init__(self, **kw):
         super().__init__(**kw)
-        # self.question_text_col.bind(minimum_height=self.questions_list.setter("height"))
-        # self.audit_col.bind(minimum_height=self.questions_list.setter("height"))
-        # self.times_flagged_col.bind(minimum_height=self.questions_list.setter("height"))
+        self.question_text_col.bind(minimum_height=self.questions_list.setter("height"))
+        self.audit_col.bind(minimum_height=self.questions_list.setter("height"))
+        self.times_flagged_col.bind(minimum_height=self.questions_list.setter("height"))
         self.audits = []
         self.get_flagged_questions()
 
