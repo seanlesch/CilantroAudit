@@ -46,19 +46,26 @@
         StackLayout:
             id: stack_list
             size_hint_y: None
-            height: 200
+            minimum_height: 10
+
+            GridLayout:
+                row_force_default: True
+                row_default_height: 30
+                cols: 2
+                spacing: 200
+                size_hint_y: None
 
 
     Button:
         text: "Submit"
         font_size: root.width/25
         size_hint: .15, .1
-        pos_hint: {"right": 1, "y": 0}
+        pos_hint: {"right": .99, "y": 0.015}
         on_press: root.submit_audit_pop(root.manager)
 
     Button:
         text: "Back"
         font_size: root.width/25
         size_hint: .15, .1
-        pos_hint: {"right": .85, "bottom": 0}
+        pos_hint: {"right": .84, "y": 0.015}
         on_press: root.back(root.manager)

@@ -108,7 +108,6 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
         for child in self.questions:
             child.no_answer_flag.opacity = 0
             child.no_comment_flag.opacity = 0
-        self.canvas.ask_update()
 
         error_message = ""
         for question in self.questions:
