@@ -39,7 +39,9 @@ ADMIN_SCREEN = "AdminScreen"
 AUDITOR_SCREEN = "AuditorScreen"
 CREATE_AUDIT_PAGE = "CreateAuditPage"
 COMPLETED_AUDITS_LIST_PAGE = "CompletedAuditsListPage"
+AUDITOR_COMPLETED_AUDITS_LIST_PAGE = "AuditorCompletedAuditsListPage"
 CREATE_AUDIT_TEMPLATE_PAGE = "CreateAuditTemplatePage"
+CREATE_COMPLETED_AUDIT_PAGE = "CreateCompletedAuditPage"
 VIEW_AUDIT_TEMPLATES = "ViewAuditTemplates"
 COMPLETED_AUDIT_PAGE = "CompletedAuditPage"
 
@@ -47,3 +49,4 @@ COMPLETED_AUDIT_PAGE = "CompletedAuditPage"
 RGB_RED = get_color_from_hex("#FF4500")
 RGB_GREEN = get_color_from_hex("#00FA9A")
 RGB_YELLOW = get_color_from_hex("#FFFF00")
+RGB_GREY_LIGHT = get_color_from_hex("D3D3D3")
