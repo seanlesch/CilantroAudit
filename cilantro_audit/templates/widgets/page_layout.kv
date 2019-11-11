@@ -4,11 +4,23 @@
         rows: 3
         cols: 1
 
+        canvas.before:
+            Color:
+                rgba: 0.196, 0.235, 0.196, 1.0
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+
         GridLayout:
             name: 'header-grid'
             rows: 1
             cols: 3
             size_hint: 1, 0.1
+
+            Button:
+            Button:
+            Button:
 
         GridLayout:
             name: 'body-grid'
