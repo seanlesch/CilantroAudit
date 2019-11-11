@@ -24,6 +24,8 @@ class CompletedAuditPage(Screen):
         self.audit_templates = []
         self.load_completed_audits()
         self.load_audit_templates()
+        self.test_audit_templates()
+        # self.test_completed_audits()
 
 
     # Loads all of the completed_audit objects from the database into a list.
@@ -35,3 +37,17 @@ class CompletedAuditPage(Screen):
     def load_audit_templates(self):
         self.audit_templates = list(AuditTemplate.objects().all_fields())
         self.audit_templates = sorted(self.audit_templates, key=lambda audit_template: audit_template.title)
+
+    def test_audit_templates(self):
+        for audit_template in self.audit_templates:
+            print(audit_template.title)
+            for question in audit_template.questions:
+                print("%s Yes: %s. No: %s. Other: %s" % (question.text, question.yes.severity, question.no.severity, question.other.severity))
+            print("\n")
+
+    def test_completed_audits(self):
+        for completed_audit in self.completed_audits:
+            print(completed_audit.title, completed_audit.auditor, completed_audit.max_severity)
+            for answer in completed_audit.answers:
+                print("%s Yes: %s. No: %s. Other: %s" % (answer.text, answer.severity, answer.response, answer.comment))
+            print("\n")
