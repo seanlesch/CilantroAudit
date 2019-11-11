@@ -11,14 +11,14 @@ from cilantro_audit.constants import KIVY_REQUIRED_VERSION
 require(KIVY_REQUIRED_VERSION)
 
 
-class PageTemplate(Screen):
+class AuditPageTemplate(Screen):
     Builder.load_file(path.dirname(path.abspath(__file__)) + "/widgets/page_layout.kv")
     pass
 
 
 class TestApp(App):
     def build(self):
-        return PageTemplate()
+        return AuditPageTemplate()
 
 
 if __name__ == '__main__':

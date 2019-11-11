@@ -1,5 +1,5 @@
 
-<PageTemplate>:
+<AuditPageTemplate>:
     GridLayout:
         rows: 3
         cols: 1
@@ -20,25 +20,13 @@
             AuditButtonTemplate:
                 text: 'Back'
 
-            GridLayout:
-                name: 'logo'
-                rows: 3
-                cols: 1
-                size_hint: 0.5, 1.0
-
-                Widget:
-                    name: 'place-holder'
-                    size_hint: 1, 0.2
-
-                Image:
-                    source: '../../cilantro-logo.png'
-
-
-
-                Label:
-                    text: 'CilantroAudit'
+            Label:
+                text: 'Page Title'
 
             AuditButtonTemplate:
+                text: 'Exit'
+                on_release:
+                    exit(1)
 
         GridLayout:
             name: 'body-grid'
