@@ -2,15 +2,27 @@
 <CompletedAuditPage>:
 
     size: root.width, root.height
+    stack_list: stack_list
+    grid_list: grid_list
 
     ScrollView:
         size_hint: 1, .89
         pos_hint: {"top": 1}
 
+        StackLayout:
+            id: stack_list
+            size_hint_y: None
+
+            GridLayout:
+                id: grid_list
+                cols: 2
+                rows: 1
+
     Button:
-        text: "Return"
+        text: "Back"
         size_hint: .15, .1
         on_release:
+            root.clear_page()
             root.manager.transition = SlideTransition(direction='right')
-            root.manager.current = 'HomeScreen'
+            root.manager.current = 'CompletedAuditsListPage'
             root.manager.transition.duration = 0.3

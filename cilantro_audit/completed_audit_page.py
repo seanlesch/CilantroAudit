@@ -17,11 +17,11 @@ kvfile = Builder.load_file("./widgets/completed_audit_page.kv")
 
 connect(PROD_DB)
 
-# self.screen_manager.get_screen(CREATE_COMPLETED_AUDIT_PAGE).populate_audit(self.text)
-# self.screen_manager.current = CREATE_COMPLETED_AUDIT_PAGE
-
 
 class CompletedAuditPage(Screen):
+    stack_list = ObjectProperty()
+    grid_list = ObjectProperty()
+
     def __init__(self, **kw):
         super().__init__(**kw)
         self.completed_audits = []
@@ -39,6 +39,14 @@ class CompletedAuditPage(Screen):
         self.audit_templates = list(AuditTemplate.objects().all_fields())
         self.audit_templates = sorted(self.audit_templates, key=lambda audit_template: audit_template.title)
 
-    def add_label(self, text):
+    def add_title(self, text):
         lbl = Label(text=text, size_hint_y=None, height=40)
-        self.add_widget(lbl)
+        self.grid_list.add_widget(lbl)
+
+    def add_date_time(self, dt):
+        lbl = Label(text=dt, size_hint_y=None, height=40)
+        self.grid_list.add_widget(lbl)
+
+    def clear_page(self):
+        self.grid_list.clear_widgets()
+        # self.stack_list.clear_widgets()
