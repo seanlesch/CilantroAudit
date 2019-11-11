@@ -104,7 +104,7 @@ class CompletedAuditsListPage(Screen):
 
         for title in audit_titles:
             btn = Button(text=title, size_hint_y=None, height=40)
-            btn.bind(on_press=lambda _: self.populate_completed_audit_page(title, audit_dates[counter]))
+            btn.bind(on_press=lambda _: self.populate_completed_audit_page(title, audit_dates[counter], audit_auditors[counter]))
             self.title_col.add_widget(btn)
             counter += 1
 
@@ -122,10 +122,12 @@ class CompletedAuditsListPage(Screen):
             lbl = Label(text=severity.severity, size_hint_y=None, height=40)
             self.severity_col.add_widget(lbl)
 
-    def populate_completed_audit_page(self, title, dt):
+    def populate_completed_audit_page(self, title, dt, auditor):
         # todo pick the right audit template
         # todo pick the right completed audit
 
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_title(title)
-        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_date_time(str(dt))
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_label("")
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_auditor(auditor)
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_date_time(format_datetime(utc_to_local(dt)))
         self.manager.current = COMPLETED_AUDIT_PAGE

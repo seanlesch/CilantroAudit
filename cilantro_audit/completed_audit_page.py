@@ -39,12 +39,20 @@ class CompletedAuditPage(Screen):
         self.audit_templates = list(AuditTemplate.objects().all_fields())
         self.audit_templates = sorted(self.audit_templates, key=lambda audit_template: audit_template.title)
 
-    def add_title(self, text):
-        lbl = Label(text=text, size_hint_y=None, height=40)
+    def add_title(self, title):
+        lbl = Label(text='[b]Audit: [/b]' + title, markup=True, size_hint_y=None, height=40, halign="left")
+        self.grid_list.add_widget(lbl)
+
+    def add_auditor(self, auditor):
+        lbl = Label(text='[b]Auditor: [/b]' + auditor, markup=True, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
     def add_date_time(self, dt):
-        lbl = Label(text=dt, size_hint_y=None, height=40)
+        lbl = Label(text='[b]Date: [/b]' + dt, markup=True, size_hint_y=None, height=40, halign="left")
+        self.grid_list.add_widget(lbl)
+
+    def add_label(self, text):
+        lbl = Label(text=text, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
     def clear_page(self):
