@@ -10,10 +10,9 @@ from cilantro_audit.constants import KIVY_REQUIRED_VERSION, CREATE_COMPLETED_AUD
 from cilantro_audit.constants import PROD_DB
 from cilantro_audit.audit_template import AuditTemplate
 
-# Required Version
 kivy.require(KIVY_REQUIRED_VERSION)
-
 Builder.load_file("./widgets/view_audit_templates.kv")
+connect(PROD_DB)
 
 
 class AuditButton(Button):
@@ -30,9 +29,7 @@ class AuditButton(Button):
 
 # Handles the retrieval of audit templates for the auditor screens.
 class ViewAuditTemplates(Screen):
-    # Holds the list of titles retrieved from the database.
     templates_list = ObjectProperty()
-    connect(PROD_DB)
 
     # Constructor utilizes the only method to retrieve audits for use in the associated .kv file.
     def __init__(self, **kw):
@@ -48,6 +45,11 @@ class ViewAuditTemplates(Screen):
         titles = list(map(lambda template: template.title, AuditTemplate.objects().only('title')))
         for title in titles:
             self.templates_list.add_widget(AuditButton(text=title, screen_manager=self.screen_manager))
+
+    # Replaces the current templates list with a newly retrieved templates list from the database
+    def refresh_audit_templates(self):
+        self.templates_list.clear_widgets()
+        self.get_audit_templates()
 
 
 class TestApp(App):
