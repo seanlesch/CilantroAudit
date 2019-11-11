@@ -1,6 +1,7 @@
 import kivy
 from kivy.app import App
 from kivy.properties import ObjectProperty
+from kivy.uix.popup import Popup
 from mongoengine import connect
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
@@ -16,6 +17,10 @@ kivy.require(KIVY_REQUIRED_VERSION)
 Builder.load_file("./widgets/view_audit_templates.kv")
 
 
+class LockedTemplatePop(Popup):
+    pass
+
+
 class AuditButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
@@ -26,6 +31,17 @@ class AuditButton(Button):
         super(AuditButton, self).on_press(*args)
         self.screen_manager.get_screen(CREATE_COMPLETED_AUDIT_PAGE).populate_audit(self.text)
         self.screen_manager.current = CREATE_COMPLETED_AUDIT_PAGE
+
+
+class InactiveAuditButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.text = kwargs['text']
+
+    def on_press(self, *args):
+        super().on_press(*args)
+        show = LockedTemplatePop()
+        show.open()
 
 
 # Handles the retrieval of audit templates for the auditor screens.
@@ -45,9 +61,12 @@ class ViewAuditTemplates(Screen):
         self.templates_list.clear_widgets()
         self.screen_manager = screen_manager
 
-        titles = list(map(lambda template: template.title, AuditTemplate.objects().only('title')))
+        titles = list(map(lambda template: (template.title, template.locked), AuditTemplate.objects().only('title', 'locked')))
         for title in titles:
-            self.templates_list.add_widget(AuditButton(text=title, screen_manager=self.screen_manager))
+            if title[1] is False: # This template is not locked out
+                self.templates_list.add_widget(AuditButton(text=title[0], screen_manager=self.screen_manager))
+            else: # This template is locked
+                self.templates_list.add_widget(InactiveAuditButton(text=title[0]))
 
 
 class TestApp(App):

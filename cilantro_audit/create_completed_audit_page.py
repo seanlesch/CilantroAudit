@@ -12,6 +12,7 @@ from cilantro_audit.completed_audit import CompletedAuditBuilder, Answer, Respon
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, VIEW_AUDIT_TEMPLATES
 from cilantro_audit.answer_module import AnswerModule
 from cilantro_audit.create_audit_template_page import ConfirmationPop, ErrorPop
+from cilantro_audit.view_audit_templates import ViewAuditTemplates
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
@@ -52,7 +53,7 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
         try:
             template = AuditTemplate.objects().filter(title=target).first()  # for now, while there can be duplicates
         except AttributeError:
-            # TO DO - SOMETHING
+            #TODO
             pass
 
         self.audit_title = template.title
@@ -92,7 +93,9 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
             else:
                 temp_answer = Answer(text=a.question.text, severity=self.question_severity(a), response=a.response)
             completed_audit.with_answer(temp_answer)
-
+        # Update the template with this title to be locked
+        AuditTemplate.objects().filter(title=self.audit_title).update(upsert=False, multi=True, locked=True)
+        # Send to database
         completed_audit.build().save()
 
     def submit_audit_pop(self, manager):
@@ -102,8 +105,10 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
             show.error_message.text = error_message
         else:
             show = ConfirmationPop()
+            show.yes.bind(on_press=lambda _: manager.get_screen(VIEW_AUDIT_TEMPLATES).get_audit_templates(self.manager))
             show.yes.bind(on_press=self.clear_page)
             show.yes.bind(on_press=self.submit_audit)
+
         show.manager = manager
         show.open()
 

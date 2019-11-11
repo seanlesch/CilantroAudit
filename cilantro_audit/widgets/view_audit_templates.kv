@@ -1,5 +1,5 @@
 #:kivy 1.11.1
-
+#:import GREY_LIGHT cilantro_audit.constants.RGB_GREY_LIGHT
 
 <ViewAuditTemplates>:
     name: 'ViewAuditTemplates'
@@ -101,3 +101,17 @@
 <AuditButton@Button>:
     name: 'button_template'
     size_hint_y: None
+
+<InactiveAuditButton@Button>:
+    name: 'inactive_button_template'
+    size_hint_y: None
+    background_normal: ''
+    background_color: GREY_LIGHT
+    color: 0, 0, 0, 1
+
+<LockedTemplatePop>:
+    title: "Can't Open Template"
+    size_hint: .5, .5
+
+    Label:
+        text: "The audit you selected has already been completed."

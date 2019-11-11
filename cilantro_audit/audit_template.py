@@ -1,5 +1,5 @@
 from mongoengine import Document, StringField, EmbeddedDocument, EmbeddedDocumentField, EmbeddedDocumentListField, \
-    ValidationError
+    ValidationError, BooleanField
 
 from cilantro_audit.constants import SEVERITY_VALUES, TEXT_MAX_LENGTH, TEXT_MIN_LENGTH, TITLE_MIN_LENGTH, \
     TITLE_MAX_LENGTH
@@ -60,6 +60,7 @@ class AuditTemplateBuilder:
     def __init__(self):
         self.title = None
         self.questions = []
+        self.locked = False
 
     def with_title(self, title):
         self.title = title
@@ -69,8 +70,12 @@ class AuditTemplateBuilder:
         self.questions.append(question)
         return self
 
+    def with_lock(self):
+        self.locked = True
+        return self
+
     def build(self):
-        template = AuditTemplate(title=self.title, questions=self.questions)
+        template = AuditTemplate(title=self.title, questions=self.questions, locked=self.locked)
         template.validate()
         return template
 
@@ -78,3 +83,4 @@ class AuditTemplateBuilder:
 class AuditTemplate(Document):
     title = StringField(required=True, max_length=TITLE_MAX_LENGTH, min_length=TITLE_MIN_LENGTH)
     questions = EmbeddedDocumentListField(Question, required=True)
+    locked = BooleanField(required=True, default=False)

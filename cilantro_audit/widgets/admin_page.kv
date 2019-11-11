@@ -48,6 +48,14 @@
                 size_hint: None, None
                 pos_hint: {"center_x": 1.7, "center_y": -1.0}
 
+            Button:
+                text: "Clear All Audit Locks"
+                font_size: 25
+                size: 500, 100
+                size_hint: None, None
+                pos_hint: {"center_x": 0.45, "center_y": -2}
+                on_press: root.clear_all_locks()
+
         Button:
             text: "Exit"
             font_size: 30
@@ -55,3 +63,11 @@
             size_hint: None, None
             pos_hint:{"center_x": 0.5}
             on_press: app.exit()
+
+
+<TemplatesUnlockedPop>:
+    title: "Task Completed"
+    size_hint: .5, .5
+
+    Label:
+        text: "All audit locks cleared; All audits available for submission."
