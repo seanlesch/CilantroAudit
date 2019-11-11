@@ -10,7 +10,7 @@ from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 
 from cilantro_audit.completed_audit import CompletedAudit
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, SEVERITY_PRECEDENCE
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, SEVERITY_PRECEDENCE, COMPLETED_AUDIT_PAGE
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
@@ -102,6 +102,7 @@ class CompletedAuditsListPage(Screen):
 
         for title in audit_titles:
             btn = Button(text=title, size_hint_y=None, height=40)
+            btn.bind(on_press=lambda _:self.populate_completed_audit_page())
             self.title_col.add_widget(btn)
 
         for dt in audit_dates:
@@ -115,3 +116,7 @@ class CompletedAuditsListPage(Screen):
         for severity in audit_severities:
             lbl = Label(text=severity.severity, size_hint_y=None, height=40)
             self.severity_col.add_widget(lbl)
+
+    def populate_completed_audit_page(self):
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_label("Some label")
+        self.manager.current = COMPLETED_AUDIT_PAGE
