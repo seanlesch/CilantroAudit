@@ -3,6 +3,7 @@
     title_label: title_label
     auditor_name: auditor_name
     size: root.width, root.height
+    scrolling_panel: scrolling_panel
 
     Label:
         id: title_label
@@ -39,6 +40,7 @@
             multiline: False
 
     ScrollView:
+        id: scrolling_panel
         size_hint: 1, .7
         pos_hint: {"top": .83}
         bar_width: 10
@@ -54,7 +56,6 @@
                 cols: 2
                 spacing: 200
                 size_hint_y: None
-
 
     Button:
         text: "Submit"
