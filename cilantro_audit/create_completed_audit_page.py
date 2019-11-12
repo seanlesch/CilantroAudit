@@ -2,6 +2,7 @@ import kivy
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty
+from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
@@ -9,7 +10,7 @@ from mongoengine import connect
 
 from cilantro_audit.audit_template import AuditTemplate
 from cilantro_audit.completed_audit import CompletedAuditBuilder, Answer, Response
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, VIEW_AUDIT_TEMPLATES
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, VIEW_AUDIT_TEMPLATES, ANSWER_MODULE_DISPLACEMENT
 from cilantro_audit.answer_module import AnswerModule
 from cilantro_audit.create_audit_template_page import ConfirmationPop, ErrorPop
 
@@ -45,10 +46,12 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
     def __init__(self, **kw):
         super().__init__(**kw)
         self.questions = []
+        self.populate_audit('Bathroom #1')
 
     # put all questions on the screen for the auditor to respond to
     def populate_audit(self, audit_name):
         target = audit_name
+
         try:
             template = AuditTemplate.objects().filter(title=target).first()  # for now, while there can be duplicates
         except AttributeError:
@@ -57,12 +60,12 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
 
         self.audit_title = template.title
         for question in template.questions:
-            self.stack_list.height += 200
             a_temp = AnswerModule()
             a_temp.question = question
             a_temp.question_text = question.text
             self.stack_list.add_widget(a_temp)
             self.questions.append(a_temp)
+            self.stack_list.height += ANSWER_MODULE_DISPLACEMENT
 
         # https://kivy.org/doc/stable/api-kivy.uix.scrollview.html Y scrolling value, between 0 and 1. If 0,
         # the content’s bottom side will touch the bottom side of the ScrollView. If 1, the content’s top side will

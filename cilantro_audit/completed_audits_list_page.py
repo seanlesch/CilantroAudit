@@ -50,7 +50,6 @@ class CompletedAuditsListPage(Screen):
         self.auditor_col.bind(minimum_height=self.audit_list.setter("height"))
         self.severity_col.bind(minimum_height=self.audit_list.setter("height"))
         self.audits = []
-        self.load_completed_audits()
 
     """Sorts list items by title."""
 

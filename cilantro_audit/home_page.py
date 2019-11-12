@@ -20,8 +20,15 @@ from create_completed_audit_page import CreateCompletedAuditPage
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
+# Configures the default window settings
 Config.set('graphics', 'borderless', '0')
 Config.set('graphics', 'window_state', 'maximized')
+Config.set('graphics', 'minimum_height', '600')
+Config.set('graphics', 'minimum_width', '800')
+
+# https://stackoverflow.com/questions/12692851/why-does-right-clicking-create-an-orange-dot-in-the-center-of-the-circle
+# Removes the multi-touch simulation (red/orange dots on right click)
+Config.set('input', 'mouse', 'mouse, multitouch_on_demand')
 
 Builder.load_file('./widgets/home_page.kv')
 Builder.load_file('./widgets/admin_page.kv')
