@@ -49,7 +49,7 @@ class ViewAuditTemplates(Screen):
     # Replaces the current templates list with a newly retrieved templates list from the database
     def refresh_audit_templates(self):
         self.templates_list.clear_widgets()
-        self.get_audit_templates()
+        self.get_audit_templates(self.screen_manager)
 
 
 class TestApp(App):
