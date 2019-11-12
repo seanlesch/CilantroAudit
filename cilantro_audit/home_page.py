@@ -1,6 +1,7 @@
 import kivy
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.config import Config
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from kivy.uix.screenmanager import ScreenManager
@@ -18,6 +19,9 @@ from cilantro_audit.constants import KIVY_REQUIRED_VERSION, ADMIN_SCREEN, HOME_S
 from create_completed_audit_page import CreateCompletedAuditPage
 
 kivy.require(KIVY_REQUIRED_VERSION)
+
+Config.set('graphics', 'borderless', '0')
+Config.set('graphics', 'window_state', 'maximized')
 
 Builder.load_file('./widgets/home_page.kv')
 Builder.load_file('./widgets/admin_page.kv')
