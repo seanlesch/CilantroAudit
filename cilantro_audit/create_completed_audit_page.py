@@ -46,7 +46,6 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
     def __init__(self, **kw):
         super().__init__(**kw)
         self.questions = []
-        self.populate_audit('Bathroom #1')
 
     # put all questions on the screen for the auditor to respond to
     def populate_audit(self, audit_name):

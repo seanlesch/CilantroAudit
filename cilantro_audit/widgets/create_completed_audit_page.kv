@@ -6,7 +6,6 @@
     scrolling_panel: scrolling_panel
 
     GridLayout:
-        cols: 1
         rows: 2
         row_force_default: True
         row_default_height: 30
@@ -30,7 +29,7 @@
     GridLayout:
         cols: 1
         rows: 2
-        size_hint_y: 0.88
+        size_hint_y: 0.85
 
         ScrollView:
             pos_hint: {"top": .6}
@@ -50,17 +49,16 @@
 
         GridLayout:
             cols: 2
-            rows: 1
             size_hint_y: 0.1
 
             Button:
                 text: "Submit"
                 size_hint_y: None
-                pos_hint: {"right": 1, "y": 0}
+                size: 400, 60
                 on_press: root.submit_audit_pop(root.manager)
 
             Button:
                 text: "Back"
                 size_hint_y: None
-                pos_hint: {"right": .85, "bottom": 0}
+                size: 400, 60
                 on_press: root.back(root.manager)
