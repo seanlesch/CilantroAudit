@@ -40,17 +40,6 @@
                 on_press: app.exit()
                 pos_hint: {"center_x": 0.45, "center_y": -1.0}
 
-            Button:
-                text: 'New'
-                font_size: 30
-                size: 500, 100
-                size_hint: None, None
-                on_press:
-                    root.manager.current = 'CompletedAuditPage'
-                    root.manager.transition.duration = 0.3
-                    root.manager.transition.direction = 'left'
-                pos_hint: {"center_x": 0.45, "center_y": -2.0}
-
 <AdminLoginPopup>
 
     id: popup

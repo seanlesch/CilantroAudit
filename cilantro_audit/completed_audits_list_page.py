@@ -11,6 +11,7 @@ from mongoengine import connect
 
 from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, SEVERITY_PRECEDENCE, COMPLETED_AUDIT_PAGE
+from cilantro_audit.audit_template import AuditTemplate
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
@@ -50,7 +51,9 @@ class CompletedAuditsListPage(Screen):
         self.auditor_col.bind(minimum_height=self.audit_list.setter("height"))
         self.severity_col.bind(minimum_height=self.audit_list.setter("height"))
         self.audits = []
+        self.audit_templates = []
         self.load_completed_audits()
+        self.load_audit_templates()
 
     """Sorts list items by title."""
 
@@ -87,6 +90,9 @@ class CompletedAuditsListPage(Screen):
         self.sort_by_severity()
         self.refresh_completed_audits()
 
+    def load_audit_templates(self):
+        self.audit_templates = list(AuditTemplate.objects().only("title", "questions"))
+
     """Refreshes the list of audits on the screen."""
 
     def refresh_completed_audits(self):
@@ -104,7 +110,8 @@ class CompletedAuditsListPage(Screen):
 
         for title in audit_titles:
             btn = Button(text=title, size_hint_y=None, height=40)
-            btn.bind(on_press=lambda _: self.populate_completed_audit_page(title, audit_dates[counter], audit_auditors[counter]))
+            btn.bind(on_press=lambda _: self.populate_completed_audit_page(title, audit_dates[counter],
+                                                                           audit_auditors[counter]))
             self.title_col.add_widget(btn)
             counter += 1
 
@@ -122,12 +129,37 @@ class CompletedAuditsListPage(Screen):
             lbl = Label(text=severity.severity, size_hint_y=None, height=40)
             self.severity_col.add_widget(lbl)
 
-    def populate_completed_audit_page(self, title, dt, auditor):
-        # todo pick the right audit template
-        # todo pick the right completed audit
-
+    def build_header_row(self, title, dt, auditor):
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_title(title)
-        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_label("")
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_blank_label("")
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_auditor(auditor)
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_date_time(format_datetime(utc_to_local(dt)))
+
+    def load_audit_template_and_completed_audit_with_title(self, title):
+        at = AuditTemplate()
+        ca = CompletedAudit()
+
+        for audit_template in self.audit_templates:
+            if audit_template.title == title:
+                at = audit_template
+                break
+        for completed_audit in self.audits:
+            if completed_audit.title == title:
+                ca = completed_audit
+                break
+        return at, ca
+
+    def build_completed_audit_page_body(self, audit_template, completed_audit):
+        counter = 0
+
+        for question in audit_template.questions:
+            self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_question(question)
+            # self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_answer(completed_audit.answers[counter])
+            counter += 1
+
+    def populate_completed_audit_page(self, title, dt, auditor):
+        self.build_header_row(title, dt, auditor)
+        at, ca = self.load_audit_template_and_completed_audit_with_title(title)
+        self.build_completed_audit_page_body(at, ca)
+
         self.manager.current = COMPLETED_AUDIT_PAGE

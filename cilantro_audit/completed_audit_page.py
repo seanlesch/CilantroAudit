@@ -51,10 +51,22 @@ class CompletedAuditPage(Screen):
         lbl = Label(text='[b]Date: [/b]' + dt, markup=True, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
-    def add_label(self, text):
+    def add_blank_label(self, text):
         lbl = Label(text=text, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
+    def add_question(self, question):
+        lbl = Label(text=question.text, size_hint_y=None, height=40)
+        self.stack_list.add_widget(lbl)
+
+    def add_answer(self, answer):
+        lbl = Label(text=str(answer.response), size_hint_y=None, height=40, halign="left")
+        self.stack_list.add_widget(lbl)
+
+        if answer.comment != "":
+            lbl2 = Label(text=str(answer.comment), size_hint_y=None, height=40, halign="left")
+            self.stack_list.add_widget(lbl2)
+
     def clear_page(self):
         self.grid_list.clear_widgets()
-        # self.stack_list.clear_widgets()
+        self.stack_list.clear_widgets()
