@@ -9,6 +9,7 @@ from mongoengine import connect
 
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION
 from cilantro_audit.constants import PROD_DB
+
 from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.audit_template import Severity
 
