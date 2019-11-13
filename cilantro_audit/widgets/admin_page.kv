@@ -9,7 +9,7 @@
         Label:
             text: 'Admin Page'
             font_size: 40
-            pos: 0, 250
+            pos: 0, 150
 
         FloatLayout:
 
@@ -21,7 +21,7 @@
                 font_size: 25
                 size: 250, 100
                 size_hint: None, None
-                pos_hint: {"center_x": -0.8, "center_y": 1}
+                pos_hint: {"center_x": -0.8, "center_y": 1.1}
                 on_press: root.manager.current = 'CreateAuditTemplatePage'
 
             Button:
@@ -29,7 +29,7 @@
                 font_size: 25
                 size: 250, 100
                 size_hint: None, None
-                pos_hint: {"center_x": 1.7, "center_y": 1}
+                pos_hint: {"center_x": 1.7, "center_y": 1.1}
                 on_press: root.clear_all_locks()
 
             Button:
@@ -38,7 +38,7 @@
                 font_size: 25
                 size: 250, 100
                 size_hint: None, None
-                pos_hint: {"center_x": -0.8, "center_y": 0}
+                pos_hint: {"center_x": -0.8, "center_y": 0.1}
                 on_press: root.manager.current = COMPLETED_AUDITS_LIST_PAGE
 
             Button:
@@ -46,14 +46,14 @@
                 font_size: 25
                 size: 250, 100
                 size_hint: None, None
-                pos_hint: {"center_x": 1.7, "center_y": 0}
+                pos_hint: {"center_x": 1.7, "center_y": 0.1}
 
             Button:
                 text: "Return To Homepage"
                 font_size: 25
                 size: 500, 100
                 size_hint: None, None
-                pos_hint: {"center_x": 0.45, "center_y": -1}
+                pos_hint: {"center_x": 0.45, "center_y": -.9}
                 on_press: root.manager.current = HOME_SCREEN
 
         Button:
