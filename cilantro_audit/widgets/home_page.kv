@@ -3,7 +3,7 @@
     FloatLayout:
 
         Label:
-            text: 'Login'
+            text: 'Home Page'
             font_size: 40
             pos: 0, 150
             pos_hint: {"top": 1.21, "center_x": 0.5}
@@ -27,7 +27,10 @@
                 size: 250, 200
                 size_hint: None, None
                 pos_hint: {"center_x": 1.7, "center_y": 0.5}
-                on_press: root.manager.current = 'AuditorScreen'
+                on_release:
+                    root.manager.current = 'AuditorScreen'
+                    root.manager.transition.duration = 0.3
+                    root.manager.transition.direction = 'left'
 
             Button:
                 text: 'Exit'
