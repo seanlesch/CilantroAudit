@@ -2,7 +2,6 @@ from kivy import require
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.label import Label
-from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 
@@ -20,34 +19,41 @@ connect(PROD_DB)
 
 class ViewFlagTrendsPage(Screen):
     question_text_col = ObjectProperty()
-    audit_col = ObjectProperty()
+    audit_title_col = ObjectProperty()
     times_flagged_col = ObjectProperty()
-    refresh_button = ObjectProperty()
 
     def __init__(self, **kw):
         super().__init__(**kw)
         self.get_flagged_questions()
 
     def get_flagged_questions(self):
+        unique_entries = []
+
         for audit in list(CompletedAudit.objects()):
             for answer in audit.answers:
                 if answer.severity == Severity.red():
-                    question = Button(text=answer.text)
-                    audit_title = Label(text=audit.title)
-                    total_repeats = Label(text=str(1))
+                    is_unique = True
+                    for entry in unique_entries:
+                        if entry[1] == audit.title:
+                            entry[2] += 1
+                            is_unique = False
+                            break
+                    if is_unique:
+                        unique_entries.append([answer.text, audit.title, 1])
 
-                    self.question_text_col.add_widget(question)
-                    self.audit_col.add_widget(audit_title)
-                    self.times_flagged_col.add_widget(total_repeats)
+        for entry in unique_entries:
+            self.question_text_col.add_widget(DataLabel(text=entry[0]))
+            self.audit_title_col.add_widget(DataLabel(text=entry[1]))
+            self.times_flagged_col.add_widget(DataLabel(text=str(entry[2])))
 
     def refresh_flagged_questions(self):
         self.question_text_col.clear_widgets()
-        self.audit_col.clear_widgets()
+        self.audit_title_col.clear_widgets()
         self.times_flagged_col.clear_widgets()
         self.get_flagged_questions()
 
 
-class QuestionButton(Button):
+class DataLabel(Label):
     pass
 
 
