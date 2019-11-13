@@ -157,7 +157,7 @@ if __name__ == '__main__':
             .save()
 
         for _ in range(NUM_COMPLETED_PER_TEMPLATE):
-            time.sleep(1.000)
+            time.sleep(0)
             CompletedAuditBuilder() \
                 .with_title(title) \
                 .with_auditor(random.choice(AUDITORS)) \
