@@ -32,22 +32,29 @@ class AnswerModule(FloatLayout):
         self.yes_box.background_color = RGB_GREEN
         self.no_box.background_color = RGB_GREY_LIGHT
         self.other_box.background_color = RGB_GREY_LIGHT
+        if self.response is not None:
+            self.no_answer_flag.opacity = 0
 
     def no_box_press(self):
         self.response = Response.no()
         self.yes_box.background_color = RGB_GREY_LIGHT
         self.no_box.background_color = RGB_GREEN
         self.other_box.background_color = RGB_GREY_LIGHT
+        if self.response is not None:
+            self.no_answer_flag.opacity = 0
 
     def other_box_press(self):
         self.response = Response.other()
         self.yes_box.background_color = RGB_GREY_LIGHT
         self.no_box.background_color = RGB_GREY_LIGHT
         self.other_box.background_color = RGB_GREEN
+        if self.response is not None:
+            self.no_answer_flag.opacity = 0
 
     def other_has_comments(self):
         if self.response.response is Response.other().response:
             if self.other_comments.text:
+                self.no_comment_flag.opacity = 0
                 return True
             else:
                 return False
