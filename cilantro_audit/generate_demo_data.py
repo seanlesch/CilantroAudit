@@ -12,7 +12,7 @@ db.drop_database(PROD_DB)
 
 connect(PROD_DB)
 
-DELAY = 0.300
+DELAY = 0
 NUM_TEMPLATES = 10
 NUM_COMPLETED_PER_TEMPLATE = 5
 
@@ -157,7 +157,7 @@ if __name__ == '__main__':
             .save()
 
         for _ in range(NUM_COMPLETED_PER_TEMPLATE):
-            time.sleep(0)
+            time.sleep(DELAY)
             CompletedAuditBuilder() \
                 .with_title(title) \
                 .with_auditor(random.choice(AUDITORS)) \
