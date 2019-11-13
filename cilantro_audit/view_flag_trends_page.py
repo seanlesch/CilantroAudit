@@ -41,17 +41,32 @@ class ViewFlagTrendsPage(Screen):
                     if is_unique:
                         self.unique_entries.append([audit.title, answer.text, 1])
 
+        self.populate_col()
+
+    def refresh_flagged_questions(self):
+        self.clear_col()
+        self.unique_entries = []
+        self.get_flagged_questions()
+
+    def clear_col(self):
+        self.audit_title_col.clear_widgets()
+        self.question_text_col.clear_widgets()
+        self.times_flagged_col.clear_widgets()
+
+    def populate_col(self):
         for entry in self.unique_entries:
             self.audit_title_col.add_widget(EntryLabel(text=entry[0]))
             self.question_text_col.add_widget(EntryLabel(text=entry[1]))
             self.times_flagged_col.add_widget(EntryLabel(text=str(entry[2])))
 
-    def refresh_flagged_questions(self):
-        self.audit_title_col.clear_widgets()
-        self.question_text_col.clear_widgets()
-        self.times_flagged_col.clear_widgets()
-        self.unique_entries = []
-        self.get_flagged_questions()
+    def sort_by_audit_title(self):
+        pass
+
+    def sort_by_question_text(self):
+        pass
+
+    def sort_by_times_flagged(self):
+        pass
 
 
 class EntryLabel(Label):
