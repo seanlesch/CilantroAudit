@@ -1,14 +1,11 @@
-
-<ViewFlagTrendsPage>:
-
 #:import ADMIN_SCREEN cilantro_audit.constants.ADMIN_SCREEN
 #:import VIEW_FLAG_TRENDS_PAGE cilantro_audit.constants.VIEW_FLAG_TRENDS_PAGE
 
-    questions_list: questions_list
-    refresh_button: refresh_button
+<ViewFlagTrendsPage>:
     question_text_col: question_text_col
     audit_col: audit_col
     times_flagged_col: times_flagged_col
+    refresh_button: refresh_button
 
     GridLayout:
         id: page_layout
@@ -46,10 +43,7 @@
                     on_press: root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).sort_by_times_flagged()
 
             ScrollView:
-                id: scrollable_list
-
                 GridLayout:
-                    id: questions_list
                     cols: 3
                     spacing: 10
                     size_hint_y: None
@@ -65,8 +59,6 @@
                     GridLayout:
                         id: times_flagged_col
                         cols: 1
-
-
 
         GridLayout:
             id: navigation_options
