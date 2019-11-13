@@ -8,6 +8,7 @@
     audit_list: audit_list
     auditor_col: auditor_col
     severity_col: severity_col
+    unresolved_col: unresolved_col
     refresh_button: refresh_button
 
     GridLayout:
@@ -23,7 +24,7 @@
 
             GridLayout:
                 id: headers
-                cols: 4
+                cols: 5
                 spacing: 10
                 size_hint_y: 0.1
 
@@ -51,12 +52,18 @@
                     spacing: 10
                     on_press: root.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).sort_by_severity()
 
+                Button:
+                    id: unresolved_header
+                    text: 'Unresolved'
+                    spacing: 10
+                    on_press: root.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).sort_by_unresolved()
+
             ScrollView:
                 id: scrollable_list
 
                 GridLayout:
                     id: audit_list
-                    cols: 4
+                    cols: 5
                     spacing: 10
                     size_hint_y: None
 
@@ -74,6 +81,10 @@
 
                     GridLayout:
                         id: severity_col
+                        cols: 1
+
+                    GridLayout:
+                        id: unresolved_col
                         cols: 1
 
 

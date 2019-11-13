@@ -19,6 +19,8 @@ class AnswerModule(FloatLayout):
     no_box = ObjectProperty()
     other_box = ObjectProperty()
     other_comments = ObjectProperty()
+    no_answer_flag = ObjectProperty()
+    no_comment_flag = ObjectProperty()
 
     question = None
     response = None

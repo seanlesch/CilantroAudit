@@ -1,4 +1,5 @@
 #:import GREY_LIGHT cilantro_audit.constants.RGB_GREY_LIGHT
+#:import RED cilantro_audit.constants.RGB_RED
 #:import COMMENT_MAX_LENGTH cilantro_audit.constants.COMMENT_MAX_LENGTH
 #:import COMMENT_MIN_LENGTH cilantro_audit.constants.COMMENT_MIN_LENGTH
 
@@ -9,6 +10,8 @@
     no_box: no_box
     other_box: other_box
     other_comments: other_comments
+    no_answer_flag: no_answer_flag
+    no_comment_flag: no_comment_flag
 
     size_hint: 1, None
     height: 200
@@ -17,6 +20,7 @@
     Label:
         id: question_label
         text: root.question_text
+        font_size: root.width/50
         color: 1, 1, 1, 1
         size_hint: None, None
         pos_hint: {"top": 1.5, "center_x": 0.5}
@@ -27,9 +31,9 @@
         id: yes_box
         text: "Yes"
         background_color: GREY_LIGHT
-        size: 60, 60
-        size_hint: None, None
-        pos_hint: {"top": 1.0, "center_x": 0.05}
+        size_hint: .1, .35
+        pos_hint: {"top": 1.0, "center_x": 0.1}
+        font_size: root.width/40
         on_press: root.yes_box_press()
 
     # No button
@@ -37,9 +41,9 @@
         id: no_box
         text: "No"
         background_color: GREY_LIGHT
-        size: 60, 60
-        size_hint: None, None
-        pos_hint: {"top": 1.0, "center_x": 0.15}
+        size_hint: .1, .35
+        pos_hint: {"top": 1.0, "center_x": 0.24}
+        font_size: root.width/40
         on_press: root.no_box_press()
 
     # Other button
@@ -47,23 +51,24 @@
         id: other_box
         text: "Other"
         background_color: GREY_LIGHT
-        size: 60, 60
-        size_hint: None, None
-        pos_hint: {"top": 1.0, "center_x": 0.25}
+        size_hint: .1, .35
+        pos_hint: {"top": 1.0, "center_x": 0.37}
+        font_size: root.width/40
         on_press: root.other_box_press()
 
     # Comments label
     Label:
         text: "Comments"
+        font_size: root.width/60
         size_hint: None, None
-        pos_hint: {"top": 1.4, "center_x": 0.70}
+        pos_hint: {"top": 1.5, "center_x": 0.7}
+        font_size: root.width/40
 
     # Comments input
     TextInput:
         id: other_comments
-        size_hint: None, None
-        pos_hint: {"top": 0.98, "center_x":0.7}
-        size: 400, 50
+        size_hint: .4, .5
+        pos_hint: {"top": 1.0, "right": 0.9}
         # Limits comment length to database defined max length. From
         # https://stackoverflow.com/questions/25296508/set-the-width-property-for-textinput
         # On every input we check filter the text to a substring that is at most
@@ -71,3 +76,22 @@
         input_filter: lambda text, from_undo: text[:COMMENT_MAX_LENGTH - len(self.text)]
         hint_text: "Comment is required if 'Other' is checked"
 
+    # Question Not answered label
+    Label:
+        id: no_answer_flag
+        opacity: 0
+        color: RED
+        font_size: root.width/25
+        text: "!"
+        size_hint: None, None
+        pos_hint: {"top": 0.8, "center_x": 0.02}
+
+    # Comment Not given label
+    Label:
+        id: no_comment_flag
+        opacity: 0
+        color: RED
+        font_size: root.width/25
+        text: "!"
+        size_hint: None, None
+        pos_hint: {"top": 0.85, "center_x": 0.65}
