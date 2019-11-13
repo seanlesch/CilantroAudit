@@ -34,7 +34,7 @@ class ViewFlagTrendsPage(Screen):
                 if answer.severity == Severity.red():
                     is_unique = True
                     for entry in unique_entries:
-                        if entry[1] == audit.title:
+                        if entry[0] == audit.title:
                             entry[2] += 1
                             is_unique = False
                             break
