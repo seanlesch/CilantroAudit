@@ -5,6 +5,7 @@ from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
+from kivy.resources import resource_find
 from mongoengine import connect
 
 from cilantro_audit.audit_template import AuditTemplate
@@ -55,10 +56,14 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
             # TO DO - SOMETHING
             pass
 
+        dejaVuSerif_font = resource_find("DejaVuSerif-Bold.ttf")
+
         self.audit_title = template.title
         for question in template.questions:
             self.stack_list.height += 200
             a_temp = AnswerModule()
+            a_temp.no_answer_flag.font_name = dejaVuSerif_font
+            a_temp.no_comment_flag.font_name = dejaVuSerif_font
             a_temp.question = question
             a_temp.question_text = question.text
             self.stack_list.add_widget(a_temp)
