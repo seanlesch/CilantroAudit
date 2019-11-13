@@ -18,8 +18,8 @@ connect(PROD_DB)
 
 
 class ViewFlagTrendsPage(Screen):
-    question_text_col = ObjectProperty()
     audit_title_col = ObjectProperty()
+    question_text_col = ObjectProperty()
     times_flagged_col = ObjectProperty()
 
     def __init__(self, **kw):
@@ -39,21 +39,21 @@ class ViewFlagTrendsPage(Screen):
                             is_unique = False
                             break
                     if is_unique:
-                        unique_entries.append([answer.text, audit.title, 1])
+                        unique_entries.append([audit.title, answer.text, 1])
 
         for entry in unique_entries:
-            self.question_text_col.add_widget(DataLabel(text=entry[0]))
-            self.audit_title_col.add_widget(DataLabel(text=entry[1]))
-            self.times_flagged_col.add_widget(DataLabel(text=str(entry[2])))
+            self.audit_title_col.add_widget(EntryLabel(text=entry[0]))
+            self.question_text_col.add_widget(EntryLabel(text=entry[1]))
+            self.times_flagged_col.add_widget(EntryLabel(text=str(entry[2])))
 
     def refresh_flagged_questions(self):
-        self.question_text_col.clear_widgets()
         self.audit_title_col.clear_widgets()
+        self.question_text_col.clear_widgets()
         self.times_flagged_col.clear_widgets()
         self.get_flagged_questions()
 
 
-class DataLabel(Label):
+class EntryLabel(Label):
     pass
 
 

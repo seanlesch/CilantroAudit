@@ -1,75 +1,145 @@
+#:import HOME_SCREEN cilantro_audit.constants.HOME_SCREEN
 #:import ADMIN_SCREEN cilantro_audit.constants.ADMIN_SCREEN
 #:import VIEW_FLAG_TRENDS_PAGE cilantro_audit.constants.VIEW_FLAG_TRENDS_PAGE
 
 <ViewFlagTrendsPage>:
-    question_text_col: question_text_col
     audit_title_col: audit_title_col
+    question_text_col: question_text_col
     times_flagged_col: times_flagged_col
 
     GridLayout:
-        rows: 2
+        rows: 3
         cols: 1
-        spacing: 10
 
         GridLayout:
-            rows: 2
-            cols: 1
-            spacing: 10
-            size_hint_x: 1.8
+            name: 'header-grid'
+            rows: 1
+            cols: 3
+            size_hint: 1.0, 0.1
+
+            Button:
+                text: 'Return to Homepage'
+                on_release:
+                    root.manager.current = HOME_SCREEN
+                    root.manager.transition.duration = 0.3
+                    root.manager.transition.direction = 'down'
+
+            Label:
+                name: 'page-title'
+                text: 'Flagged Questions Trend'
+
+            Button:
+                text: 'Exit'
+                on_release:
+                    exit(1)
+
+        GridLayout:
+            name: 'body-grid'
+            rows: 3
+            cols: 3
+
+            # 1st Row
+            Widget:
+                name: 'place-holder'
+                size_hint: 0.1, 0.1
+
+            Widget:
+                name: 'place-holder'
+                size_hint: 1, 0.1
+
+            Widget:
+                name: 'place-holder'
+                size_hint: 0.1, 0.1
+
+            # 2nd Row
+            Widget:
+                name: 'place-holder'
+                size_hint: 0.1, 1
 
             GridLayout:
-                rows: 1
-                cols: 3
+                rows: 2
+                cols: 1
                 spacing: 10
-                size_hint_y: 0.1
 
-                Button:
-                    text: 'Question'
-                    on_release:
-                        #root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).sort_by_question()
-
-                Button:
-                    text: 'Audit Title'
-                    on_release:
-                        #root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).sort_by_audit_template()
-
-                Button:
-                    text: 'Times Flagged'
-                    on_release:
-                        #root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).sort_by_times_flagged()
-
-            ScrollView:
                 GridLayout:
-                    rows: 1
-                    cols: 3
+                    rows: 2
+                    cols: 1
                     spacing: 10
-                    size_hint_y: None
-                    height: self.minimum_height
+                    size_hint_x: 1.8
 
-                    StackLayout:
-                        id: question_text_col
-                        size_hint_y: None
-                        height: self.minimum_height
+                    GridLayout:
+                        rows: 1
+                        cols: 3
+                        spacing: 10
+                        size_hint_y: 0.1
 
-                    StackLayout:
-                        id: audit_title_col
-                        size_hint_y: None
-                        height: self.minimum_height
+                        Button:
+                            text: 'Audit Title'
+                            on_release:
+                                #root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).sort_by_audit_template()
 
-                    StackLayout:
-                        id: times_flagged_col
-                        size_hint_y: None
-                        height: self.minimum_height
+                        Button:
+                            text: 'Question'
+                            on_release:
+                                #root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).sort_by_question()
+
+                        Button:
+                            text: 'Times Flagged'
+                            on_release:
+                                #root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).sort_by_times_flagged()
+
+                    ScrollView:
+                        GridLayout:
+                            rows: 1
+                            cols: 3
+                            spacing: 10
+                            size_hint_y: None
+                            height: self.minimum_height
+
+                            StackLayout:
+                                id: audit_title_col
+                                size_hint_y: None
+                                height: self.minimum_height
+
+                            StackLayout:
+                                id: question_text_col
+                                size_hint_y: None
+                                height: self.minimum_height
+
+                            StackLayout:
+                                id: times_flagged_col
+                                size_hint_y: None
+                                height: self.minimum_height
+
+            Widget:
+                name: 'place-holder'
+                size_hint: 0.1, 1
+
+            # 3rd Row
+            Widget:
+                name: 'place-holder'
+                size_hint: 0.1, 0.1
+
+            Widget:
+                name: 'place-holder'
+                size_hint: 1, 0.1
+
+            Widget:
+                name: 'place-holder'
+                size_hint: 0.1, 0.1
 
         GridLayout:
+            name: 'footer-grid'
             rows: 1
-            cols: 2
+            cols: 3
             size_hint: 1, 0.1
 
             Button:
                 text: 'Return to Admin Page'
                 on_release:
                     root.manager.current = ADMIN_SCREEN
+                    root.manager.transition.duration = 0.3
+                    root.manager.transition.direction = 'right'
 
             Button:
                 text: 'Refresh List'
@@ -77,7 +147,7 @@
                     root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).refresh_flagged_questions()
 
 
-<DataLabel>:
+<EntryLabel>:
     size_hint_y: None
     text_size: self.width, None
     halign: 'center'
