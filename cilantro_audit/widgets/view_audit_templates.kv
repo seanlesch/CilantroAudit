@@ -1,6 +1,5 @@
 #:kivy 1.11.1
 
-
 <ViewAuditTemplates>:
     name: 'ViewAuditTemplates'
     templates_list: templates_list
@@ -51,8 +50,8 @@
                     size: self.size
                     pos: self.pos
 
-            Label:
-                name: 'top-row'
+            BoxLayout:
+                orientation: 'horizontal'
                 size_hint: 1.0, 0.1
 
             BoxLayout:
@@ -97,12 +96,12 @@
                     app.root.transition.duration = 0.3
                     app.root.transition.direction = 'down'
 
+            Button:
+                text: 'Refresh Audit List'
+                on_release:
+                    root.refresh_audit_templates()
+
 
 <AuditButton@Button>:
     name: 'button_template'
-
     size_hint_y: None
-    on_release:
-        app.root.current = 'ViewAuditTemplates'
-        app.root.transition.duration = 0.3
-        app.root.transition.direction = 'right'

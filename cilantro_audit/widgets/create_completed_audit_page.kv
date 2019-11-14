@@ -1,0 +1,72 @@
+<CreateCompletedAuditPage>:
+    stack_list: stack_list
+    title_label: title_label
+    auditor_name: auditor_name
+    size: root.width, root.height
+    scrolling_panel: scrolling_panel
+
+    Label:
+        id: title_label
+        text: "Audit Name:  " + root.audit_title
+        color: 1, 1, 1, 1
+        text_size: root.width-100, None
+        pos_hint: {"top": 1.45}
+
+    GridLayout:
+        cols: 2
+        rows: 2
+        row_force_default: True
+        row_default_height: 30
+        size_hint_y: None
+        size_hint_x: .25
+        pos_hint: {"top": .95}
+
+        Label:
+            id: title_label
+            text: "Audit Name:  " + root.audit_title
+            color: 1, 1, 1, 1
+            text_size: root.width, None
+            pos_hint: {"top": 1.45}
+
+        Label:
+            id: blank_label
+
+        Label:
+            id: name_label
+            text: "Your Name: "
+
+        TextInput:
+            id: auditor_name
+            multiline: False
+
+    ScrollView:
+        id: scrolling_panel
+        size_hint: 1, .7
+        pos_hint: {"top": .83}
+        bar_width: 10
+
+        StackLayout:
+            id: stack_list
+            size_hint_y: None
+            minimum_height: 10
+
+            GridLayout:
+                row_force_default: True
+                row_default_height: 30
+                cols: 2
+                spacing: 200
+                size_hint_y: None
+
+    Button:
+        text: "Submit"
+        font_size: root.width/25
+        size_hint: .15, .1
+        pos_hint: {"right": .99, "y": 0.015}
+        on_press: root.submit_audit_pop(root.manager)
+
+    Button:
+        text: "Back"
+        font_size: root.width/25
+        size_hint: .15, .1
+        pos_hint: {"right": .84, "y": 0.015}
+        on_press: root.back(root.manager)

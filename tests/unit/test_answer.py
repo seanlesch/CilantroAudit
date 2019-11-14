@@ -13,6 +13,7 @@ class AnswerTests(unittest.TestCase):
         expected_severity = Severity.red()
         expected_response = Response.yes()
         expected_comment = "Expected Comments"
+        expected_resolved = True
 
         answer = Answer(
             text=expected_text,
@@ -25,6 +26,7 @@ class AnswerTests(unittest.TestCase):
         self.assertEqual(expected_severity, answer.severity)
         self.assertEqual(expected_response, answer.response)
         self.assertEqual(expected_comment, answer.comment)
+        self.assertEqual(expected_resolved, answer.resolved)
 
     def test_comment_required_only_for_other_response(self):
         yes_answer = Answer(

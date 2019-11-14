@@ -12,7 +12,7 @@ db.drop_database(PROD_DB)
 
 connect(PROD_DB)
 
-DELAY = 0.300
+DELAY = 0
 NUM_TEMPLATES = 10
 NUM_COMPLETED_PER_TEMPLATE = 5
 
@@ -98,8 +98,10 @@ RESPONSES = [
     Response.other(),
 ]
 
+
 def random_title():
     return random.choice(TITLES)
+
 
 def random_question():
     return Question(
@@ -108,6 +110,7 @@ def random_question():
         no=random.choice(SEVERITIES),
         other=random.choice(SEVERITIES),
     )
+
 
 def random_answer_from_question(question):
     text = question.text
@@ -125,12 +128,12 @@ def random_answer_from_question(question):
             response=response,
         )
     elif Response.other() == response:
-            return Answer(
-                text=question.text,
-                severity=question.yes,
-                response=response,
-                comment=random.choice(COMMENTS),
-            )
+        return Answer(
+            text=question.text,
+            severity=question.yes,
+            response=response,
+            comment=random.choice(COMMENTS),
+        )
 
 
 if __name__ == '__main__':
@@ -154,7 +157,7 @@ if __name__ == '__main__':
             .save()
 
         for _ in range(NUM_COMPLETED_PER_TEMPLATE):
-            time.sleep(1.000)
+            time.sleep(DELAY)
             CompletedAuditBuilder() \
                 .with_title(title) \
                 .with_auditor(random.choice(AUDITORS)) \
