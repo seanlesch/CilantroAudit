@@ -9,10 +9,10 @@ from cilantro_audit.templates.audit_button import AuditButtonTemplate
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION
 
 require(KIVY_REQUIRED_VERSION)
+Builder.load_file(path.dirname(path.abspath(__file__)) + "/widgets/page_layout.kv")
 
 
 class AuditPageTemplate(Screen):
-    Builder.load_file(path.dirname(path.abspath(__file__)) + "/widgets/page_layout.kv")
     pass
 
 
