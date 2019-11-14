@@ -1,21 +1,22 @@
 
 <AuditButtonTemplate@Button>:
+    # Label Attributes
     text: 'Button Template'
+    halign: 'center'
+    valign: 'middle'
     text_size:
     font_name:
     font_family:
-    font_size: self.width - (self.width - 20)
-    color: 1.0, 1.0, 1.0, 1.0
-    disabled_color:
-    bold: 1
+    font_size: self.height/2
+    color: 0.9, 0.9, 0.9, 1.0
+    disabled_color: 0, 0, 0, 0
+    bold: 0
     italic: 0
     underline: 0
     strikethrough: 0
     outline_width: 0
-    outline_color: 1.0, 1.0, 1.0, 1.0
+    outline_color:
     disabled_outline_color:
-    halign:
-    valign:
     padding_x:
     padding_y:
     shorten:
@@ -36,7 +37,8 @@
     base_direction:
     text_language:
 
+    # Button Attributes
     background_color: 0.5, 0.5, 0.5, 1.0
-    on_state:
-    on_press:
-    on_release:
+    on_state: root.manager.transition.duration = 0.3
+    on_press: root.manager.transition.duration = 0.3
+    on_release: root.manager.transition.duration = 0.3
