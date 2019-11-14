@@ -34,6 +34,7 @@ class ViewFlagTrendsPage(Screen):
         self.unique_entry_rows = []
         completed_audits = list(CompletedAudit.objects())
 
+        # Go over each flagged answer and append them to a local 3d-array while counting the number of repeated flags
         for audit in completed_audits:
             for answer in audit.answers:
                 if answer.severity == Severity.red():
@@ -45,6 +46,9 @@ class ViewFlagTrendsPage(Screen):
                             break
                     if is_unique_row:
                         self.unique_entry_rows.append([audit.title, answer.text, 1])
+
+        # Default Sort
+        self.sort_by_times_flagged()
 
     # Populate the unique entry rows into the widget cols
     def populate_unique_entry_rows(self):
