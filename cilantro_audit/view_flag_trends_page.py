@@ -22,61 +22,68 @@ class ViewFlagTrendsPage(Screen):
     audit_title_col = ObjectProperty()
     question_text_col = ObjectProperty()
     times_flagged_col = ObjectProperty()
-    unique_entries = []
+    unique_entry_rows = []
 
     def __init__(self, **kw):
         super().__init__(**kw)
-        self.get_flagged_questions()
+        self.retrieve_flagged_answers()
+        self.populate_unique_entry_rows()
 
-    def get_flagged_questions(self):
-        for audit in list(CompletedAudit.objects()):
+    # Retrieve all flagged answers from the database and condense them (by question uniqueness) in a 3d array
+    def retrieve_flagged_answers(self):
+        self.unique_entry_rows = []
+        completed_audits = list(CompletedAudit.objects())
+
+        for audit in completed_audits:
             for answer in audit.answers:
                 if answer.severity == Severity.red():
-                    is_unique = True
-                    for entry in self.unique_entries:
-                        if entry[0] == audit.title:
-                            entry[2] += 1
-                            is_unique = False
+                    is_unique_row = True
+                    for entry_row in self.unique_entry_rows:
+                        if entry_row[0] == audit.title and entry_row[1] == answer.text:
+                            entry_row[2] += 1
+                            is_unique_row = False
                             break
-                    if is_unique:
-                        self.unique_entries.append([audit.title, answer.text, 1])
+                    if is_unique_row:
+                        self.unique_entry_rows.append([audit.title, answer.text, 1])
 
-        self.sort_by_times_flagged()
-
-    def refresh_flagged_questions(self):
-        self.unique_entries = []
-        self.get_flagged_questions()
-
-    def clear_col(self):
+    # Populate the unique entry rows into the widget cols
+    def populate_unique_entry_rows(self):
+        # Make sure widget cols are clear
         self.audit_title_col.clear_widgets()
         self.question_text_col.clear_widgets()
         self.times_flagged_col.clear_widgets()
 
-    def populate_col(self):
-        for entry in self.unique_entries:
-            self.audit_title_col.add_widget(EntryLabel(text=entry[0]))
-            self.question_text_col.add_widget(EntryLabel(text=entry[1]))
-            self.times_flagged_col.add_widget(EntryLabel(text=str(entry[2])))
+        # Populate the unique entries into the widget cols
+        for entry_row in self.unique_entry_rows:
+            self.audit_title_col.add_widget(EntryLabel(text=entry_row[0]))
+            self.question_text_col.add_widget(EntryLabel(text=entry_row[1]))
+            self.times_flagged_col.add_widget(EntryLabel(text=str(entry_row[2])))
 
+    # Refresh the current data by requesting a new data retrieval
+    def refresh_flagged_questions(self):
+        self.retrieve_flagged_answers()
+        self.populate_unique_entry_rows()
+
+    # Sort the cols by the name of the audit
     def sort_by_audit_template(self):
-        self.unique_entries = sorted(self.unique_entries, key=lambda obj: (
+        self.unique_entry_rows = sorted(self.unique_entry_rows, key=lambda obj: (
             obj[0], -obj[2], obj[1]))
-        self.clear_col()
-        self.populate_col()
+        self.populate_unique_entry_rows()
 
+    # Sort the cols by the text of the question
     def sort_by_question(self):
-        self.unique_entries = sorted(self.unique_entries, key=lambda obj: (
+        self.unique_entry_rows = sorted(self.unique_entry_rows, key=lambda obj: (
             obj[1], -obj[2], obj[0]))
-        self.clear_col()
-        self.populate_col()
+        self.populate_unique_entry_rows()
 
+    # Sort the cols by the total number of red flags for a given answer in a given audit
     def sort_by_times_flagged(self):
-        self.unique_entries = sorted(self.unique_entries, key=lambda obj: (
+        self.unique_entry_rows = sorted(self.unique_entry_rows, key=lambda obj: (
             -obj[2], obj[0], obj[1]))
-        self.clear_col()
-        self.populate_col()
+        self.populate_unique_entry_rows()
 
 
+# A custom widget for retrieved entries
 class EntryLabel(Label):
     pass
 
