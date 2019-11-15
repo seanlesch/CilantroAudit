@@ -1,9 +1,9 @@
-<AnswerModule>:
-
 #:import GREY_LIGHT cilantro_audit.constants.RGB_GREY_LIGHT
 #:import RED cilantro_audit.constants.RGB_RED
 #:import COMMENT_MAX_LENGTH cilantro_audit.constants.COMMENT_MAX_LENGTH
 #:import COMMENT_MIN_LENGTH cilantro_audit.constants.COMMENT_MIN_LENGTH
+
+<AnswerModule>:
 
     question_label: question_label
     yes_box: yes_box
@@ -23,66 +23,52 @@
         font_size: root.width/50
         color: 1, 1, 1, 1
         size_hint: None, None
-        pos_hint: {"top": 0.9, "center_x": 0.5}
+        pos_hint: {"top": 1.5, "center_x": 0.5}
         text_size: root.width-100, None
 
     # Yes button
     Button:
         id: yes_box
+        text: "Yes"
         background_color: GREY_LIGHT
         size_hint: .1, .35
-        pos_hint: {"top": 0.5, "center_x": 0.1}
-        on_press: root.yes_box_press()
-
-    # Yes label
-    Label:
-        text: "Yes"
+        pos_hint: {"top": 1.0, "center_x": 0.1}
         font_size: root.width/40
-        size_hint: None, None
-        pos_hint: {"top": 0.6, "center_x": 0.1}
+        on_press: root.yes_box_press()
 
     # No button
     Button:
         id: no_box
+        text: "No"
         background_color: GREY_LIGHT
         size_hint: .1, .35
-        pos_hint: {"top": 0.5, "center_x": 0.24}
-        on_press: root.no_box_press()
-
-    # No label
-    Label:
-        text: "No"
+        pos_hint: {"top": 1.0, "center_x": 0.24}
         font_size: root.width/40
-        size_hint: None, None
-        pos_hint: {"top": 0.6, "center_x": 0.24}
+        on_press: root.no_box_press()
 
     # Other button
     Button:
         id: other_box
+        text: "Other"
         background_color: GREY_LIGHT
         size_hint: .1, .35
-        pos_hint: {"top": 0.5, "center_x": 0.37}
-        on_press: root.other_box_press()
-
-    # Other label
-    Label:
-        text: "Other"
+        pos_hint: {"top": 1.0, "center_x": 0.37}
         font_size: root.width/40
-        size_hint: None, None
-        pos_hint: {"top": 0.6, "center_x": 0.37}
+        on_press: root.other_box_press()
 
     # Comments label
     Label:
         text: "Comments"
         font_size: root.width/60
         size_hint: None, None
-        pos_hint: {"top": 0.8, "center_x": 0.7}
+        pos_hint: {"top": 1.5, "center_x": 0.7}
+        font_size: root.width/40
 
     # Comments input
     TextInput:
         id: other_comments
-        size_hint: .4, .6
-        pos_hint: {"top": 0.48, "right": 0.9}
+        size_hint: .4, .5
+        pos_hint: {"top": 1.0, "right": 0.9}
         # Limits comment length to database defined max length. From
         # https://stackoverflow.com/questions/25296508/set-the-width-property-for-textinput
         # On every input we check filter the text to a substring that is at most
@@ -109,7 +95,3 @@
         text: "!"
         size_hint: None, None
         pos_hint: {"top": 0.85, "center_x": 0.65}
-
-    Label:
-        text: "___________________________________________________________________________________________________________________________________________________________________________________________________________________________"
-        pos_hint: {"top": 0.3, "center_x": 0.5}
