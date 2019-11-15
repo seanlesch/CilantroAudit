@@ -1,6 +1,7 @@
 #:kivy 1.11.1
 #:import GREY_LIGHT cilantro_audit.constants.RGB_GREY_LIGHT
 
+
 <ViewAuditTemplates>:
     name: 'ViewAuditTemplates'
     templates_list: templates_list
@@ -51,8 +52,8 @@
                     size: self.size
                     pos: self.pos
 
-            Label:
-                name: 'top-row'
+            BoxLayout:
+                orientation: 'horizontal'
                 size_hint: 1.0, 0.1
 
             BoxLayout:
@@ -96,6 +97,11 @@
                     app.root.current = 'HomeScreen'
                     app.root.transition.duration = 0.3
                     app.root.transition.direction = 'down'
+
+            Button:
+                text: 'Refresh Audit List'
+                on_release:
+                    root.refresh_audit_templates()
 
 
 <AuditButton@Button>:

@@ -5,6 +5,7 @@ from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
+from kivy.resources import resource_find
 from mongoengine import connect
 
 from cilantro_audit.audit_template import AuditTemplate
@@ -129,16 +130,21 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
 
     # Ensures that the completedAudit has everything filled out before trying to .save() it
     def check_audit(self):
+        for child in self.questions:
+            child.no_answer_flag.opacity = 0
+            child.no_comment_flag.opacity = 0
+
         error_message = ""
         for question in self.questions:
             # Check if all questions are answered
             if question.response is None:
                 error_message = "Must respond to all questions."
-                break  # like this for now because there are changes to be made still
+                question.no_answer_flag.opacity = 1
+
             # Check if 'other' responses have comments.
-            if question.other_has_comments() is False:
+            elif question.other_has_comments() is False:
                 error_message = "Answers with 'Other' must have comments."
-                break
+                question.no_comment_flag.opacity = 1
 
         if not self.auditor_name.text:
             error_message = "Please enter your name."
