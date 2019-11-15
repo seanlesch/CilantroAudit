@@ -1,0 +1,87 @@
+#:import AUDITOR_SCREEN cilantro_audit.constants.AUDITOR_SCREEN
+#:import AUDITOR_COMPLETED_AUDITS_LIST_PAGE cilantro_audit.constants.AUDITOR_COMPLETED_AUDITS_LIST_PAGE
+
+<AuditorCompletedAuditsListPage>:
+    date_col: date_col
+    title_col: title_col
+    audit_list: audit_list
+    auditor_col: auditor_col
+    refresh_button: refresh_button
+
+    GridLayout:
+        id: page_layout
+        rows: 2
+        spacing: 10
+
+        GridLayout:
+            id: list_layout
+            rows: 2
+            size_hint_x: 1.8
+            spacing: 10
+
+            GridLayout:
+                id: headers
+                cols: 4
+                spacing: 10
+                size_hint_y: 0.1
+
+                Button:
+                    id: title_header
+                    text: 'Title'
+                    spacing: 10
+                    on_press: root.manager.get_screen(AUDITOR_COMPLETED_AUDITS_LIST_PAGE).sort_by_title()
+
+                Button:
+                    id: date_header
+                    text: 'Date'
+                    spacing: 10
+                    on_press: root.manager.get_screen(AUDITOR_COMPLETED_AUDITS_LIST_PAGE).sort_by_date()
+
+                Button:
+                    id: auditor_header
+                    text: 'Auditor'
+                    spacing: 10
+                    on_press: root.manager.get_screen(AUDITOR_COMPLETED_AUDITS_LIST_PAGE).sort_by_auditor()
+
+            ScrollView:
+                id: scrollable_list
+
+                GridLayout:
+                    id: audit_list
+                    cols: 4
+                    spacing: 10
+                    size_hint_y: None
+
+                    GridLayout:
+                        id: title_col
+                        cols: 1
+
+                    GridLayout:
+                        id: date_col
+                        cols: 1
+
+                    GridLayout:
+                        id: auditor_col
+                        cols: 1
+
+
+        GridLayout:
+            id: navigation_options
+            cols: 2
+            size_hint_y: 0.1
+
+            Button:
+                text: 'Return to Auditor Page'
+                size_hint_y: None
+                size: 400, 50
+                on_release:
+                    root.manager.current = AUDITOR_SCREEN
+                    root.manager.transition.duration = 0.3
+                    root.manager.transition.direction = 'right'
+
+            Button:
+                id: refresh_button
+                text: 'Refresh List'
+                size_hint_y: None
+                size: 400, 50
+                on_press: root.manager.get_screen(AUDITOR_COMPLETED_AUDITS_LIST_PAGE).load_completed_audits()
