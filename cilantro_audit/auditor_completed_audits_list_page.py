@@ -32,7 +32,6 @@ class AuditorCompletedAuditsListPage(Screen):
         self.title_col.bind(minimum_height=self.audit_list.setter("height"))
         self.auditor_col.bind(minimum_height=self.audit_list.setter("height"))
         self.audits = []
-        self.load_completed_audits()
 
     # Sorts list items by title
     def sort_by_title(self):

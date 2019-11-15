@@ -1,9 +1,7 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty
-from kivy.uix.checkbox import CheckBox
 from kivy.uix.floatlayout import FloatLayout
-from mongoengine import connect
 
 from cilantro_audit.completed_audit import Response
 from cilantro_audit.constants import RGB_GREEN, RGB_GREY_LIGHT, COMMENT_MAX_LENGTH
