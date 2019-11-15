@@ -30,18 +30,30 @@ class AnswerModule(FloatLayout):
         self.yes_box.background_color = RGB_GREEN
         self.no_box.background_color = RGB_GREY_LIGHT
         self.other_box.background_color = RGB_GREY_LIGHT
+        if self.response is not None:
+            self.no_answer_flag.opacity = 0
+        if self.no_comment_flag.opacity is 1:
+            self.no_comment_flag.opacity = 0
 
     def no_box_press(self):
         self.response = Response.no()
         self.yes_box.background_color = RGB_GREY_LIGHT
         self.no_box.background_color = RGB_GREEN
         self.other_box.background_color = RGB_GREY_LIGHT
+        if self.response is not None:
+            self.no_answer_flag.opacity = 0
+        if self.no_comment_flag.opacity is 1:
+            self.no_comment_flag.opacity = 0
 
     def other_box_press(self):
         self.response = Response.other()
         self.yes_box.background_color = RGB_GREY_LIGHT
         self.no_box.background_color = RGB_GREY_LIGHT
         self.other_box.background_color = RGB_GREEN
+        if self.response is not None:
+            self.no_answer_flag.opacity = 0
+            if self.other_has_comments() is False:
+                self.no_comment_flag.opacity = 1
 
     def other_has_comments(self):
         if self.response.response is Response.other().response:
@@ -51,6 +63,16 @@ class AnswerModule(FloatLayout):
                 return False
         else:
             return True
+
+    # note: this overrides kivy's own on_touch_up function for this Widget (AnswerModule)
+    def on_touch_up(self, touch):
+        if self.disabled:
+            return
+        for child in self.children[:]:
+            if self.other_comments.text:
+                self.no_comment_flag.opacity = 0
+            if child.dispatch('on_touch_up', touch):
+                return True
 
 
 class TestApp(App):
