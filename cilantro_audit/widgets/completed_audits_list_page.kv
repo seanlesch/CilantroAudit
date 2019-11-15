@@ -92,7 +92,8 @@
 
         GridLayout:
             id: navigation_options
-            cols: 2
+            cols: 4
+            spacing: 10
             size_hint_y: 0.1
 
             Button:
@@ -107,3 +108,46 @@
                 size_hint_y: None
                 size: 400, 50
                 on_press: root.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).load_completed_audits()
+
+            Button:
+                text: 'Search'
+                size_hint_y: None
+                size: 400, 50
+                on_press: root.search_audit_list_pop()
+
+            Button:
+                text: 'Clear Search Results'
+                size_hint_y: None
+                size: 400, 50
+                on_press: root.refresh_completed_audits()
+
+<SearchPop>:
+    auto_dismiss: True
+    title: "Search Criteria"
+    size_hint: .5, .5
+
+    search_text: search_text
+    popup_search_button: popup_search_button
+
+    GridLayout:
+        rows: 3
+
+        Label:
+            text: "Please enter the title of the audit you are looking for."
+
+        TextInput:
+            id: search_text
+            multiline: False
+
+        GridLayout:
+            rows: 1
+
+            Button:
+                id: popup_search_button
+                text: "Search"
+                pos_hint: {"x": 0, "y": 0}
+
+            Button:
+                text: "Cancel"
+                pos_hint: {"right": 1, "y": 0}
+                on_press: root.dismiss()
