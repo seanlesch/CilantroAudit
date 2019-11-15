@@ -19,18 +19,18 @@
             Button:
                 text: "Create Audit"
                 font_size: 25
-                size: 250, 200
+                size: 250, 100
                 size_hint: None, None
-                pos_hint: {"center_x": -0.8, "center_y": 0.5}
+                pos_hint: {"center_x": -0.8, "center_y": 1.1}
                 on_press: root.manager.current = 'CreateAuditTemplatePage'
 
             Button:
-                text: "Return to Home Page"
+                text: "Clear All Audit Locks"
                 font_size: 25
-                size: 250, 200
+                size: 250, 100
                 size_hint: None, None
-                pos_hint: {"center_x": 1.7, "center_y": 0.5}
-                on_press: root.manager.current = HOME_SCREEN
+                pos_hint: {"center_x": 1.7, "center_y": 1.1}
+                on_press: root.clear_all_locks()
 
             Button:
                 text: "View Submitted \nAudits"
@@ -38,7 +38,7 @@
                 font_size: 25
                 size: 250, 100
                 size_hint: None, None
-                pos_hint: {"center_x": -0.8, "center_y": -1.0}
+                pos_hint: {"center_x": -0.8, "center_y": 0.1}
                 on_release:
                     root.manager.current = COMPLETED_AUDITS_LIST_PAGE
                     root.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).load_completed_audits()
@@ -48,7 +48,15 @@
                 font_size: 25
                 size: 250, 100
                 size_hint: None, None
-                pos_hint: {"center_x": 1.7, "center_y": -1.0}
+                pos_hint: {"center_x": 1.7, "center_y": 0.1}
+
+            Button:
+                text: "Return To Homepage"
+                font_size: 25
+                size: 500, 100
+                size_hint: None, None
+                pos_hint: {"center_x": 0.45, "center_y": -.9}
+                on_press: root.manager.current = HOME_SCREEN
 
         Button:
             text: "Exit"
@@ -57,3 +65,21 @@
             size_hint: None, None
             pos_hint:{"center_x": 0.5}
             on_press: app.exit()
+
+
+<TemplatesUnlockedPop>:
+    title: "Task Completed"
+    size_hint: .5, .5
+
+    FloatLayout:
+
+        Label:
+            text: "All audit locks cleared; All audits available for submission."
+            size_hint: 0.6, 0.2
+            pos_hint: {"x": .2, "top": .9}
+
+        Button:
+            text: "OK"
+            size_hint: .3, .3
+            pos_hint: {"center_x": .5, "y": 0}
+            on_press: root.dismiss()
