@@ -8,8 +8,7 @@ from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 
 from cilantro_audit.audit_template import AuditTemplateBuilder, Question, AuditTemplate
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, ADMIN_SCREEN, TITLE_MAX_LENGTH, TEXT_MAX_LENGTH, \
-    VIEW_AUDIT_TEMPLATES
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, ADMIN_SCREEN, TITLE_MAX_LENGTH, TEXT_MAX_LENGTH
 from cilantro_audit.question_module import QuestionModule
 
 kivy.require(KIVY_REQUIRED_VERSION)
