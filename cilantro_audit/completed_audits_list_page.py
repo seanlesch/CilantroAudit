@@ -167,6 +167,7 @@ class CompletedAuditsListPage(Screen):
             audit_titles = list(map(lambda set: set.title, audits_found))
             audit_auditors = list(map(lambda set: set.auditor, audits_found))
             audit_severities = list(map(lambda set: set.severity, audits_found))
+            audit_unresolved_counts = list(map(lambda set: set.unresolved_count, audits_found))
 
             for title in audit_titles:
                 btn = Button(text=title, size_hint_y=None, height=40)
@@ -183,6 +184,10 @@ class CompletedAuditsListPage(Screen):
             for severity in audit_severities:
                 lbl = Label(text=severity.severity, size_hint_y=None, height=40)
                 self.severity_col.add_widget(lbl)
+
+            for count in audit_unresolved_counts:
+                lbl = Label(text=str(count), size_hint_y=None, height=40)
+                self.unresolved_col.add_widget(lbl)
 
     # Helper function that makes the popup wait 0.2 seconds so we can assign focus properly
     def schedule_focus(self, popup):
