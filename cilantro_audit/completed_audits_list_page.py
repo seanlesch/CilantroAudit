@@ -9,7 +9,6 @@ from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 from kivy.uix.popup import Popup
-from kivy.uix.floatlayout import FloatLayout
 from kivy.clock import Clock
 
 from cilantro_audit.completed_audit import CompletedAudit
@@ -156,6 +155,7 @@ class CompletedAuditsListPage(Screen):
         self.title_col.clear_widgets()
         self.auditor_col.clear_widgets()
         self.severity_col.clear_widgets()
+        self.unresolved_col.clear_widgets()
 
         audits_found = self.grab_audits_with_title(title_to_search)
 
@@ -192,10 +192,11 @@ class CompletedAuditsListPage(Screen):
     # Creates the search popup
     def search_audit_list_pop(self):
         show = SearchPop()
-        show.popup_search_button.bind(on_press=lambda _:self.search_completed_audits_list(show.search_text.text))
+        show.popup_search_button.bind(on_press=lambda _: self.search_completed_audits_list(show.search_text.text))
         show.popup_search_button.bind(on_press=show.dismiss)
         Clock.schedule_once(lambda _: self.schedule_focus(show), 0.2)
         show.open()
+
 
 # Class defining the search popup
 class SearchPop(Popup):
