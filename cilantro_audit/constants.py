@@ -45,6 +45,7 @@ AUDITOR_COMPLETED_AUDITS_LIST_PAGE = "AuditorCompletedAuditsListPage"
 CREATE_AUDIT_TEMPLATE_PAGE = "CreateAuditTemplatePage"
 CREATE_COMPLETED_AUDIT_PAGE = "CreateCompletedAuditPage"
 VIEW_AUDIT_TEMPLATES = "ViewAuditTemplates"
+VIEW_FLAG_TRENDS_PAGE = "ViewFlagTrendsPage"
 
 # Colors
 RGB_RED = get_color_from_hex("#FF4500")
