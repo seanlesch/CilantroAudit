@@ -22,6 +22,7 @@ TITLES = [
     "Bathroom #2",
     "Ink Room",
     "Plating Room",
+    "Engine Room",
     "Break Room",
     "Lunch Room",
     "Lobby",
@@ -137,9 +138,8 @@ def random_answer_from_question(question):
 
 
 if __name__ == '__main__':
-    for _ in range(NUM_TEMPLATES):
+    for title in TITLES:
         time.sleep(DELAY)
-        title = random_title()
         q0 = random_question()
         q1 = random_question()
         q2 = random_question()
