@@ -1,0 +1,15 @@
+<JosiahModule>:
+
+    question_label: question_label
+
+    size_hint: 1, None
+    height: 80
+
+    # Question text
+    Label:
+        id: question_label
+        text: root.question_text
+        color: 1, 1, 1, 1
+        size_hint: None, None
+        pos_hint: {"top": 1, "center_x": 0.5}
+        text_size: root.width-50, None

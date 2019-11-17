@@ -7,6 +7,7 @@ from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 
+from cilantro_audit.josiah_module import JosiahModule
 from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.audit_template import AuditTemplate
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, ADMIN_SCREEN
@@ -21,6 +22,8 @@ connect(PROD_DB)
 class CompletedAuditPage(Screen):
     stack_list = ObjectProperty()
     grid_list = ObjectProperty()
+    question_text = ObjectProperty()
+    scrolling_panel = ObjectProperty()
 
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -39,15 +42,21 @@ class CompletedAuditPage(Screen):
         self.audit_templates = list(AuditTemplate.objects().all_fields())
         self.audit_templates = sorted(self.audit_templates, key=lambda audit_template: audit_template.title)
 
-    def add_title(self, title):
+    def reset_scroll_to_top(self):  # todo: needs to be used in the routine that first populates the questions.
+        # https://kivy.org/doc/stable/api-kivy.uix.scrollview.html Y scrolling value, between 0 and 1. If 0,
+        # the content’s bottom side will touch the bottom side of the ScrollView. If 1, the content’s top side will
+        # touch the top side.
+        self.scrolling_panel.scroll_y = 1
+
+    def add_title(self, title):  # todo: needs to be updated when you click out of one audit and load up another
         lbl = Label(text='[b]Audit: [/b]' + title, markup=True, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
-    def add_auditor(self, auditor):
+    def add_auditor(self, auditor):  # todo: needs to be updated when you click out of one audit and load up another
         lbl = Label(text='[b]Auditor: [/b]' + auditor, markup=True, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
-    def add_date_time(self, dt):
+    def add_date_time(self, dt):  # todo: needs to be updated when you click out of one audit and load up another
         lbl = Label(text='[b]Date: [/b]' + dt, markup=True, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
@@ -56,8 +65,10 @@ class CompletedAuditPage(Screen):
         self.grid_list.add_widget(lbl)
 
     def add_question(self, question):
-        lbl = Label(text=question.text, size_hint_y=None, height=40)
-        self.stack_list.add_widget(lbl)
+        self.stack_list.height += 80  # integer (80) comes from josiah_module.kv
+        a_temp = JosiahModule()
+        a_temp.question_text = question.text
+        self.stack_list.add_widget(a_temp)
 
     def add_answer(self, answer):
         lbl = Label(text=str(answer.response), size_hint_y=None, height=40, halign="left")
@@ -70,3 +81,5 @@ class CompletedAuditPage(Screen):
     def clear_page(self):
         self.grid_list.clear_widgets()
         self.stack_list.clear_widgets()
+        self.stack_list.height = 0  # todo: resets the hieght of the scrolling view. otherwise it grows with each new audit
+        self.reset_scroll_to_top()  # todo: self explanitory. Line 45 in this file

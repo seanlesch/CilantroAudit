@@ -4,19 +4,34 @@
     size: root.width, root.height
     stack_list: stack_list
     grid_list: grid_list
+    scrolling_panel: scrolling_panel
+
+
+    GridLayout:
+        id: grid_list
+        pos_hint: {"top": 1}
+        size_hint: 1, .1
+        cols: 4
+        rows: 1
 
     ScrollView:
-        size_hint: 1, .89
-        pos_hint: {"top": 1}
+        size_hint: 1, .77
+        pos_hint: {"top": .9}
+        id: scrolling_panel
 
         StackLayout:
             id: stack_list
+            size_hint: 1, 1
             size_hint_y: None
+            minimum_height: 5
 
             GridLayout:
-                id: grid_list
-                cols: 4
-                rows: 1
+                row_force_default: True
+                row_default_height: 0
+                cols: 1
+                spacing: 80
+                size_hint_y: None
+
 
     Button:
         text: "Back"
