@@ -96,3 +96,12 @@
                 size_hint_y: None
                 size: 400, 50
                 on_press: root.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).load_completed_audits()
+
+<CompletedAuditButton>:
+    completed_audit_button: completed_audit_button
+
+    Button:
+        id: completed_audit_button
+        text: root.button_text
+        size_hint_y: None
+        height: 40

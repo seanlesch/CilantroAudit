@@ -3,7 +3,7 @@ import time
 
 from datetime import datetime
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
@@ -21,6 +21,10 @@ connect(PROD_DB)
 
 EPOCH = datetime.utcfromtimestamp(0)
 
+
+class CompletedAuditButton:
+    completed_audit_button = ObjectProperty()
+    button_text = StringProperty()
 
 def format_datetime(dt):
     return dt.strftime("%m/%d/%Y (%H:%M:%S)")
@@ -106,16 +110,10 @@ class CompletedAuditsListPage(Screen):
         audit_auditors = list(map(lambda set: set.auditor, self.audits))
         audit_severities = list(map(lambda set: set.severity, self.audits))
 
-        counter = 0
-
         for title in audit_titles:
             btn = Button(text=title, size_hint_y=None, height=40)
-            btn.bind(on_press=lambda _: self.populate_completed_audit_page(title, audit_dates[counter],
-                                                                           audit_auditors[counter]))
+            btn.bind(on_press= lambda _: print(title))
             self.title_col.add_widget(btn)
-            counter += 1
-
-        counter = 0
 
         for dt in audit_dates:
             lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
@@ -167,8 +165,12 @@ class CompletedAuditsListPage(Screen):
 
     def populate_completed_audit_page(self, title, dt, auditor):
         self.build_header_row(title, dt, auditor)
+        print(title)
         at, ca = self.load_audit_template_and_completed_audit_with_title_and_datetime(title, dt)
 
         self.build_completed_audit_page_body(at, ca)
 
         self.manager.current = COMPLETED_AUDIT_PAGE
+
+    def print_something(self, something):
+        print(something)

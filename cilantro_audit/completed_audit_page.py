@@ -76,9 +76,9 @@ class CompletedAuditPage(Screen):
     def add_question_answer(self, question, answer):
         self.stack_list.height += 80  # integer (80) comes from question_answer size
         qa = QuestionAnswer()
-        qa.question_text = question.text
-        qa.answer_response_text = str(answer.response.response)
-        qa.answer_comments_text = str(answer.comment)
+        qa.question_text = "[b]Question: [/b]" + question.text
+        qa.answer_response_text = "[b]Response: [/b]" + str(answer.response.response)
+        qa.answer_comments_text = "[b]Comments: [/b]" + str(answer.comment)
 
         self.stack_list.add_widget(qa)
 
