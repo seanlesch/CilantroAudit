@@ -21,6 +21,15 @@ class QuestionAnswer(FloatLayout):
     question_label = ObjectProperty()
     question_text = StringProperty()
 
+    answer_response_label = ObjectProperty()
+    answer_response_text = StringProperty()
+
+    answer_comments_label = ObjectProperty()
+    answer_comments_text = StringProperty()
+
+    answer_severity_label = ObjectProperty()
+    answer_severity_text = StringProperty()
+
 
 class CompletedAuditPage(Screen):
     stack_list = ObjectProperty()
@@ -68,13 +77,19 @@ class CompletedAuditPage(Screen):
         self.grid_list.add_widget(lbl)
 
     def add_question_answer(self, question, answer):
-        self.stack_list.height += 80  # integer (80) comes from josiah_module
-        a_temp = QuestionAnswer()
-        a_temp.question_text = question.text
-        # a_temp.question_text = str(answer.response.response)
-        # a_temp.question_text = str(answer.comment) todo if the comment is nothing make sure to say NA
-
-        self.stack_list.add_widget(a_temp)
+        self.stack_list.height += 80  # integer (80) comes from question_answer size
+        qa = QuestionAnswer()
+        qa.question_text = "[b]Question: [/b]" + question.text
+        qa.answer_response_text = "[b]Response: [/b]" + str(answer.response.response)
+        qa.answer_comments_text = "[b]Comments: [/b]" + str(answer.comment)
+        qa.answer_severity_text = "[b]Severity: [/b]" + str(answer.severity.severity)
+        if qa.answer_severity_text == "[b]Severity: [/b]RED":
+            qa.answer_severity_text = "[b]Severity: [/b][color=#ed1c1c]RED[/color]"
+        elif qa.answer_severity_text == "[b]Severity: [/b]YELLOW":
+            qa.answer_severity_text = "[b]Severity: [/b][color=#fbff21]YELLOW[/color]"
+        elif qa.answer_severity_text == "[b]Severity: [/b]GREEN":
+            qa.answer_severity_text = "[b]Severity: [/b][color=#21ff2c]GREEN[/color]"
+        self.stack_list.add_widget(qa)
 
     def clear_page(self):
         self.grid_list.clear_widgets()

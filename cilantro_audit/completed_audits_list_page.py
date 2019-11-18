@@ -125,9 +125,15 @@ class CompletedAuditsListPage(Screen):
         audit_severities = list(map(lambda set: set.severity, self.audits))
         audit_unresolved_counts = list(map(lambda set: set.unresolved_count, self.audits))
 
+        counter = 0
         for title in audit_titles:
             btn = Button(text=title, size_hint_y=None, height=40)
+            btn.id = str(audit_dates[counter])
+            btn.bind(on_press=self.callback)
             self.title_col.add_widget(btn)
+            counter += 1
+
+        counter = 0
 
         for dt in audit_dates:
             lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
@@ -176,9 +182,14 @@ class CompletedAuditsListPage(Screen):
             audit_severities = list(map(lambda set: set.severity, audits_found))
             audit_unresolved_counts = list(map(lambda set: set.unresolved_count, audits_found))
 
+            counter = 0
             for title in audit_titles:
                 btn = Button(text=title, size_hint_y=None, height=40)
+                btn.id = str(audit_dates[counter])
+                btn.bind(on_press=self.callback)
                 self.title_col.add_widget(btn)
+                counter += 1
+            counter = 0
 
             for dt in audit_dates:
                 lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
@@ -227,7 +238,7 @@ class CompletedAuditsListPage(Screen):
                 break
 
         for completed_audit in ca_list:
-            if completed_audit.datetime == datetime:
+            if str(completed_audit.datetime) == datetime:
                 ca = completed_audit
                 break
         return at, ca
@@ -244,13 +255,16 @@ class CompletedAuditsListPage(Screen):
             self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_question_answer(question, completed_audit.answers[counter])
             counter += 1
 
-    def populate_completed_audit_page(self, title, dt, auditor):
-        self.build_header_row(title, dt, auditor)
+    def populate_completed_audit_page(self, title, dt):
         at, ca = self.load_audit_template_and_completed_audit_with_title_and_datetime(title, dt)
+        self.build_header_row(ca.title, ca.datetime, ca.auditor)
 
         self.build_completed_audit_page_body(at, ca)
 
         self.manager.current = COMPLETED_AUDIT_PAGE
+
+    def callback(self, instance):
+        self.populate_completed_audit_page(instance.text, instance.id)
 
 
 # Class defining the search popup
