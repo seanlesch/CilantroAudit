@@ -12,12 +12,12 @@ from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, ADMIN_SCREE
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
-kvfile = Builder.load_file("./widgets/completed_audit_page.kv")
+kvfile = Builder.load_file("./widgets/auditor_completed_audit_page.kv")
 
 connect(PROD_DB)
 
 
-class QuestionAnswer(FloatLayout):
+class AuditorQuestionAnswer(FloatLayout):
     question_label = ObjectProperty()
     question_text = StringProperty()
 
@@ -27,11 +27,8 @@ class QuestionAnswer(FloatLayout):
     answer_comments_label = ObjectProperty()
     answer_comments_text = StringProperty()
 
-    answer_severity_label = ObjectProperty()
-    answer_severity_text = StringProperty()
 
-
-class CompletedAuditPage(Screen):
+class AuditorCompletedAuditPage(Screen):
     stack_list = ObjectProperty()
     grid_list = ObjectProperty()
     question_text = ObjectProperty()
@@ -78,7 +75,7 @@ class CompletedAuditPage(Screen):
 
     def add_question_answer(self, question, answer):
         self.stack_list.height += 80  # integer (80) comes from question_answer size
-        qa = QuestionAnswer()
+        qa = AuditorQuestionAnswer()
         qa.question_text = "[b]Question: [/b]" + question.text
         qa.answer_response_text = "[b]Response: [/b]" + str(answer.response.response)
         qa.answer_comments_text = "[b]Comments: [/b]" + str(answer.comment)
@@ -93,7 +90,7 @@ class CompletedAuditPage(Screen):
 
     def add_question_answer_auditor_version(self, question, answer):
         self.stack_list.height += 80  # integer (80) comes from question_answer size
-        qa = QuestionAnswer()
+        qa = AuditorQuestionAnswer()
         qa.question_text = "[b]Question: [/b]" + question.text
         qa.answer_response_text = "[b]Response: [/b]" + str(answer.response.response)
         qa.answer_comments_text = "[b]Comments: [/b]" + str(answer.comment)

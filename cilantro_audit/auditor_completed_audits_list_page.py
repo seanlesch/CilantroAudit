@@ -1,5 +1,7 @@
 from time import mktime
 from datetime import datetime
+
+from cilantro_audit.audit_template import AuditTemplate
 from kivy import require
 from kivy.app import App
 from kivy.lang import Builder
@@ -10,7 +12,7 @@ from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 
 from cilantro_audit.completed_audit import CompletedAudit
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, COMPLETED_AUDIT_PAGE, AUDITOR_COMPLETED_AUDIT_PAGE
 
 EPOCH = datetime.utcfromtimestamp(0)
 require(KIVY_REQUIRED_VERSION)
@@ -32,6 +34,8 @@ class AuditorCompletedAuditsListPage(Screen):
         self.title_col.bind(minimum_height=self.audit_list.setter("height"))
         self.auditor_col.bind(minimum_height=self.audit_list.setter("height"))
         self.audits = []
+        self.audit_templates = []
+        self.load_audit_templates()
 
     # Sorts list items by title
     def sort_by_title(self):
@@ -57,6 +61,9 @@ class AuditorCompletedAuditsListPage(Screen):
         self.sort_by_date()
         self.refresh_completed_audits()
 
+    def load_audit_templates(self):
+        self.audit_templates = list(AuditTemplate.objects().only("title", "questions"))
+
     # Refreshes the list of audits on the screen
     def refresh_completed_audits(self):
         self.date_col.clear_widgets()
@@ -67,9 +74,15 @@ class AuditorCompletedAuditsListPage(Screen):
         audit_titles = list(map(lambda set: set.title, self.audits))
         audit_auditors = list(map(lambda set: set.auditor, self.audits))
 
+        counter = 0
         for title in audit_titles:
             btn = Button(text=title, size_hint_y=None, height=40)
+            btn.id = str(audit_dates[counter])
+            btn.bind(on_press=self.callback)
             self.title_col.add_widget(btn)
+            counter += 1
+
+        counter = 0
 
         for dt in audit_dates:
             lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
@@ -79,6 +92,52 @@ class AuditorCompletedAuditsListPage(Screen):
             lbl = Label(text=auditor, size_hint_y=None, height=40)
             self.auditor_col.add_widget(lbl)
 
+    def build_header_row(self, title, dt, auditor):
+        self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).add_title(title)
+        self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).add_blank_label("")
+        self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).add_auditor(auditor)
+        self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).add_date_time(format_datetime(utc_to_local(dt)))
+
+    def load_audit_template_and_completed_audit_with_title_and_datetime(self, title, datetime):
+        at = AuditTemplate()
+        ca = CompletedAudit()
+
+        ca_list = list(CompletedAudit.objects().only("title", "datetime", "auditor", "severity", "answers"))
+
+        for audit_template in self.audit_templates:
+            if audit_template.title == title:
+                at = audit_template
+                break
+
+        for completed_audit in ca_list:
+            if str(completed_audit.datetime) == datetime:
+                ca = completed_audit
+                break
+        return at, ca
+
+    def build_completed_audit_page_body(self, audit_template, completed_audit):
+        counter = 0
+
+        # Have to set the scroll so there is not a major gap.
+        self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).stack_list.clear_widgets()
+        self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).stack_list.height = 0
+        self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).reset_scroll_to_top()
+
+        for question in audit_template.questions:
+            self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).add_question_answer_auditor_version(question,
+                                                                              completed_audit.answers[counter])
+            counter += 1
+
+    def populate_completed_audit_page(self, title, dt):
+        at, ca = self.load_audit_template_and_completed_audit_with_title_and_datetime(title, dt)
+        self.build_header_row(ca.title, ca.datetime, ca.auditor)
+
+        self.build_completed_audit_page_body(at, ca)
+
+        self.manager.current = AUDITOR_COMPLETED_AUDIT_PAGE
+
+    def callback(self, instance):
+        self.populate_completed_audit_page(instance.text, instance.id)
 
 def format_datetime(dt):
     return dt.strftime("%m/%d/%Y (%H:%M:%S)")
