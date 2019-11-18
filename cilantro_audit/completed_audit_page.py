@@ -21,6 +21,12 @@ class QuestionAnswer(FloatLayout):
     question_label = ObjectProperty()
     question_text = StringProperty()
 
+    answer_response_label = ObjectProperty()
+    answer_response_text = StringProperty()
+
+    answer_comments_label = ObjectProperty()
+    answer_comments_text = StringProperty()
+
 
 class CompletedAuditPage(Screen):
     stack_list = ObjectProperty()
@@ -69,12 +75,12 @@ class CompletedAuditPage(Screen):
 
     def add_question_answer(self, question, answer):
         self.stack_list.height += 80  # integer (80) comes from josiah_module
-        a_temp = QuestionAnswer()
-        a_temp.question_text = question.text
-        # a_temp.question_text = str(answer.response.response)
-        # a_temp.question_text = str(answer.comment) todo if the comment is nothing make sure to say NA
+        qa = QuestionAnswer()
+        qa.question_text = question.text
+        qa.answer_response_text = str(answer.response.response)
+        qa.answer_comments_text = str(answer.comment)
 
-        self.stack_list.add_widget(a_temp)
+        self.stack_list.add_widget(qa)
 
     def clear_page(self):
         self.grid_list.clear_widgets()

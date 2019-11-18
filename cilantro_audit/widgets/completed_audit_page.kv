@@ -45,6 +45,8 @@
 <QuestionAnswer>:
 
     question_label: question_label
+    answer_response_label: answer_response_label
+    answer_comments_label: answer_comments_label
 
     size_hint: 1, None
     height: 80
@@ -52,8 +54,27 @@
     # Question text
     Label:
         id: question_label
+        markup=True
         text: root.question_text
         color: 1, 1, 1, 1
         size_hint: None, None
         pos_hint: {"top": 1, "center_x": 0.5}
+        text_size: root.width-50, None
+
+    Label:
+        id: answer_response_label
+        markup=True
+        text: root.answer_response_text
+        color: 1, 1, 1, 1
+        size_hint: None, None
+        pos_hint: {"top": .8, "center_x": 0.5}
+        text_size: root.width-50, None
+
+    Label:
+        id: answer_comments_label
+        markup=True
+        text: root.answer_comments_text
+        color: 1, 1, 1, 1
+        size_hint: None, None
+        pos_hint: {"top": .6, "center_x": 0.5}
         text_size: root.width-50, None
