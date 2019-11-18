@@ -42,21 +42,21 @@ class CompletedAuditPage(Screen):
         self.audit_templates = list(AuditTemplate.objects().all_fields())
         self.audit_templates = sorted(self.audit_templates, key=lambda audit_template: audit_template.title)
 
-    def reset_scroll_to_top(self):  # todo: needs to be used in the routine that first populates the questions.
+    def reset_scroll_to_top(self):  # needs to be used in the routine that first populates the questions.
         # https://kivy.org/doc/stable/api-kivy.uix.scrollview.html Y scrolling value, between 0 and 1. If 0,
         # the content’s bottom side will touch the bottom side of the ScrollView. If 1, the content’s top side will
         # touch the top side.
         self.scrolling_panel.scroll_y = 1
 
-    def add_title(self, title):  # todo: needs to be updated when you click out of one audit and load up another
+    def add_title(self, title):  # needs to be updated when you click out of one audit and load up another
         lbl = Label(text='[b]Audit: [/b]' + title, markup=True, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
-    def add_auditor(self, auditor):  # todo: needs to be updated when you click out of one audit and load up another
+    def add_auditor(self, auditor):  # needs to be updated when you click out of one audit and load up another
         lbl = Label(text='[b]Auditor: [/b]' + auditor, markup=True, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
-    def add_date_time(self, dt):  # todo: needs to be updated when you click out of one audit and load up another
+    def add_date_time(self, dt):  # needs to be updated when you click out of one audit and load up another
         lbl = Label(text='[b]Date: [/b]' + dt, markup=True, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
@@ -81,5 +81,5 @@ class CompletedAuditPage(Screen):
     def clear_page(self):
         self.grid_list.clear_widgets()
         self.stack_list.clear_widgets()
-        self.stack_list.height = 0  # todo: resets the hieght of the scrolling view. otherwise it grows with each new audit
-        self.reset_scroll_to_top()  # todo: self explanitory. Line 45 in this file
+        self.stack_list.height = 0  # resets the height of the scrolling view. otherwise it grows with each new audit
+        self.reset_scroll_to_top()

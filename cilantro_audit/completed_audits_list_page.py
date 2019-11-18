@@ -129,13 +129,14 @@ class CompletedAuditsListPage(Screen):
             lbl = Label(text=severity.severity, size_hint_y=None, height=40)
             self.severity_col.add_widget(lbl)
 
+    # todo: Ticket-84 stuff
     def build_header_row(self, title, dt, auditor):
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_title(title)
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_blank_label("")
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_auditor(auditor)
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_date_time(format_datetime(utc_to_local(dt)))
 
-    def load_audit_template_and_completed_audit_with_title(self, title):
+    def load_audit_template_and_completed_audit_with_title_and_datetime(self, title, datetime):
         at = AuditTemplate()
         ca = CompletedAudit()
 
@@ -144,7 +145,7 @@ class CompletedAuditsListPage(Screen):
                 at = audit_template
                 break
         for completed_audit in self.audits:
-            if completed_audit.title == title:
+            if completed_audit.title == title and completed_audit.datetime == datetime:
                 ca = completed_audit
                 break
         return at, ca
@@ -152,14 +153,19 @@ class CompletedAuditsListPage(Screen):
     def build_completed_audit_page_body(self, audit_template, completed_audit):
         counter = 0
 
+        # Have to set the scroll so there is not a major gap.
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).stack_list.clear_widgets()
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).stack_list.height = 0
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).reset_scroll_to_top()
+
         for question in audit_template.questions:
             self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_question(question)
-            # self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_answer(completed_audit.answers[counter])
             counter += 1
 
     def populate_completed_audit_page(self, title, dt, auditor):
         self.build_header_row(title, dt, auditor)
-        at, ca = self.load_audit_template_and_completed_audit_with_title(title)
+        at, ca = self.load_audit_template_and_completed_audit_with_title_and_datetime(title, dt)
+
         self.build_completed_audit_page_body(at, ca)
 
         self.manager.current = COMPLETED_AUDIT_PAGE
