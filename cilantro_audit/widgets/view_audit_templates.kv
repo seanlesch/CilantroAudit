@@ -1,7 +1,8 @@
-#:kivy 1.11.1
-
-
 <ViewAuditTemplates>:
+
+#:kivy 1.11.1
+#:import GREY_LIGHT cilantro_audit.constants.RGB_GREY_LIGHT
+
     name: 'ViewAuditTemplates'
     templates_list: templates_list
 
@@ -51,8 +52,8 @@
                     size: self.size
                     pos: self.pos
 
-            Label:
-                name: 'top-row'
+            BoxLayout:
+                orientation: 'horizontal'
                 size_hint: 1.0, 0.1
 
             BoxLayout:
@@ -97,7 +98,36 @@
                     app.root.transition.duration = 0.3
                     app.root.transition.direction = 'down'
 
+            Button:
+                text: 'Refresh Audit List'
+                on_release:
+                    root.refresh_audit_templates()
+
 
 <AuditButton@Button>:
     name: 'button_template'
     size_hint_y: None
+
+<InactiveAuditButton@Button>:
+    name: 'inactive_button_template'
+    size_hint_y: None
+    background_normal: ''
+    background_color: GREY_LIGHT
+    color: 0, 0, 0, 1
+
+<LockedTemplatePop>:
+    title: "Can't Open Template"
+    size_hint: .5, .5
+
+    FloatLayout:
+
+        Label:
+            text: "The audit you selected has already been completed."
+            size_hint: 0.6, 0.2
+            pos_hint: {"x": .2, "top": .9}
+
+        Button:
+            text: "OK"
+            size_hint: .3, .3
+            pos_hint: {"center_x": .5, "y": 0}
+            on_press: root.dismiss()

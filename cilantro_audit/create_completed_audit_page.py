@@ -5,13 +5,15 @@ from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
+from kivy.resources import resource_find
 from mongoengine import connect
 
 from cilantro_audit.audit_template import AuditTemplate
 from cilantro_audit.completed_audit import CompletedAuditBuilder, Answer, Response
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, VIEW_AUDIT_TEMPLATES
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, VIEW_AUDIT_TEMPLATES, ANSWER_MODULE_DISPLACEMENT
 from cilantro_audit.answer_module import AnswerModule
 from cilantro_audit.create_audit_template_page import ConfirmationPop, ErrorPop
+from cilantro_audit.view_audit_templates import ViewAuditTemplates
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
@@ -49,20 +51,21 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
     # put all questions on the screen for the auditor to respond to
     def populate_audit(self, audit_name):
         target = audit_name
+
         try:
             template = AuditTemplate.objects().filter(title=target).first()  # for now, while there can be duplicates
         except AttributeError:
-            # TO DO - SOMETHING
+            #TODO
             pass
 
         self.audit_title = template.title
         for question in template.questions:
-            self.stack_list.height += 200
             a_temp = AnswerModule()
             a_temp.question = question
             a_temp.question_text = question.text
             self.stack_list.add_widget(a_temp)
             self.questions.append(a_temp)
+            self.stack_list.height += ANSWER_MODULE_DISPLACEMENT
 
         # https://kivy.org/doc/stable/api-kivy.uix.scrollview.html Y scrolling value, between 0 and 1. If 0,
         # the content’s bottom side will touch the bottom side of the ScrollView. If 1, the content’s top side will
@@ -92,7 +95,9 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
             else:
                 temp_answer = Answer(text=a.question.text, severity=self.question_severity(a), response=a.response)
             completed_audit.with_answer(temp_answer)
-
+        # Update the template with this title to be locked
+        AuditTemplate.objects().filter(title=self.audit_title).update(upsert=False, multi=True, locked=True)
+        # Send to database
         completed_audit.build().save()
 
     def submit_audit_pop(self, manager):
@@ -102,8 +107,10 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
             show.error_message.text = error_message
         else:
             show = ConfirmationPop()
+            show.yes.bind(on_press=lambda _: manager.get_screen(VIEW_AUDIT_TEMPLATES).get_audit_templates(self.manager))
             show.yes.bind(on_press=self.clear_page)
             show.yes.bind(on_press=self.submit_audit)
+
         show.manager = manager
         show.open()
 
@@ -124,16 +131,21 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
 
     # Ensures that the completedAudit has everything filled out before trying to .save() it
     def check_audit(self):
+        for child in self.questions:
+            child.no_answer_flag.opacity = 0
+            child.no_comment_flag.opacity = 0
+
         error_message = ""
         for question in self.questions:
             # Check if all questions are answered
             if question.response is None:
                 error_message = "Must respond to all questions."
-                break  # like this for now because there are changes to be made still
+                question.no_answer_flag.opacity = 1
+
             # Check if 'other' responses have comments.
-            if question.other_has_comments() is False:
+            elif question.other_has_comments() is False:
                 error_message = "Answers with 'Other' must have comments."
-                break
+                question.no_comment_flag.opacity = 1
 
         if not self.auditor_name.text:
             error_message = "Please enter your name."

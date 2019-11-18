@@ -1,6 +1,7 @@
 import kivy
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.config import Config
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from kivy.uix.screenmanager import ScreenManager
@@ -11,15 +12,27 @@ from cilantro_audit.create_audit_template_page import CreateAuditTemplatePage
 from cilantro_audit.completed_audits_list_page import CompletedAuditsListPage
 from cilantro_audit.auditor_completed_audits_list_page import AuditorCompletedAuditsListPage
 from cilantro_audit.view_audit_templates import ViewAuditTemplates
+from cilantro_audit.view_flag_trends_page import ViewFlagTrendsPage
 from cilantro_audit.completed_audit_page import CompletedAuditPage
+from cilantro_audit.create_completed_audit_page import CreateCompletedAuditPage
 
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, ADMIN_SCREEN, HOME_SCREEN, AUDITOR_SCREEN, \
-    CREATE_AUDIT_TEMPLATE_PAGE, COMPLETED_AUDITS_LIST_PAGE, AUDITOR_COMPLETED_AUDITS_LIST_PAGE, VIEW_AUDIT_TEMPLATES, \
-    CREATE_COMPLETED_AUDIT_PAGE, COMPLETED_AUDIT_PAGE
+    CREATE_AUDIT_TEMPLATE_PAGE, COMPLETED_AUDITS_LIST_PAGE, VIEW_AUDIT_TEMPLATES, VIEW_FLAG_TRENDS_PAGE, \
+    AUDITOR_COMPLETED_AUDITS_LIST_PAGE, CREATE_COMPLETED_AUDIT_PAGE, COMPLETED_AUDIT_PAGE
 
 from cilantro_audit.create_completed_audit_page import CreateCompletedAuditPage
 
 kivy.require(KIVY_REQUIRED_VERSION)
+
+# Configures the default window settings
+Config.set('graphics', 'borderless', '0')
+Config.set('graphics', 'window_state', 'maximized')
+Config.set('graphics', 'minimum_height', '600')
+Config.set('graphics', 'minimum_width', '800')
+
+# https://stackoverflow.com/questions/12692851/why-does-right-clicking-create-an-orange-dot-in-the-center-of-the-circle
+# Removes the multi-touch simulation (red/orange dots on right click)
+Config.set('input', 'mouse', 'mouse, multitouch_on_demand')
 
 Builder.load_file('./widgets/home_page.kv')
 Builder.load_file('./widgets/admin_page.kv')
@@ -29,10 +42,6 @@ sm = ScreenManager()
 
 
 class HomePage(Screen):
-    pass
-
-
-class AdminPage(Screen):
     pass
 
 
@@ -55,6 +64,7 @@ class CilantroAudit(App):
         sm.add_widget(CompletedAuditsListPage(name=COMPLETED_AUDITS_LIST_PAGE))
         sm.add_widget(AuditorCompletedAuditsListPage(name=AUDITOR_COMPLETED_AUDITS_LIST_PAGE))
         sm.add_widget(ViewAuditTemplates(name=VIEW_AUDIT_TEMPLATES))
+        sm.add_widget(ViewFlagTrendsPage(name=VIEW_FLAG_TRENDS_PAGE))
         sm.add_widget(CompletedAuditPage(name=COMPLETED_AUDIT_PAGE))
         sm.add_widget(CreateCompletedAuditPage(name=CREATE_COMPLETED_AUDIT_PAGE))
 

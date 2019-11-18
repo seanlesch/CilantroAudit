@@ -1,14 +1,14 @@
-
-<CompletedAuditsListPage>:
-
 #:import ADMIN_SCREEN cilantro_audit.constants.ADMIN_SCREEN
 #:import COMPLETED_AUDITS_LIST_PAGE cilantro_audit.constants.COMPLETED_AUDITS_LIST_PAGE
+
+<CompletedAuditsListPage>:
 
     date_col: date_col
     title_col: title_col
     audit_list: audit_list
     auditor_col: auditor_col
     severity_col: severity_col
+    unresolved_col: unresolved_col
     refresh_button: refresh_button
 
     GridLayout:
@@ -24,7 +24,7 @@
 
             GridLayout:
                 id: headers
-                cols: 4
+                cols: 5
                 spacing: 10
                 size_hint_y: 0.1
 
@@ -52,12 +52,18 @@
                     spacing: 10
                     on_press: root.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).sort_by_severity()
 
+                Button:
+                    id: unresolved_header
+                    text: 'Unresolved'
+                    spacing: 10
+                    on_press: root.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).sort_by_unresolved()
+
             ScrollView:
                 id: scrollable_list
 
                 GridLayout:
                     id: audit_list
-                    cols: 4
+                    cols: 5
                     spacing: 10
                     size_hint_y: None
 
@@ -77,11 +83,16 @@
                         id: severity_col
                         cols: 1
 
+                    GridLayout:
+                        id: unresolved_col
+                        cols: 1
+
 
 
         GridLayout:
             id: navigation_options
-            cols: 2
+            cols: 4
+            spacing: 10
             size_hint_y: 0.1
 
             Button:
@@ -96,3 +107,46 @@
                 size_hint_y: None
                 size: 400, 50
                 on_press: root.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).load_completed_audits()
+
+            Button:
+                text: 'Search'
+                size_hint_y: None
+                size: 400, 50
+                on_press: root.search_audit_list_pop()
+
+            Button:
+                text: 'Clear Search Results'
+                size_hint_y: None
+                size: 400, 50
+                on_press: root.refresh_completed_audits()
+
+<SearchPop>:
+    auto_dismiss: True
+    title: "Search Criteria"
+    size_hint: .5, .5
+
+    search_text: search_text
+    popup_search_button: popup_search_button
+
+    GridLayout:
+        rows: 3
+
+        Label:
+            text: "Please enter the title of the audit you are looking for."
+
+        TextInput:
+            id: search_text
+            multiline: False
+
+        GridLayout:
+            rows: 1
+
+            Button:
+                id: popup_search_button
+                text: "Search"
+                pos_hint: {"x": 0, "y": 0}
+
+            Button:
+                text: "Cancel"
+                pos_hint: {"right": 1, "y": 0}
+                on_press: root.dismiss()
