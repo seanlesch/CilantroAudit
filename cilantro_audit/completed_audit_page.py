@@ -1,13 +1,11 @@
 import kivy
-from kivy.app import App
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty
-from kivy.uix.button import Button
+from kivy.properties import ObjectProperty, StringProperty
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 
-from cilantro_audit.josiah_module import JosiahModule
 from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.audit_template import AuditTemplate
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, ADMIN_SCREEN
@@ -18,6 +16,9 @@ kvfile = Builder.load_file("./widgets/completed_audit_page.kv")
 
 connect(PROD_DB)
 
+class JosiahModule(FloatLayout):
+    question_label = ObjectProperty()
+    question_text = StringProperty()
 
 class CompletedAuditPage(Screen):
     stack_list = ObjectProperty()
@@ -65,7 +66,7 @@ class CompletedAuditPage(Screen):
         self.grid_list.add_widget(lbl)
 
     def add_question(self, question):
-        self.stack_list.height += 80  # integer (80) comes from josiah_module.kv
+        self.stack_list.height += 80  # integer (80) comes from josiah_module
         a_temp = JosiahModule()
         a_temp.question_text = question.text
         self.stack_list.add_widget(a_temp)
@@ -83,3 +84,5 @@ class CompletedAuditPage(Screen):
         self.stack_list.clear_widgets()
         self.stack_list.height = 0  # resets the height of the scrolling view. otherwise it grows with each new audit
         self.reset_scroll_to_top()
+
+
