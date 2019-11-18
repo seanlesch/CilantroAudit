@@ -219,7 +219,6 @@ class CompletedAuditsListPage(Screen):
         Clock.schedule_once(lambda _: self.schedule_focus(show), 0.2)
         show.open()
 
-    # todo: Ticket-84 stuff
     def build_header_row(self, title, dt, auditor):
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_title(title)
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_blank_label("")
