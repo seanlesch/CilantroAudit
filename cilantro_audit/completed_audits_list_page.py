@@ -140,12 +140,16 @@ class CompletedAuditsListPage(Screen):
         at = AuditTemplate()
         ca = CompletedAudit()
 
+        ca_list = list(CompletedAudit.objects().only("title", "datetime", "auditor", "severity", "answers"))
+
         for audit_template in self.audit_templates:
             if audit_template.title == title:
                 at = audit_template
                 break
-        for completed_audit in self.audits:
-            if completed_audit.title == title and completed_audit.datetime == datetime:
+
+        for completed_audit in ca_list:
+            print(completed_audit.datetime, datetime)
+            if completed_audit.datetime == datetime:
                 ca = completed_audit
                 break
         return at, ca
@@ -160,6 +164,7 @@ class CompletedAuditsListPage(Screen):
 
         for question in audit_template.questions:
             self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_question(question)
+            self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_answer(completed_audit.answers[counter])
             counter += 1
 
     def populate_completed_audit_page(self, title, dt, auditor):

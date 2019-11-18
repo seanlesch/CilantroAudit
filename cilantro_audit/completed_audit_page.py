@@ -71,7 +71,7 @@ class CompletedAuditPage(Screen):
         self.stack_list.add_widget(a_temp)
 
     def add_answer(self, answer):
-        lbl = Label(text=str(answer.response), size_hint_y=None, height=40, halign="left")
+        lbl = Label(text=str(answer.response.response), size_hint_y=None, height=40, halign="left")
         self.stack_list.add_widget(lbl)
 
         if answer.comment != "":
