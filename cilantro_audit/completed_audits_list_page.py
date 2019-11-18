@@ -132,9 +132,15 @@ class CompletedAuditsListPage(Screen):
         audit_severities = list(map(lambda set: set.severity, self.audits))
         audit_unresolved_counts = list(map(lambda set: set.unresolved_count, self.audits))
 
+        counter = 0
         for title in audit_titles:
             btn = Button(text=title, size_hint_y=None, height=40)
+            btn.id = str(audit_dates[counter])
+            btn.bind(on_press=self.callback)
             self.title_col.add_widget(btn)
+            counter += 1
+
+        counter = 0
 
         for dt in audit_dates:
             lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
@@ -194,41 +200,22 @@ class CompletedAuditsListPage(Screen):
 
         counter = 0
 
-            for dt in audit_dates:
-                lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
-                self.date_col.add_widget(lbl)
+        for dt in audit_dates:
+            lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
+            self.date_col.add_widget(lbl)
 
-            for auditor in audit_auditors:
-                lbl = Label(text=auditor, size_hint_y=None, height=40)
-                self.auditor_col.add_widget(lbl)
+        for auditor in audit_auditors:
+            lbl = Label(text=auditor, size_hint_y=None, height=40)
+            self.auditor_col.add_widget(lbl)
 
-            for severity in audit_severities:
-                lbl = Label(text=severity.severity, size_hint_y=None, height=40)
-                self.severity_col.add_widget(lbl)
+        for severity in audit_severities:
+            lbl = Label(text=severity.severity, size_hint_y=None, height=40)
+            self.severity_col.add_widget(lbl)
 
-            for count in audit_unresolved_counts:
-                lbl = Label(text=str(count), size_hint_y=None, height=40)
-                self.unresolved_col.add_widget(lbl)
+        for count in audit_unresolved_counts:
+            lbl = Label(text=str(count), size_hint_y=None, height=40)
+            self.unresolved_col.add_widget(lbl)
 
-    # Helper function that makes the popup wait 0.2 seconds so we can assign focus properly
-    def schedule_focus(self, popup):
-        popup.search_text.focus = True
-
-    # Creates the search popup
-    def search_audit_list_pop(self):
-        show = SearchPop()
-        show.popup_search_button.bind(on_press=lambda _: self.search_completed_audits_list(show.search_text.text))
-        show.popup_search_button.bind(on_press=show.dismiss)
-        Clock.schedule_once(lambda _: self.schedule_focus(show), 0.2)
-        show.open()
-
-
-# Class defining the search popup
-class SearchPop(Popup):
-    search_text = ObjectProperty(None)
-    popup_search_button = ObjectProperty(None)
-
-    # todo: Ticket-84 stuff
     def build_header_row(self, title, dt, auditor):
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_title(title)
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_blank_label("")
@@ -261,7 +248,8 @@ class SearchPop(Popup):
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).reset_scroll_to_top()
 
         for question in audit_template.questions:
-            self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_question_answer(question, completed_audit.answers[counter])
+            self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_question_answer(question,
+                                                                              completed_audit.answers[counter])
             counter += 1
 
     def populate_completed_audit_page(self, title, dt):
@@ -273,4 +261,22 @@ class SearchPop(Popup):
         self.manager.current = COMPLETED_AUDIT_PAGE
 
     def callback(self, instance):
-        self.populate_completed_audit_page(instance.text, instance.id) # The id is holding the datetime
+        self.populate_completed_audit_page(instance.text, instance.id)  # The id is holding the datetime
+
+    # Helper function that makes the popup wait 0.2 seconds so we can assign focus properly
+    def schedule_focus(self, popup):
+        popup.search_text.focus = True
+
+    # Creates the search popup
+    def search_audit_list_pop(self):
+        show = SearchPop()
+        show.popup_search_button.bind(on_press=lambda _: self.search_completed_audits_list(show.search_text.text))
+        show.popup_search_button.bind(on_press=show.dismiss)
+        Clock.schedule_once(lambda _: self.schedule_focus(show), 0.2)
+        show.open()
+
+
+# Class defining the search popup
+class SearchPop(Popup):
+    search_text = ObjectProperty(None)
+    popup_search_button = ObjectProperty(None)
