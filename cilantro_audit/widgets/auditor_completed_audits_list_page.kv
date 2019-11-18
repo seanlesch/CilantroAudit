@@ -1,5 +1,5 @@
 #:import AUDITOR_SCREEN cilantro_audit.constants.AUDITOR_SCREEN
-#:import THIS_PAGE cilantro_audit.constants.AUDITOR_COMPLETED_AUDITS_LIST_PAGE
+#:import AUDITOR_COMPLETED_AUDITS_LIST_PAGE cilantro_audit.constants.AUDITOR_COMPLETED_AUDITS_LIST_PAGE
 
 <AuditorCompletedAuditsListPage>:
     date_col: date_col
@@ -29,19 +29,19 @@
                     id: title_header
                     text: 'Title'
                     spacing: 10
-                    on_press: root.manager.get_screen(THIS_PAGE).sort_by_title()
+                    on_press: root.manager.get_screen(AUDITOR_COMPLETED_AUDITS_LIST_PAGE).sort_by_title()
 
                 Button:
                     id: date_header
                     text: 'Date'
                     spacing: 10
-                    on_press: root.manager.get_screen(THIS_PAGE).sort_by_date()
+                    on_press: root.manager.get_screen(AUDITOR_COMPLETED_AUDITS_LIST_PAGE).sort_by_date()
 
                 Button:
                     id: auditor_header
                     text: 'Auditor'
                     spacing: 10
-                    on_press: root.manager.get_screen(THIS_PAGE).sort_by_auditor()
+                    on_press: root.manager.get_screen(AUDITOR_COMPLETED_AUDITS_LIST_PAGE).sort_by_auditor()
 
             ScrollView:
                 id: scrollable_list
@@ -84,4 +84,4 @@
                 text: 'Refresh List'
                 size_hint_y: None
                 size: 400, 50
-                on_press: root.manager.get_screen(THIS_PAGE).load_completed_audits()
+                on_press: root.manager.get_screen(AUDITOR_COMPLETED_AUDITS_LIST_PAGE).load_completed_audits()

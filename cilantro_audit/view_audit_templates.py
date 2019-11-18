@@ -1,6 +1,7 @@
 import kivy
 from kivy.app import App
 from kivy.properties import ObjectProperty
+from kivy.uix.popup import Popup
 from mongoengine import connect
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
@@ -10,10 +11,13 @@ from cilantro_audit.constants import KIVY_REQUIRED_VERSION, CREATE_COMPLETED_AUD
 from cilantro_audit.constants import PROD_DB
 from cilantro_audit.audit_template import AuditTemplate
 
-# Required Version
 kivy.require(KIVY_REQUIRED_VERSION)
-
 Builder.load_file("./widgets/view_audit_templates.kv")
+connect(PROD_DB)
+
+
+class LockedTemplatePop(Popup):
+    pass
 
 
 class AuditButton(Button):
@@ -28,11 +32,20 @@ class AuditButton(Button):
         self.screen_manager.current = CREATE_COMPLETED_AUDIT_PAGE
 
 
+class InactiveAuditButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.text = kwargs['text']
+
+    def on_press(self, *args):
+        super().on_press(*args)
+        show = LockedTemplatePop()
+        show.open()
+
+
 # Handles the retrieval of audit templates for the auditor screens.
 class ViewAuditTemplates(Screen):
-    # Holds the list of titles retrieved from the database.
     templates_list = ObjectProperty()
-    connect(PROD_DB)
 
     # Constructor utilizes the only method to retrieve audits for use in the associated .kv file.
     def __init__(self, **kw):
@@ -45,9 +58,17 @@ class ViewAuditTemplates(Screen):
         self.templates_list.clear_widgets()
         self.screen_manager = screen_manager
 
-        titles = list(map(lambda template: template.title, AuditTemplate.objects().only('title')))
+        titles = list(map(lambda template: (template.title, template.locked), AuditTemplate.objects().only('title', 'locked')))
         for title in titles:
-            self.templates_list.add_widget(AuditButton(text=title, screen_manager=self.screen_manager))
+            if title[1] is False: # This template is not locked out
+                self.templates_list.add_widget(AuditButton(text=title[0], screen_manager=self.screen_manager))
+            else: # This template is locked
+                self.templates_list.add_widget(InactiveAuditButton(text=title[0]))
+
+    # Replaces the current templates list with a newly retrieved templates list from the database
+    def refresh_audit_templates(self):
+        self.templates_list.clear_widgets()
+        self.get_audit_templates(self.screen_manager)
 
 
 class TestApp(App):

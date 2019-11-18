@@ -1,0 +1,63 @@
+
+<CilantroPage>:
+    page: page
+    header: header
+    body: body
+    footer: footer
+
+    GridLayout:
+        id: page
+        rows: 3
+        cols: 1
+
+        canvas.before:
+            Color:
+                rgba: 0.1, 0.1, 0.1, 1.0
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        GridLayout:
+            id: header
+            name: 'header-grid'
+            rows: 1
+            cols: 3
+            size_hint: 1, 0.1
+
+            CilantroButton:
+                text: 'Return to Homepage'
+
+            CilantroLabel:
+                text: 'Audit Page Template'
+
+            CilantroButton:
+                text: 'Exit'
+                on_release:
+                    exit(1)
+
+        GridLayout:
+            id: body
+            name: 'body-grid'
+            rows: 1
+            cols: 3
+            size_hint: 1, 0.8
+
+        GridLayout:
+            id: footer
+            name: 'footer-grid'
+            rows: 1
+            cols: 3
+            size_hint: 1, 0.1
+
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1.0
+                Rectangle:
+                    pos: self.x, self.y+self.height
+                    size: self.width, self.height/(self.height-1)
+
+            CilantroButton:
+                text: 'Back'
+
+            CilantroButton:
+                text: 'Refresh Page'
