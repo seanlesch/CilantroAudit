@@ -16,9 +16,11 @@ kvfile = Builder.load_file("./widgets/completed_audit_page.kv")
 
 connect(PROD_DB)
 
-class JosiahModule(FloatLayout):
+
+class QuestionAnswer(FloatLayout):
     question_label = ObjectProperty()
     question_text = StringProperty()
+
 
 class CompletedAuditPage(Screen):
     stack_list = ObjectProperty()
@@ -65,24 +67,17 @@ class CompletedAuditPage(Screen):
         lbl = Label(text=text, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
-    def add_question(self, question):
+    def add_question_answer(self, question, answer):
         self.stack_list.height += 80  # integer (80) comes from josiah_module
-        a_temp = JosiahModule()
+        a_temp = QuestionAnswer()
         a_temp.question_text = question.text
+        # a_temp.question_text = str(answer.response.response)
+        # a_temp.question_text = str(answer.comment) todo if the comment is nothing make sure to say NA
+
         self.stack_list.add_widget(a_temp)
-
-    def add_answer(self, answer):
-        lbl = Label(text=str(answer.response.response), size_hint_y=None, height=40, halign="left")
-        self.stack_list.add_widget(lbl)
-
-        if answer.comment != "":
-            lbl2 = Label(text=str(answer.comment), size_hint_y=None, height=40, halign="left")
-            self.stack_list.add_widget(lbl2)
 
     def clear_page(self):
         self.grid_list.clear_widgets()
         self.stack_list.clear_widgets()
         self.stack_list.height = 0  # resets the height of the scrolling view. otherwise it grows with each new audit
         self.reset_scroll_to_top()
-
-
