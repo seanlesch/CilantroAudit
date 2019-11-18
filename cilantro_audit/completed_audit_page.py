@@ -74,7 +74,7 @@ class CompletedAuditPage(Screen):
         self.grid_list.add_widget(lbl)
 
     def add_question_answer(self, question, answer):
-        self.stack_list.height += 80  # integer (80) comes from josiah_module
+        self.stack_list.height += 80  # integer (80) comes from question_answer size
         qa = QuestionAnswer()
         qa.question_text = question.text
         qa.answer_response_text = str(answer.response.response)
