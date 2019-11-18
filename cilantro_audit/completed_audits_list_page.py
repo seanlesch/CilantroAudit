@@ -59,6 +59,9 @@ class CompletedAuditsListPage(Screen):
         self.load_completed_audits()
         self.load_audit_templates()
 
+        self.current_title = ""
+        self.current_datetime = ""
+
     """Sorts list items by title."""
 
     def sort_by_title(self):
@@ -110,10 +113,16 @@ class CompletedAuditsListPage(Screen):
         audit_auditors = list(map(lambda set: set.auditor, self.audits))
         audit_severities = list(map(lambda set: set.severity, self.audits))
 
+        counter = 0
+
         for title in audit_titles:
             btn = Button(text=title, size_hint_y=None, height=40)
-            btn.bind(on_press= lambda _: print(title))
+            btn.id = str(audit_dates[counter])
+            btn.bind(on_press=self.callback)
             self.title_col.add_widget(btn)
+            counter += 1
+
+        counter = 0
 
         for dt in audit_dates:
             lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
@@ -132,7 +141,7 @@ class CompletedAuditsListPage(Screen):
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_title(title)
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_blank_label("")
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_auditor(auditor)
-        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_date_time(format_datetime(utc_to_local(dt)))
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_date_time(str(format_datetime(utc_to_local(dt))))
 
     def load_audit_template_and_completed_audit_with_title_and_datetime(self, title, datetime):
         at = AuditTemplate()
@@ -146,7 +155,7 @@ class CompletedAuditsListPage(Screen):
                 break
 
         for completed_audit in ca_list:
-            if completed_audit.datetime == datetime:
+            if str(completed_audit.datetime) == datetime:
                 ca = completed_audit
                 break
         return at, ca
@@ -163,14 +172,13 @@ class CompletedAuditsListPage(Screen):
             self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_question_answer(question, completed_audit.answers[counter])
             counter += 1
 
-    def populate_completed_audit_page(self, title, dt, auditor):
-        self.build_header_row(title, dt, auditor)
-        print(title)
+    def populate_completed_audit_page(self, title, dt):
         at, ca = self.load_audit_template_and_completed_audit_with_title_and_datetime(title, dt)
+        self.build_header_row(ca.title, ca.datetime, ca.auditor)
 
         self.build_completed_audit_page_body(at, ca)
 
         self.manager.current = COMPLETED_AUDIT_PAGE
 
-    def print_something(self, something):
-        print(something)
+    def callback(self, instance):
+        self.populate_completed_audit_page(instance.text, instance.id) # The id is holding the datetime
