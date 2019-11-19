@@ -16,6 +16,8 @@ TEXT_MAX_LENGTH = 50
 COMMENT_MIN_LENGTH = 1
 COMMENT_MAX_LENGTH = 150
 
+ANSWER_MODULE_DISPLACEMENT = 200
+
 # Enumerated Values
 SEVERITY_VALUES = [
     "RED",
@@ -43,6 +45,7 @@ AUDITOR_COMPLETED_AUDITS_LIST_PAGE = "AuditorCompletedAuditsListPage"
 CREATE_AUDIT_TEMPLATE_PAGE = "CreateAuditTemplatePage"
 CREATE_COMPLETED_AUDIT_PAGE = "CreateCompletedAuditPage"
 VIEW_AUDIT_TEMPLATES = "ViewAuditTemplates"
+VIEW_FLAG_TRENDS_PAGE = "ViewFlagTrendsPage"
 
 # Colors
 RGB_RED = get_color_from_hex("#FF4500")

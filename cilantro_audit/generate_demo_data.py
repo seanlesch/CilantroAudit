@@ -12,7 +12,7 @@ db.drop_database(PROD_DB)
 
 connect(PROD_DB)
 
-DELAY = 0.300
+DELAY = 0
 NUM_TEMPLATES = 10
 NUM_COMPLETED_PER_TEMPLATE = 5
 
@@ -22,6 +22,7 @@ TITLES = [
     "Bathroom #2",
     "Ink Room",
     "Plating Room",
+    "Engine Room",
     "Break Room",
     "Lunch Room",
     "Lobby",
@@ -137,9 +138,8 @@ def random_answer_from_question(question):
 
 
 if __name__ == '__main__':
-    for _ in range(NUM_TEMPLATES):
+    for title in TITLES:
         time.sleep(DELAY)
-        title = random_title()
         q0 = random_question()
         q1 = random_question()
         q2 = random_question()
@@ -157,7 +157,7 @@ if __name__ == '__main__':
             .save()
 
         for _ in range(NUM_COMPLETED_PER_TEMPLATE):
-            time.sleep(1.000)
+            time.sleep(DELAY)
             CompletedAuditBuilder() \
                 .with_title(title) \
                 .with_auditor(random.choice(AUDITORS)) \
