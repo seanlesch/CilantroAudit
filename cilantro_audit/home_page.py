@@ -6,6 +6,8 @@ from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from kivy.uix.screenmanager import ScreenManager
 
+from cilantro_audit.templates.cilantro_page import CilantroPage
+
 from cilantro_audit.admin_page import AdminPage
 from cilantro_audit.auditor_page import AuditorPage
 from cilantro_audit.create_audit_template_page import CreateAuditTemplatePage
@@ -54,6 +56,11 @@ class CilantroAudit(App):
 
     # Initialize screen manager and other necessary fields
     def build(self):
+        self.title = 'CilantroAudit'
+        page8 = CilantroPage(name=VIEW_FLAG_TRENDS_PAGE)
+
+        page8.body.add_widget(ViewFlagTrendsPage())
+
         sm.add_widget(HomePage(name=HOME_SCREEN))
         sm.add_widget(AdminPage(name=ADMIN_SCREEN))
         sm.add_widget(AuditorPage(name=AUDITOR_SCREEN))
@@ -61,10 +68,9 @@ class CilantroAudit(App):
         sm.add_widget(CompletedAuditsListPage(name=COMPLETED_AUDITS_LIST_PAGE))
         sm.add_widget(AuditorCompletedAuditsListPage(name=AUDITOR_COMPLETED_AUDITS_LIST_PAGE))
         sm.add_widget(ViewAuditTemplates(name=VIEW_AUDIT_TEMPLATES))
-        sm.add_widget(ViewFlagTrendsPage(name=VIEW_FLAG_TRENDS_PAGE))
+        sm.add_widget(page8)
         sm.add_widget(CreateCompletedAuditPage(name=CREATE_COMPLETED_AUDIT_PAGE))
 
-        self.title = 'CilantroAudit'
         return sm
 
     # Set the text field inside of the popup to be focused
