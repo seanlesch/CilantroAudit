@@ -25,15 +25,13 @@
             size_hint: 1, 0.1
 
             CilantroButton:
-                text: 'Return to Homepage'
+                text: 'Back'
 
             CilantroLabel:
                 text: 'Audit Page Template'
 
             CilantroButton:
-                text: 'Exit'
-                on_release:
-                    exit(1)
+                text: 'Return to Homepage'
 
         GridLayout:
             id: body
@@ -45,7 +43,7 @@
             id: footer
             name: 'footer-grid'
             rows: 1
-            cols: 3
+            cols: 1
             size_hint: 1, 0.1
 
             canvas.before:
@@ -54,9 +52,6 @@
                 Rectangle:
                     pos: self.x, self.y+self.height
                     size: self.width, self.height/(self.height-1)
-
-            CilantroButton:
-                text: 'Back'
 
             CilantroButton:
                 text: 'Refresh Page'
