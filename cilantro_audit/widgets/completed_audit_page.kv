@@ -1,11 +1,11 @@
 #:import SlideTransition kivy.uix.screenmanager.SlideTransition
+
 <CompletedAuditPage>:
 
     size: root.width, root.height
     stack_list: stack_list
     grid_list: grid_list
     scrolling_panel: scrolling_panel
-
 
     GridLayout:
         id: grid_list
@@ -31,7 +31,6 @@
                 cols: 1
                 spacing: 80
                 size_hint_y: None
-
 
     Button:
         text: "Back"
