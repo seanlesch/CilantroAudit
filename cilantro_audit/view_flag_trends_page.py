@@ -4,6 +4,8 @@ from kivy.lang import Builder
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
+from kivy.uix.popup import Popup
+from kivy.uix.button import Button
 
 from mongoengine import connect
 
@@ -59,8 +61,8 @@ class ViewFlagTrendsPage(Screen):
 
         # Populate the unique entries into the widget cols
         for entry_row in self.unique_entry_rows:
+            self.question_text_col.add_widget(QuestionButton(text=entry_row[1]))
             self.audit_title_col.add_widget(EntryLabel(text=entry_row[0]))
-            self.question_text_col.add_widget(EntryLabel(text=entry_row[1]))
             self.times_flagged_col.add_widget(EntryLabel(text=str(entry_row[2])))
 
     # Refresh the current data by requesting a new data retrieval
@@ -89,6 +91,18 @@ class ViewFlagTrendsPage(Screen):
 
 # A custom widget for retrieved entries
 class EntryLabel(Label):
+    pass
+
+
+# A button containing answer text that will pull up the audit list popup when clicked
+class QuestionButton(Button):
+    def show_audit_list(self):
+        show = AuditListPop()
+        show.open()
+
+
+# A popup listing all of the completed audits containing an answer
+class AuditListPop(Popup):
     pass
 
 

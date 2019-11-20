@@ -165,3 +165,27 @@
         Rectangle:
             pos: self.pos
             size: 1000, 5
+
+<QuestionButton>:
+    size_hint_y: None
+    text_size: self.width-20, None
+    halign: 'center'
+    on_press: self.show_audit_list()
+
+    canvas.before:
+        Color:
+            rgb: 0.1, 0.1, 0.1, 1
+
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+        Color:
+            rgb: 0, 0, 0, 1
+        Rectangle:
+            pos: self.pos
+            size: 1000, 5
+
+<AuditListPop>:
+    title: "Related Completed Audits"
+    size_hint: .8, .8
