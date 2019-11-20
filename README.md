@@ -20,7 +20,7 @@ Copyright (c) 2019 Sean Lesch
 - Erik
 - Kegan
 - Josiah
-- Sean
+- Sean Lesch
 - Steven
 
 ### How to Contribute

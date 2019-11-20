@@ -1,7 +1,8 @@
-from mongoengine import connect
-
 import random
 import time
+from itertools import permutations
+
+from mongoengine import connect
 
 from cilantro_audit.audit_template import Severity, Question, AuditTemplateBuilder
 from cilantro_audit.completed_audit import Response, CompletedAuditBuilder, Answer
@@ -12,22 +13,21 @@ db.drop_database(PROD_DB)
 
 connect(PROD_DB)
 
-DELAY = 0
+DELAY = 0.1
 NUM_TEMPLATES = 10
 NUM_COMPLETED_PER_TEMPLATE = 5
+ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-TITLES = [
-    "Boiler Room",
-    "Bathroom #1",
-    "Bathroom #2",
-    "Ink Room",
-    "Plating Room",
-    "Engine Room",
-    "Break Room",
-    "Lunch Room",
-    "Lobby",
-    "Outside",
-]
+
+def inverse_factorial(value: int):
+    n = 1
+    while value > 0:
+        n += 1
+        value = int(value / n)
+    return n
+
+
+TITLES = ["".join(p) for p in permutations(ALPHABET[0:inverse_factorial(NUM_TEMPLATES)])]
 
 TEXTS = [
     "Who's the best auditor in town!? Is it you?",
@@ -100,8 +100,8 @@ RESPONSES = [
 ]
 
 
-def random_title():
-    return random.choice(TITLES)
+def next_title():
+    return TITLES.pop(0)
 
 
 def random_question():
@@ -138,7 +138,12 @@ def random_answer_from_question(question):
 
 
 if __name__ == '__main__':
-    for title in TITLES:
+    print("\nGenerating", NUM_TEMPLATES, "audit template(s), each with", NUM_COMPLETED_PER_TEMPLATE,
+          "completed audit(s)...")
+    print("Using", DELAY, "ms delay: Estimated time = ", NUM_TEMPLATES * NUM_COMPLETED_PER_TEMPLATE * DELAY,
+          " second(s)\n")
+    for _ in range(NUM_TEMPLATES):
+        title = next_title()
         time.sleep(DELAY)
         q0 = random_question()
         q1 = random_question()
