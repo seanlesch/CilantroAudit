@@ -1,7 +1,6 @@
 from time import mktime
 from datetime import datetime
 
-from cilantro_audit.audit_template import AuditTemplate
 from kivy import require
 from kivy.app import App
 from kivy.lang import Builder
@@ -12,7 +11,8 @@ from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 
 from cilantro_audit.completed_audit import CompletedAudit
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, COMPLETED_AUDIT_PAGE, AUDITOR_COMPLETED_AUDIT_PAGE
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, AUDITOR_COMPLETED_AUDIT_PAGE
+from cilantro_audit.audit_template import AuditTemplate
 
 EPOCH = datetime.utcfromtimestamp(0)
 require(KIVY_REQUIRED_VERSION)
@@ -81,8 +81,6 @@ class AuditorCompletedAuditsListPage(Screen):
             btn.bind(on_press=self.callback)
             self.title_col.add_widget(btn)
             counter += 1
-
-        counter = 0
 
         for dt in audit_dates:
             lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
