@@ -74,14 +74,14 @@
                         size_hint_y: 0.1
 
                         Button:
-                            text: 'Audit Title'
-                            on_release:
-                                root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).sort_by_audit_template()
-
-                        Button:
                             text: 'Question'
                             on_release:
                                 root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).sort_by_question()
+
+                        Button:
+                            text: 'Audit Title'
+                            on_release:
+                                root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).sort_by_audit_template()
 
                         Button:
                             text: 'Flagged Answers'
@@ -97,12 +97,12 @@
                             height: self.minimum_height
 
                             StackLayout:
-                                id: audit_title_col
+                                id: question_text_col
                                 size_hint_y: None
                                 height: self.minimum_height
 
                             StackLayout:
-                                id: question_text_col
+                                id: audit_title_col
                                 size_hint_y: None
                                 height: self.minimum_height
 
