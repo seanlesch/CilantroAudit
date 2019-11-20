@@ -61,23 +61,23 @@ class CompletedAuditPage(Screen):
         self.scrolling_panel.scroll_y = 1
 
     def add_title(self, title):  # needs to be updated when you click out of one audit and load up another
-        lbl = Label(text='[b]Audit: [/b]' + title, markup=True, size_hint_y=None, height=40, halign="left")
+        lbl = Label(text='[b]Audit: [/b]' + title, markup=True, size_hint_y=None, height=40, font_size=20, halign="left")
         self.grid_list.add_widget(lbl)
 
     def add_auditor(self, auditor):  # needs to be updated when you click out of one audit and load up another
-        lbl = Label(text='[b]Auditor: [/b]' + auditor, markup=True, size_hint_y=None, height=40, halign="left")
+        lbl = Label(text='[b]Auditor: [/b]' + auditor, markup=True, size_hint_y=None, height=40, font_size=20, halign="left")
         self.grid_list.add_widget(lbl)
 
     def add_date_time(self, dt):  # needs to be updated when you click out of one audit and load up another
-        lbl = Label(text='[b]Date: [/b]' + dt, markup=True, size_hint_y=None, height=40, halign="left")
+        lbl = Label(text='[b]Date: [/b]' + dt, markup=True, size_hint_y=None, height=40, font_size=20, halign="left")
         self.grid_list.add_widget(lbl)
 
     def add_blank_label(self, text):
-        lbl = Label(text=text, size_hint_y=None, height=40, halign="left")
+        lbl = Label(text=text, size_hint_y=None, height=40, font_size=20, halign="left")
         self.grid_list.add_widget(lbl)
 
     def add_question_answer(self, question, answer):
-        self.stack_list.height += 80  # integer (80) comes from question_answer size
+        self.stack_list.height += 130  # integer (80) comes from question_answer size
         qa = QuestionAnswer()
         qa.question_text = "[b]Question: [/b]" + question.text
         qa.answer_response_text = "[b]Response: [/b]" + str(answer.response.response)
@@ -89,14 +89,6 @@ class CompletedAuditPage(Screen):
             qa.answer_severity_text = "[b]Severity: [/b][color=#fbff21]YELLOW[/color]"
         elif qa.answer_severity_text == "[b]Severity: [/b]GREEN":
             qa.answer_severity_text = "[b]Severity: [/b][color=#21ff2c]GREEN[/color]"
-        self.stack_list.add_widget(qa)
-
-    def add_question_answer_auditor_version(self, question, answer):
-        self.stack_list.height += 80  # integer (80) comes from question_answer size
-        qa = QuestionAnswer()
-        qa.question_text = "[b]Question: [/b]" + question.text
-        qa.answer_response_text = "[b]Response: [/b]" + str(answer.response.response)
-        qa.answer_comments_text = "[b]Comments: [/b]" + str(answer.comment)
         self.stack_list.add_widget(qa)
 
     def clear_page(self):
