@@ -1,6 +1,8 @@
 import kivy
+import openpyxl
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty
+from kivy.uix.popup import Popup
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
@@ -9,6 +11,8 @@ from mongoengine import connect
 from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.audit_template import AuditTemplate
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB
+
+import os
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
@@ -29,6 +33,12 @@ class QuestionAnswer(FloatLayout):
 
     answer_severity_label = ObjectProperty()
     answer_severity_text = StringProperty()
+
+
+class SaveDialog(FloatLayout):
+    save = ObjectProperty(None)
+    text_input = ObjectProperty(None)
+    cancel = ObjectProperty(None)
 
 
 class CompletedAuditPage(Screen):
@@ -61,11 +71,13 @@ class CompletedAuditPage(Screen):
         self.scrolling_panel.scroll_y = 1
 
     def add_title(self, title):  # needs to be updated when you click out of one audit and load up another
-        lbl = Label(text='[b]Audit: [/b]' + title, markup=True, size_hint_y=None, height=40, font_size=20, halign="left")
+        lbl = Label(text='[b]Audit: [/b]' + title, markup=True, size_hint_y=None, height=40, font_size=20,
+                    halign="left")
         self.grid_list.add_widget(lbl)
 
     def add_auditor(self, auditor):  # needs to be updated when you click out of one audit and load up another
-        lbl = Label(text='[b]Auditor: [/b]' + auditor, markup=True, size_hint_y=None, height=40, font_size=20, halign="left")
+        lbl = Label(text='[b]Auditor: [/b]' + auditor, markup=True, size_hint_y=None, height=40, font_size=20,
+                    halign="left")
         self.grid_list.add_widget(lbl)
 
     def add_date_time(self, dt):  # needs to be updated when you click out of one audit and load up another
@@ -96,3 +108,19 @@ class CompletedAuditPage(Screen):
         self.stack_list.clear_widgets()
         self.stack_list.height = 0  # resets the height of the scrolling view. otherwise it grows with each new audit
         self.reset_scroll_to_top()
+
+    def dismiss_popup(self):
+        self._popup.dismiss()
+
+    def show_save(self):
+        content = SaveDialog(save=self.save, cancel=self.dismiss_popup)
+        self._popup = Popup(title="Save file", content=content,
+                            size_hint=(0.5, 0.5))
+        self._popup.open()
+
+    def save(self, path, filename):
+        # with open(os.path.join(path, filename), 'w') as stream:
+        #     stream.write(self.text_input.text)
+        #
+        # self.dismiss_popup()
+        pass

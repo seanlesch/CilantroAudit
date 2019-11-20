@@ -48,7 +48,7 @@
 
         Button:
             text: "Export to Excel"
-            on_release: None
+            on_release: root.show_save()
 
 <QuestionAnswer>:
 
@@ -99,3 +99,34 @@
         size_hint: None, None
         pos_hint: {"top": .4, "center_x": 0.6}
         text_size: root.width-50, None
+
+<SaveDialog>
+    text_input: text_input
+
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+
+        FileChooserListView:
+            id: filechooser
+            on_selection: text_input.text = self.selection and self.selection[0] or ''
+            dirselect: True
+            show_hidden: True
+
+        TextInput:
+            id: text_input
+            size_hint_y: None
+            height: 30
+            multiline: False
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Save"
+                on_release: root.save(filechooser.path, text_input.text)

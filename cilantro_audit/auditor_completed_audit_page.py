@@ -62,7 +62,8 @@ class AuditorCompletedAuditPage(Screen):
         self.grid_list.add_widget(lbl)
 
     def add_auditor(self, auditor):  # needs to be updated when you click out of one audit and load up another
-        lbl = Label(text='[b]Auditor: [/b]' + auditor, markup=True, size_hint_y=None, height=40, font_size=20, halign="left")
+        lbl = Label(text='[b]Auditor: [/b]' + auditor, markup=True,
+                    size_hint_y=None, height=40, font_size=20, halign="left")
         self.grid_list.add_widget(lbl)
 
     def add_date_time(self, dt):  # needs to be updated when you click out of one audit and load up another
