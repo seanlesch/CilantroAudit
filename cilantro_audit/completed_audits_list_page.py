@@ -133,8 +133,6 @@ class CompletedAuditsListPage(Screen):
             self.title_col.add_widget(btn)
             counter += 1
 
-        counter = 0
-
         for dt in audit_dates:
             lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
             self.date_col.add_widget(lbl)
@@ -189,7 +187,6 @@ class CompletedAuditsListPage(Screen):
                 btn.bind(on_press=self.callback)
                 self.title_col.add_widget(btn)
                 counter += 1
-            counter = 0
 
             for dt in audit_dates:
                 lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
@@ -251,7 +248,8 @@ class CompletedAuditsListPage(Screen):
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).reset_scroll_to_top()
 
         for question in audit_template.questions:
-            self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_question_answer(question, completed_audit.answers[counter])
+            self.manager.get_screen(COMPLETED_AUDIT_PAGE)\
+                .add_question_answer(question, completed_audit.answers[counter])
             counter += 1
 
     def populate_completed_audit_page(self, title, dt):
