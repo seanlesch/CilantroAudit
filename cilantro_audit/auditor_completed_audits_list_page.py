@@ -96,7 +96,7 @@ class AuditorCompletedAuditsListPage(Screen):
         self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).add_auditor(auditor)
         self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).add_date_time(format_datetime(utc_to_local(dt)))
 
-    def load_audit_template_and_completed_audit_with_title_and_datetime(self, title, datetime):
+    def load_audit_template_and_completed_audit_with_title_and_datetime(self, title, timedate):
         at = AuditTemplate()
         ca = CompletedAudit()
 
@@ -108,7 +108,7 @@ class AuditorCompletedAuditsListPage(Screen):
                 break
 
         for completed_audit in ca_list:
-            if str(completed_audit.datetime) == datetime:
+            if str(completed_audit.datetime) == timedate:
                 ca = completed_audit
                 break
         return at, ca
@@ -122,8 +122,8 @@ class AuditorCompletedAuditsListPage(Screen):
         self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).reset_scroll_to_top()
 
         for question in audit_template.questions:
-            self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).add_question_answer_auditor_version(question,
-                                                                              completed_audit.answers[counter])
+            self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE)\
+                .add_question_answer_auditor_version(question, completed_audit.answers[counter])
             counter += 1
 
     def populate_completed_audit_page(self, title, dt):
@@ -136,6 +136,7 @@ class AuditorCompletedAuditsListPage(Screen):
 
     def callback(self, instance):
         self.populate_completed_audit_page(instance.text, instance.id)
+
 
 def format_datetime(dt):
     return dt.strftime("%m/%d/%Y (%H:%M:%S)")
