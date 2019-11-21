@@ -111,13 +111,14 @@
 
         FileChooserListView:
             id: filechooser
-            path: "C:\\Users\\" + os.getlogin()
+            path: "C:\\Users\\" + os.getlogin() + "\\Desktop"
             on_selection: text_input.text = self.selection and self.selection[0] or ''
             dirselect: True
             show_hidden: True
 
         TextInput:
             id: text_input
+            text: "C:\\Users\\" + os.getlogin() + "\\Desktop\\example.xlsx"
             size_hint_y: None
             height: 30
             multiline: False
@@ -165,6 +166,27 @@
         Label:
             text_size: root.width, None
             text: "File successfully exported."
+            halign: 'center'
+            font_size: 17
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+
+            Button:
+                text: "Ok"
+                on_release: root.ok()
+
+<ErrorPopup>
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+
+        Label:
+            text_size: root.width, None
+            markup: True
+            text: "[color=#fc0303][b]Error:[/b][/color] Please enter a file not a directory."
             halign: 'center'
             font_size: 17
 

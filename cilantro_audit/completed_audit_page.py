@@ -51,6 +51,10 @@ class FileSavedPopup(FloatLayout):
     ok = ObjectProperty(None)
 
 
+class ErrorPopup(FloatLayout):
+    ok = ObjectProperty(None)
+
+
 class CompletedAuditPage(Screen):
     stack_list = ObjectProperty()
     grid_list = ObjectProperty()
@@ -147,16 +151,33 @@ class CompletedAuditPage(Screen):
         sheetname = self.header_auditor.text + " - " + self.header_title.text
         wb = ef.open_file(sheetname, file_path)
         # todo: add failsafe(s) for filename
-        if os.path.exists(file_path):
-            content = OverwritePopup(yes=lambda: self.replace_file(wb, file_path), no=self.dismiss_popup)
-            self._popup = Popup(title="Overwrite File?", content=content, size_hint=(0.5, 0.5))
+        if file_path.endswith("\\"):
+            content = ErrorPopup(ok=self.dismiss_popup)
+            self._popup = Popup(title="File Error", content=content, size_hint=(0.5, 0.5))
             self._popup.open()
+        elif not file_path.endswith(".xlsx"):
+            file_path = file_path + ".xlsx"
+            if os.path.exists(file_path):
+                content = OverwritePopup(yes=lambda: self.replace_file(wb, file_path), no=self.dismiss_popup)
+                self._popup = Popup(title="Overwrite File?", content=content, size_hint=(0.5, 0.5))
+                self._popup.open()
+            else:
+                wb.save(file_path)
+                self.dismiss_popup()
+                content = FileSavedPopup(ok=self.dismiss_popup)
+                self._popup = Popup(title="File Exported", content=content, size_hint=(0.5, 0.5))
+                self._popup.open()
         else:
-            wb.save(file_path)
-            self.dismiss_popup()
-            content = FileSavedPopup(ok=self.dismiss_popup)
-            self._popup = Popup(title="File Exported", content=content, size_hint=(0.5, 0.5))
-            self._popup.open()
+            if os.path.exists(file_path):
+                content = OverwritePopup(yes=lambda: self.replace_file(wb, file_path), no=self.dismiss_popup)
+                self._popup = Popup(title="Overwrite File?", content=content, size_hint=(0.5, 0.5))
+                self._popup.open()
+            else:
+                wb.save(file_path)
+                self.dismiss_popup()
+                content = FileSavedPopup(ok=self.dismiss_popup)
+                self._popup = Popup(title="File Exported", content=content, size_hint=(0.5, 0.5))
+                self._popup.open()
 
     def replace_file(self, wb, path_to_file):
         os.remove(path_to_file)
