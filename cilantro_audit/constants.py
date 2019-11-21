@@ -35,6 +35,9 @@ SEVERITY_PRECEDENCE = {
 TEST_DB = "testdb"
 PROD_DB = "prod"
 
+# Directories
+PDF_OUTPUT_DIR = "CilantroOutput"
+
 # Kivy Window Names
 HOME_SCREEN = "HomeScreen"
 ADMIN_SCREEN = "AdminScreen"
