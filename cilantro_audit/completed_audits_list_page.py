@@ -208,7 +208,8 @@ class CompletedAuditsListPage(Screen):
                 self.auditor_col.add_widget(lbl)
 
             for severity in audit_severities:
-                lbl = Label(text=severity.severity, color=get_severity_color(severity.severity), size_hint_y=None, height=40)
+                lbl = Label(text=severity.severity, color=get_severity_color(severity.severity), size_hint_y=None,
+                            height=40)
                 self.severity_col.add_widget(lbl)
 
             for count in audit_unresolved_counts:
