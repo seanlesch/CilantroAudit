@@ -47,17 +47,17 @@
                     spacing: 5
                     size_hint_y: 0.1
 
-                    Button:
+                    CilantroButton:
                         text: 'Audit Title'
                         on_release:
                             root.sort_by_audit_template()
 
-                    Button:
+                    CilantroButton:
                         text: 'Question'
                         on_release:
                             root.sort_by_question()
 
-                    Button:
+                    CilantroButton:
                         text: 'Flagged Answers'
                         on_release:
                             root.sort_by_times_flagged()
@@ -94,7 +94,7 @@
             name: 'place-holder'
             size_hint: 0.1, 0.1
 
-        Button:
+        CilantroButton:
             text: 'Refresh List'
             size_hint: 1, 0.1
             on_release:
@@ -124,14 +124,7 @@
 
     canvas.before:
         Color:
-            rgb: 0.1, 0.1, 0.1, 1
-
-        Rectangle:
-            size: self.size
-            pos: self.pos
-
-        Color:
             rgb: 0, 0, 0, 1
         Rectangle:
             pos: self.pos
-            size: 1000, 5
+            size: 1000, 2
