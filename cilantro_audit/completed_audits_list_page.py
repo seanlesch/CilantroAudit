@@ -38,6 +38,15 @@ def invert_datetime(dt):
     return -(dt - EPOCH).total_seconds()
 
 
+def get_severity_color(severity):
+    if severity == "RED":
+        return kivy.utils.rgba("#ed1c1c")
+    if severity == "YELLOW":
+        return kivy.utils.rgba("#fbff21")
+    if severity == "GREEN":
+        return kivy.utils.rgba("#21ff2c")
+
+
 class CompletedAuditsListPage(Screen):
     date_col = ObjectProperty()
     title_col = ObjectProperty()
@@ -142,7 +151,8 @@ class CompletedAuditsListPage(Screen):
             self.auditor_col.add_widget(lbl)
 
         for severity in audit_severities:
-            lbl = Label(text=severity.severity, size_hint_y=None, height=40)
+            lbl = Label(text=severity.severity, color=get_severity_color(severity.severity), size_hint_y=None,
+                        height=40)
             self.severity_col.add_widget(lbl)
 
         for count in audit_unresolved_counts:
@@ -197,7 +207,7 @@ class CompletedAuditsListPage(Screen):
                 self.auditor_col.add_widget(lbl)
 
             for severity in audit_severities:
-                lbl = Label(text=severity.severity, size_hint_y=None, height=40)
+                lbl = Label(text=severity.severity, color=get_severity_color(severity.severity), size_hint_y=None, height=40)
                 self.severity_col.add_widget(lbl)
 
             for count in audit_unresolved_counts:
@@ -248,7 +258,7 @@ class CompletedAuditsListPage(Screen):
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).reset_scroll_to_top()
 
         for question in audit_template.questions:
-            self.manager.get_screen(COMPLETED_AUDIT_PAGE)\
+            self.manager.get_screen(COMPLETED_AUDIT_PAGE) \
                 .add_question_answer(question, completed_audit.answers[counter])
             counter += 1
 
