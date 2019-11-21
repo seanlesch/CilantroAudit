@@ -23,6 +23,7 @@ connect(PROD_DB)
 # Handles the retrieval of audit templates for the auditor screens.
 class ViewAuditTemplates(Screen):
     templates_list = ObjectProperty()
+    titles = []
 
     # Constructor utilizes the only method to retrieve audits for use in the associated .kv file.
     def __init__(self, **kw):
