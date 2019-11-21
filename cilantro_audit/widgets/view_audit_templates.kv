@@ -2,6 +2,7 @@
 
 <ViewAuditTemplates>:
 
+
 <ViewAuditTemplatesContent>:
     templates_list: templates_list
 
@@ -78,7 +79,7 @@
 
 
 <ActiveAuditButton@CilantroButton>:
-    name: 'button_template'
+    name: 'active_button_template'
     size_hint_y: None
     height: 70
 
@@ -96,7 +97,6 @@
     size_hint: .5, .5
 
     FloatLayout:
-
         Label:
             text: "The audit you selected has already been completed."
             size_hint: 0.6, 0.2
@@ -106,4 +106,5 @@
             text: "OK"
             size_hint: .3, .3
             pos_hint: {"center_x": .5, "y": 0}
-            on_press: root.dismiss()
+            on_release:
+                root.dismiss()

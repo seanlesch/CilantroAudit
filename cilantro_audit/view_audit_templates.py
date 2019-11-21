@@ -69,10 +69,6 @@ class ActiveAuditButton(CilantroButton):
 
 
 class InactiveAuditButton(CilantroButton):
-    def __init__(self, **kwargs):
-        super().__init__()
-        self.text = kwargs['text']
-
     def on_release(self, *args):
         super().on_release(*args)
         show = LockedTemplatePop()
