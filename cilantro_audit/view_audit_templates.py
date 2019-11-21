@@ -52,7 +52,7 @@ class ViewAuditTemplatesContent(Screen):
 
         for audit in audit_templates:
             if audit.locked is False:
-                self.templates_list.add_widget(AuditButton(text=audit.title))
+                self.templates_list.add_widget(ActiveAuditButton(text=audit.title))
             else:
                 self.templates_list.add_widget(InactiveAuditButton(text=audit.title))
 
@@ -61,13 +61,9 @@ class ViewAuditTemplatesContent(Screen):
         self.retrieve_audit_titles()
 
 
-class AuditButton(CilantroButton):
-    def __init__(self, **kwargs):
-        super().__init__()
-        self.text = kwargs['text']
-
-    def on_press(self, *args):
-        super(AuditButton, self).on_press(*args)
+class ActiveAuditButton(CilantroButton):
+    def on_release(self, *args):
+        super(ActiveAuditButton, self).on_release(*args)
         self.screen_manager.get_screen(CREATE_COMPLETED_AUDIT_PAGE).populate_audit(self.text)
         self.screen_manager.current = CREATE_COMPLETED_AUDIT_PAGE
 
@@ -77,8 +73,8 @@ class InactiveAuditButton(Button):
         super().__init__()
         self.text = kwargs['text']
 
-    def on_press(self, *args):
-        super().on_press(*args)
+    def on_release(self, *args):
+        super().on_release(*args)
         show = LockedTemplatePop()
         show.open()
 

@@ -37,15 +37,12 @@
                 rows: 2
                 cols: 1
                 spacing: 5
-                size_hint_x: 1.8
 
                 ScrollView:
-                    name: 'middle-col'
-
                     StackLayout:
                         id: templates_list
                         height: self.minimum_height
-                        size_hint_y: None
+                        size_hint: 1, None
 
         Widget:
             name: 'place-holder'
@@ -80,9 +77,10 @@
             size_hint: 0.1, 0.1
 
 
-<AuditButton@CilantroButton>:
+<ActiveAuditButton@CilantroButton>:
     name: 'button_template'
     size_hint_y: None
+    height: 70
 
 
 <InactiveAuditButton@Button>:
