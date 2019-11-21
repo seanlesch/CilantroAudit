@@ -68,7 +68,7 @@ class ActiveAuditButton(CilantroButton):
         self.screen_manager.current = CREATE_COMPLETED_AUDIT_PAGE
 
 
-class InactiveAuditButton(Button):
+class InactiveAuditButton(CilantroButton):
     def __init__(self, **kwargs):
         super().__init__()
         self.text = kwargs['text']
