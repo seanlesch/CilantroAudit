@@ -1,5 +1,5 @@
 import kivy
-import openpyxl
+from cilantro_audit.excel_file import ExcelFile
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.popup import Popup
@@ -7,6 +7,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from mongoengine import connect
+from cilantro_audit.completed_audit import CompletedAudit
 
 from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.audit_template import AuditTemplate
@@ -39,6 +40,7 @@ class SaveDialog(FloatLayout):
     save = ObjectProperty(None)
     text_input = ObjectProperty(None)
     cancel = ObjectProperty(None)
+    default_path = ObjectProperty(None)
 
 
 class CompletedAuditPage(Screen):
@@ -46,6 +48,9 @@ class CompletedAuditPage(Screen):
     grid_list = ObjectProperty()
     question_text = ObjectProperty()
     scrolling_panel = ObjectProperty()
+    header_title = ObjectProperty()
+    header_auditor = ObjectProperty()
+    header_dt = ObjectProperty()
 
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -53,6 +58,8 @@ class CompletedAuditPage(Screen):
         self.audit_templates = []
         self.load_completed_audits()
         self.load_audit_templates()
+        self.ca = CompletedAudit()
+        self.at = AuditTemplate()
 
     # Loads all of the completed_audit objects from the database into a list.
     def load_completed_audits(self):
@@ -73,15 +80,19 @@ class CompletedAuditPage(Screen):
     def add_title(self, title):  # needs to be updated when you click out of one audit and load up another
         lbl = Label(text='[b]Audit: [/b]' + title, markup=True, size_hint_y=None, height=40, font_size=20,
                     halign="left")
+        self.header_title = Label(text=title)
         self.grid_list.add_widget(lbl)
 
     def add_auditor(self, auditor):  # needs to be updated when you click out of one audit and load up another
         lbl = Label(text='[b]Auditor: [/b]' + auditor, markup=True, size_hint_y=None, height=40, font_size=20,
                     halign="left")
+        self.header_auditor = Label(text=auditor)
+
         self.grid_list.add_widget(lbl)
 
     def add_date_time(self, dt):  # needs to be updated when you click out of one audit and load up another
         lbl = Label(text='[b]Date: [/b]' + dt, markup=True, size_hint_y=None, height=40, font_size=20, halign="left")
+        self.header_dt = Label(text=dt)
         self.grid_list.add_widget(lbl)
 
     def add_blank_label(self, text):
@@ -114,13 +125,17 @@ class CompletedAuditPage(Screen):
 
     def show_save(self):
         content = SaveDialog(save=self.save, cancel=self.dismiss_popup)
+        content.default_path = "C:\\Users\\" + os.getlogin() +"\\Desktop"
         self._popup = Popup(title="Save file", content=content,
-                            size_hint=(0.5, 0.5))
+                            size_hint=(0.9, 0.9))
         self._popup.open()
 
     def save(self, path, filename):
-        # with open(os.path.join(path, filename), 'w') as stream:
-        #     stream.write(self.text_input.text)
-        #
-        # self.dismiss_popup()
-        pass
+        file_path = os.path.join(path, filename)
+        ef = ExcelFile(self.header_title.text, self.header_auditor.text, self.header_dt.text, self.at, self.ca)
+        sheetname = self.header_auditor.text + " - " + self.header_title.text
+        wb = ef.open_file(sheetname, file_path)
+        # todo: add failsafe(s) for filename
+        # wb.save(file_path)
+        print(os.getlogin())
+        self.dismiss_popup()

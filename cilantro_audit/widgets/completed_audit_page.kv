@@ -1,4 +1,5 @@
 #:import SlideTransition kivy.uix.screenmanager.SlideTransition
+#:import os os
 
 <CompletedAuditPage>:
 
@@ -110,6 +111,7 @@
 
         FileChooserListView:
             id: filechooser
+            path: "C:\\Users\\" + os.getlogin()
             on_selection: text_input.text = self.selection and self.selection[0] or ''
             dirselect: True
             show_hidden: True
