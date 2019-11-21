@@ -2,6 +2,9 @@
 <CilantroPage>:
     page: page
     header: header
+    header_back: header_back
+    header_title: header_title
+    header_home: header_home
     body: body
     footer: footer
 
@@ -25,12 +28,15 @@
             size_hint: 1, 0.1
 
             CilantroButton:
+                id: header_back
                 text: 'Back'
 
             CilantroLabel:
+                id: header_title
                 text: 'Template Page'
 
             CilantroButton:
+                id: header_home
                 text: 'Return to Homepage'
 
         GridLayout:

@@ -18,6 +18,9 @@ class CilantroPage(Screen):
     page = ObjectProperty()
     body = ObjectProperty()
     header = ObjectProperty()
+    header_back = ObjectProperty()
+    header_title = ObjectProperty()
+    header_home = ObjectProperty()
     footer = ObjectProperty()
     pass
 
