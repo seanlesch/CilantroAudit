@@ -14,6 +14,7 @@ from cilantro_audit.constants import CREATE_COMPLETED_AUDIT_PAGE
 
 from cilantro_audit.audit_template import AuditTemplate
 from cilantro_audit.templates.cilantro_page import CilantroPage
+from cilantro_audit.templates.cilantro_button import CilantroButton
 
 require(KIVY_REQUIRED_VERSION)
 Builder.load_file("./widgets/view_audit_templates.kv")
@@ -54,7 +55,7 @@ class LockedTemplatePop(Popup):
     pass
 
 
-class AuditButton(Button):
+class AuditButton(CilantroButton):
     def __init__(self, **kwargs):
         super().__init__()
         self.screen_manager = kwargs['screen_manager']
