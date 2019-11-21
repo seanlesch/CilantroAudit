@@ -54,3 +54,8 @@ RGB_RED = get_color_from_hex("#FF4500")
 RGB_GREEN = get_color_from_hex("#00FA9A")
 RGB_YELLOW = get_color_from_hex("#FFFF00")
 RGB_GREY_LIGHT = get_color_from_hex("D3D3D3")
+
+# Severity Colors
+SEVERITY_RED = "#ED1C1C"
+SEVERITY_YELLOW = "#FBFF21"
+SEVERITY_GREEN = "21FF2C"
