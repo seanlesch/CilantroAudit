@@ -12,7 +12,8 @@ from kivy.uix.popup import Popup
 from kivy.clock import Clock
 
 from cilantro_audit.completed_audit import CompletedAudit
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, SEVERITY_PRECEDENCE, COMPLETED_AUDIT_PAGE
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, SEVERITY_PRECEDENCE, COMPLETED_AUDIT_PAGE, \
+    RGB_RED, RGB_YELLOW, RGB_GREEN
 from cilantro_audit.audit_template import AuditTemplate
 
 kivy.require(KIVY_REQUIRED_VERSION)
@@ -40,11 +41,11 @@ def invert_datetime(dt):
 
 def get_severity_color(severity):
     if severity == "RED":
-        return kivy.utils.rgba("#ed1c1c")
+        return RGB_RED
     if severity == "YELLOW":
-        return kivy.utils.rgba("#fbff21")
+        return RGB_YELLOW
     if severity == "GREEN":
-        return kivy.utils.rgba("#21ff2c")
+        return RGB_GREEN
 
 
 class CompletedAuditsListPage(Screen):
