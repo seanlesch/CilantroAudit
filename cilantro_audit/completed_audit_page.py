@@ -40,7 +40,15 @@ class SaveDialog(FloatLayout):
     save = ObjectProperty(None)
     text_input = ObjectProperty(None)
     cancel = ObjectProperty(None)
-    default_path = ObjectProperty(None)
+
+
+class OverwritePopup(FloatLayout):
+    yes = ObjectProperty(None)
+    no = ObjectProperty(None)
+
+
+class FileSavedPopup(FloatLayout):
+    ok = ObjectProperty(None)
 
 
 class CompletedAuditPage(Screen):
@@ -51,6 +59,8 @@ class CompletedAuditPage(Screen):
     header_title = ObjectProperty()
     header_auditor = ObjectProperty()
     header_dt = ObjectProperty()
+    current_pupup = ObjectProperty()
+    other_popup = ObjectProperty()
 
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -125,9 +135,10 @@ class CompletedAuditPage(Screen):
 
     def show_save(self):
         content = SaveDialog(save=self.save, cancel=self.dismiss_popup)
-        content.default_path = "C:\\Users\\" + os.getlogin() +"\\Desktop"
         self._popup = Popup(title="Save file", content=content,
                             size_hint=(0.9, 0.9))
+        self.other_popup = self._popup
+
         self._popup.open()
 
     def save(self, path, filename):
@@ -136,6 +147,22 @@ class CompletedAuditPage(Screen):
         sheetname = self.header_auditor.text + " - " + self.header_title.text
         wb = ef.open_file(sheetname, file_path)
         # todo: add failsafe(s) for filename
-        # wb.save(file_path)
-        print(os.getlogin())
+        if os.path.exists(file_path):
+            content = OverwritePopup(yes=lambda: self.replace_file(wb, file_path), no=self.dismiss_popup)
+            self._popup = Popup(title="Overwrite File?", content=content, size_hint=(0.5, 0.5))
+            self._popup.open()
+        else:
+            wb.save(file_path)
+            self.dismiss_popup()
+            content = FileSavedPopup(ok=self.dismiss_popup)
+            self._popup = Popup(title="File Exported", content=content, size_hint=(0.5, 0.5))
+            self._popup.open()
+
+    def replace_file(self, wb, path_to_file):
+        os.remove(path_to_file)
+        wb.save(path_to_file)
         self.dismiss_popup()
+        self.other_popup.dismiss()
+        content = FileSavedPopup(ok=self.dismiss_popup)
+        self._popup = Popup(title="File Exported", content=content, size_hint=(0.5, 0.5))
+        self._popup.open()
