@@ -51,8 +51,6 @@ class AdminLoginPopup(Popup):
 
 
 class CilantroAudit(App):
-
-    # Initialize screen manager and other necessary fields
     def build(self):
         self.title = 'CilantroAudit'
 
