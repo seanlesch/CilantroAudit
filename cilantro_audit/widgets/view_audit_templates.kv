@@ -7,7 +7,6 @@
     templates_list: templates_list
 
     GridLayout:
-        name: 'body-grid'
         rows: 4
         cols: 3
 
@@ -32,18 +31,17 @@
         GridLayout:
             rows: 2
             cols: 1
-            spacing: 5
 
             GridLayout:
                 rows: 2
                 cols: 1
-                spacing: 5
 
                 ScrollView:
                     StackLayout:
                         id: templates_list
                         height: self.minimum_height
                         size_hint: 1, None
+                        spacing: 2
 
         Widget:
             name: 'place-holder'
@@ -85,6 +83,7 @@
 
     on_release:
         self.text
+
 
 <InactiveAuditButton@Button>:
     name: 'inactive_button_template'
