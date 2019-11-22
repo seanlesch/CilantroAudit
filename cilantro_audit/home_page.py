@@ -64,7 +64,7 @@ class CilantroAudit(App):
         sm.add_widget(CompletedAuditsListPage(name=COMPLETED_AUDITS_LIST_PAGE))
         sm.add_widget(AuditorCompletedAuditsListPage(name=AUDITOR_COMPLETED_AUDITS_LIST_PAGE))
         sm.add_widget(ViewAuditTemplates(name=VIEW_AUDIT_TEMPLATES, screen_manager=sm))
-        sm.add_widget(ViewFlagTrendsPage(name=VIEW_FLAG_TRENDS_PAGE))
+        sm.add_widget(ViewFlagTrendsPage(name=VIEW_FLAG_TRENDS_PAGE, screen_manager=sm))
 
         return sm
 

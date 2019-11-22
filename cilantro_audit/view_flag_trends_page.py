@@ -23,6 +23,7 @@ connect(PROD_DB)
 
 
 class ViewFlagTrendsPage(Screen):
+    screen_manager = ObjectProperty()
     template_page = CilantroPage()
 
     def __init__(self, **kw):
@@ -33,10 +34,10 @@ class ViewFlagTrendsPage(Screen):
         self.add_widget(self.template_page)
 
     def go_back(self):
-        self.manager.current = ADMIN_SCREEN
+        self.screen_manager.current = ADMIN_SCREEN
 
     def go_home(self):
-        self.manager.current = HOME_SCREEN
+        self.screen_manager.current = HOME_SCREEN
 
 
 # A custom widget for retrieved entries
