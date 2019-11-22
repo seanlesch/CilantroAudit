@@ -38,18 +38,15 @@ class CreateCompletedAuditPage(Screen):
 
     def populate_audit(self, audit_title):
         self.audit_title = audit_title
-        completed_audits = list(AuditTemplate.objects())
 
-        for completed_audit in completed_audits:
-            if completed_audit.title == self.audit_title:
-                for question in completed_audit.questions:
-                    a_temp = AnswerModule()
-                    a_temp.question = question
-                    a_temp.question_text = question.text
-                    self.stack_list.add_widget(a_temp)
-                    self.questions.append(a_temp)
-                    self.stack_list.height += ANSWER_MODULE_DISPLACEMENT
-                break
+        completed_audit = AuditTemplate.objects().filter(title=self.audit_title).first()
+        for question in completed_audit.questions:
+            a_temp = AnswerModule()
+            a_temp.question = question
+            a_temp.question_text = question.text
+            self.stack_list.add_widget(a_temp)
+            self.questions.append(a_temp)
+            self.stack_list.height += ANSWER_MODULE_DISPLACEMENT
 
         self.scrolling_panel.scroll_y = 1
         self.auditor_name.text = ''
