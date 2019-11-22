@@ -1,151 +1,121 @@
-#:import HOME_SCREEN cilantro_audit.constants.HOME_SCREEN
-#:import ADMIN_SCREEN cilantro_audit.constants.ADMIN_SCREEN
-#:import VIEW_FLAG_TRENDS_PAGE cilantro_audit.constants.VIEW_FLAG_TRENDS_PAGE
 
 <ViewFlagTrendsPage>:
+
+
+<ViewFlagTrendsPageContent>:
     audit_title_col: audit_title_col
     question_text_col: question_text_col
     times_flagged_col: times_flagged_col
 
     GridLayout:
-        rows: 3
-        cols: 1
+        name: 'body-grid'
+        rows: 4
+        cols: 3
+
+        # 1st Row
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
+
+        Widget:
+            name: 'place-holder'
+            size_hint: 1, 0.1
+
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
+
+        # 2nd Row
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 1
 
         GridLayout:
-            name: 'header-grid'
-            rows: 1
-            cols: 3
-            size_hint: 1.0, 0.1
-
-            Button:
-                text: 'Return to Homepage'
-                on_release:
-                    root.manager.current = HOME_SCREEN
-                    root.manager.transition.duration = 0.3
-                    root.manager.transition.direction = 'down'
-
-            Label:
-                name: 'page-title'
-                text: 'Flagged Questions Trend'
-
-            Button:
-                text: 'Exit'
-                on_release:
-                    exit(1)
-
-        GridLayout:
-            name: 'body-grid'
-            rows: 3
-            cols: 3
-
-            # 1st Row
-            Widget:
-                name: 'place-holder'
-                size_hint: 0.1, 0.1
-
-            Widget:
-                name: 'place-holder'
-                size_hint: 1, 0.1
-
-            Widget:
-                name: 'place-holder'
-                size_hint: 0.1, 0.1
-
-            # 2nd Row
-            Widget:
-                name: 'place-holder'
-                size_hint: 0.1, 1
+            rows: 2
+            cols: 1
+            spacing: 5
 
             GridLayout:
                 rows: 2
                 cols: 1
                 spacing: 5
+                size_hint_x: 1.8
 
                 GridLayout:
-                    rows: 2
-                    cols: 1
+                    rows: 1
+                    cols: 3
                     spacing: 5
-                    size_hint_x: 1.8
+                    size_hint_y: 0.1
 
+                    CilantroButton:
+                        text: 'Audit Title'
+                        on_release:
+                            root.sort_by_audit_template()
+
+                    CilantroButton:
+                        text: 'Question'
+                        on_release:
+                            root.sort_by_question()
+
+                    CilantroButton:
+                        text: 'Flagged Answers'
+                        on_release:
+                            root.sort_by_times_flagged()
+
+                ScrollView:
                     GridLayout:
                         rows: 1
                         cols: 3
                         spacing: 5
-                        size_hint_y: 0.1
+                        size_hint_y: None
+                        height: self.minimum_height
 
-                        Button:
-                            text: 'Audit Title'
-                            on_release:
-                                root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).sort_by_audit_template()
-
-                        Button:
-                            text: 'Question'
-                            on_release:
-                                root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).sort_by_question()
-
-                        Button:
-                            text: 'Flagged Answers'
-                            on_release:
-                                root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).sort_by_times_flagged()
-
-                    ScrollView:
-                        GridLayout:
-                            rows: 1
-                            cols: 3
-                            spacing: 5
+                        StackLayout:
+                            id: audit_title_col
                             size_hint_y: None
                             height: self.minimum_height
 
-                            StackLayout:
-                                id: audit_title_col
-                                size_hint_y: None
-                                height: self.minimum_height
+                        StackLayout:
+                            id: question_text_col
+                            size_hint_y: None
+                            height: self.minimum_height
 
-                            StackLayout:
-                                id: question_text_col
-                                size_hint_y: None
-                                height: self.minimum_height
+                        StackLayout:
+                            id: times_flagged_col
+                            size_hint_y: None
+                            height: self.minimum_height
 
-                            StackLayout:
-                                id: times_flagged_col
-                                size_hint_y: None
-                                height: self.minimum_height
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 1
 
-            Widget:
-                name: 'place-holder'
-                size_hint: 0.1, 1
+        # 3rd Row
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
 
-            # 3rd Row
-            Widget:
-                name: 'place-holder'
-                size_hint: 0.1, 0.1
+        CilantroButton:
+            text: 'Refresh List'
+            size_hint: 1, 0.1
+            on_release:
+                root.refresh_flagged_questions()
 
-            Widget:
-                name: 'place-holder'
-                size_hint: 1, 0.1
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
 
-            Widget:
-                name: 'place-holder'
-                size_hint: 0.1, 0.1
+        # 4th Row
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
 
-        GridLayout:
-            name: 'footer-grid'
-            rows: 1
-            cols: 3
+        Widget:
+            name: 'place-holder'
             size_hint: 1, 0.1
 
-            Button:
-                text: 'Return to Admin Page'
-                on_release:
-                    root.manager.current = ADMIN_SCREEN
-                    root.manager.transition.duration = 0.3
-                    root.manager.transition.direction = 'right'
-
-            Button:
-                text: 'Refresh List'
-                on_release:
-                    root.manager.get_screen(VIEW_FLAG_TRENDS_PAGE).refresh_flagged_questions()
-
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
 
 <EntryLabel>:
     size_hint_y: None
@@ -154,14 +124,7 @@
 
     canvas.before:
         Color:
-            rgb: 0.1, 0.1, 0.1, 1
-
-        Rectangle:
-            size: self.size
-            pos: self.pos
-
-        Color:
             rgb: 0, 0, 0, 1
         Rectangle:
             pos: self.pos
-            size: 1000, 5
+            size: 1000, 3
