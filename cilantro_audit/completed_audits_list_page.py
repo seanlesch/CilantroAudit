@@ -234,17 +234,10 @@ class CompletedAuditsListPage(Screen):
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_auditor(auditor)
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_date_time(format_datetime(utc_to_local(dt)))
 
-    def load_audit_template_and_completed_audit_with_title_and_datetime(self, datetime):
-        ca = CompletedAudit()
+    def load_audit_template_and_completed_audit_with_title_and_datetime(self, dt):
+        ca = list(CompletedAudit.objects(datetime=dt))
 
-        ca_list = list(CompletedAudit.objects().only("title", "datetime", "auditor", "severity", "answers"))
-
-        for completed_audit in ca_list:
-            if str(completed_audit.datetime) == datetime:
-                ca = completed_audit
-                break
-
-        return ca
+        return ca[0]
 
     def build_completed_audit_page_body(self, completed_audit):
 
