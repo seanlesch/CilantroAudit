@@ -1,20 +1,20 @@
-import kivy
 import time
-
 from datetime import datetime
+
+import kivy
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 from kivy.uix.button import Button
 from kivy.uix.label import Label
+from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from mongoengine import connect
-from kivy.uix.popup import Popup
-from kivy.clock import Clock
 
+from cilantro_audit.audit_template import AuditTemplate, Severity
 from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, SEVERITY_PRECEDENCE, COMPLETED_AUDIT_PAGE, \
     RGB_RED, RGB_YELLOW, RGB_GREEN
-from cilantro_audit.audit_template import AuditTemplate
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
@@ -40,11 +40,11 @@ def invert_datetime(dt):
 
 
 def get_severity_color(severity):
-    if severity == "RED":
+    if severity == Severity.red():
         return RGB_RED
-    if severity == "YELLOW":
+    if severity == Severity.yellow():
         return RGB_YELLOW
-    if severity == "GREEN":
+    if severity == Severity.green():
         return RGB_GREEN
 
 
@@ -113,7 +113,10 @@ class CompletedAuditsListPage(Screen):
 
     def load_completed_audits(self):
         self.audits = list(
-            CompletedAudit.objects().only("title", "datetime", "auditor", "severity", "unresolved_count"))
+            (CompletedAudit
+             .objects()
+             .order_by("-unresolved_count", "severity", "-datetime", "title", "auditor")
+             .only("title", "datetime", "auditor", "severity", "unresolved_count")).limit(5))
         self.sort_by_severity()
         self.refresh_completed_audits()
 
@@ -152,7 +155,7 @@ class CompletedAuditsListPage(Screen):
             self.auditor_col.add_widget(lbl)
 
         for severity in audit_severities:
-            lbl = Label(text=severity.severity, color=get_severity_color(severity.severity), size_hint_y=None,
+            lbl = Label(text=severity.severity[2:], color=get_severity_color(severity), size_hint_y=None,
                         height=40)
             self.severity_col.add_widget(lbl)
 
@@ -208,7 +211,7 @@ class CompletedAuditsListPage(Screen):
                 self.auditor_col.add_widget(lbl)
 
             for severity in audit_severities:
-                lbl = Label(text=severity.severity, color=get_severity_color(severity.severity), size_hint_y=None,
+                lbl = Label(text=severity.severity[2:], color=get_severity_color(severity), size_hint_y=None,
                             height=40)
                 self.severity_col.add_widget(lbl)
 

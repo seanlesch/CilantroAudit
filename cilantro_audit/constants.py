@@ -20,15 +20,15 @@ ANSWER_MODULE_DISPLACEMENT = 200
 
 # Enumerated Values
 SEVERITY_VALUES = [
-    "RED",
-    "YELLOW",
-    "GREEN",
+    "0:RED",
+    "1:YELLOW",
+    "2:GREEN",
 ]
 
 SEVERITY_PRECEDENCE = {
-    "RED": 0,
-    "YELLOW": 1,
-    "GREEN": 2,
+    "0:RED": 0,
+    "1:YELLOW": 1,
+    "2:GREEN": 2,
 }
 
 # Database Names
