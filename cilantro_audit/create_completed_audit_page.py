@@ -1,77 +1,57 @@
-import kivy
+from kivy import require
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty, StringProperty
-from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
-from kivy.resources import resource_find
+from kivy.properties import ObjectProperty
+from kivy.properties import StringProperty
+
 from mongoengine import connect
 
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION
+from cilantro_audit.constants import PROD_DB
+from cilantro_audit.constants import VIEW_AUDIT_TEMPLATES
+from cilantro_audit.constants import ANSWER_MODULE_DISPLACEMENT
+
 from cilantro_audit.audit_template import AuditTemplate
-from cilantro_audit.completed_audit import CompletedAuditBuilder, Answer, Response
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, VIEW_AUDIT_TEMPLATES, ANSWER_MODULE_DISPLACEMENT
 from cilantro_audit.answer_module import AnswerModule
-from cilantro_audit.create_audit_template_page import ConfirmationPop, ErrorPop
-from cilantro_audit.view_audit_templates import ViewAuditTemplates
+from cilantro_audit.completed_audit import Answer
+from cilantro_audit.completed_audit import Response
+from cilantro_audit.completed_audit import CompletedAuditBuilder
+from cilantro_audit.create_audit_template_page import ErrorPop
 
-kivy.require(KIVY_REQUIRED_VERSION)
-
-# Loads in the .kv file which contains the CreateCompletedAuditPage layout.
+require(KIVY_REQUIRED_VERSION)
 Builder.load_file("./widgets/create_completed_audit_page.kv")
+connect(PROD_DB)
 
 
-# The popup used for both the back and submit buttons
-class ConfirmationPop(Popup):
-    yes = ObjectProperty(None)
-
-    def return_admin_page(self):
-        self.dismiss()
-        self.manager.current = VIEW_AUDIT_TEMPLATES
-
-
-class CreateCompletedAuditPage(Screen, FloatLayout):
-    # The id for the StackLayout, Used to add questions to the layout.
+class CreateCompletedAuditPage(Screen):
     stack_list = ObjectProperty()
-    # the actual label holding the audit title
     title_label = ObjectProperty()
-    # The id for the title section of the audit.
-    audit_title = StringProperty()
-    # The auditor's name that is conducting the audit.
     auditor_name = ObjectProperty()
-    # The scrolling panel for view management
     scrolling_panel = ObjectProperty()
-
-    connect(PROD_DB)
+    audit_title = StringProperty()
 
     def __init__(self, **kw):
         super().__init__(**kw)
         self.questions = []
 
-    # put all questions on the screen for the auditor to respond to
-    def populate_audit(self, audit_name):
-        target = audit_name
+    def populate_audit(self, audit_title):
+        self.audit_title = audit_title
+        completed_audits = list(AuditTemplate.objects())
 
-        try:
-            template = AuditTemplate.objects().filter(title=target).first()  # for now, while there can be duplicates
-        except AttributeError:
-            #TODO
-            pass
+        for completed_audit in completed_audits:
+            if completed_audit.title == self.audit_title:
+                for question in completed_audit.questions:
+                    a_temp = AnswerModule()
+                    a_temp.question = question
+                    a_temp.question_text = question.text
+                    self.stack_list.add_widget(a_temp)
+                    self.questions.append(a_temp)
+                    self.stack_list.height += ANSWER_MODULE_DISPLACEMENT
+                break
 
-        self.audit_title = template.title
-        for question in template.questions:
-            a_temp = AnswerModule()
-            a_temp.question = question
-            a_temp.question_text = question.text
-            self.stack_list.add_widget(a_temp)
-            self.questions.append(a_temp)
-            self.stack_list.height += ANSWER_MODULE_DISPLACEMENT
-
-        # https://kivy.org/doc/stable/api-kivy.uix.scrollview.html Y scrolling value, between 0 and 1. If 0,
-        # the content’s bottom side will touch the bottom side of the ScrollView. If 1, the content’s top side will
-        # touch the top side.
         self.scrolling_panel.scroll_y = 1
-        # Reset the auditor name
         self.auditor_name.text = ''
 
     # Return the associated severity with question's response
@@ -107,7 +87,6 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
             show.error_message.text = error_message
         else:
             show = ConfirmationPop()
-            show.yes.bind(on_press=lambda _: manager.get_screen(VIEW_AUDIT_TEMPLATES).get_audit_templates(self.manager))
             show.yes.bind(on_press=self.clear_page)
             show.yes.bind(on_press=self.submit_audit)
 
@@ -151,6 +130,15 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
             error_message = "Please enter your name."
 
         return error_message
+
+
+# The popup used for both the back and submit buttons
+class ConfirmationPop(Popup):
+    yes = ObjectProperty(None)
+
+    def return_admin_page(self):
+        self.dismiss()
+        self.manager.current = VIEW_AUDIT_TEMPLATES
 
 
 class TestApp(App):

@@ -23,23 +23,25 @@ connect(PROD_DB)
 
 
 class ViewAuditTemplates(Screen):
-    template_page = CilantroPage()
+    screen_manager = ObjectProperty()
 
     def __init__(self, **kw):
         super().__init__(**kw)
+        self.template_page = CilantroPage()
         self.template_page.header_back.bind(on_release=lambda _: self.go_back())
         self.template_page.header_home.bind(on_release=lambda _: self.go_home())
-        self.template_page.body.add_widget(ViewAuditTemplatesContent())
+        self.template_page.body.add_widget(ViewAuditTemplatesContent(screen_manager=self.screen_manager))
         self.add_widget(self.template_page)
 
     def go_back(self):
-        self.manager.current = AUDITOR_SCREEN
+        self.screen_manager.current = AUDITOR_SCREEN
 
     def go_home(self):
-        self.manager.current = HOME_SCREEN
+        self.screen_manager.current = HOME_SCREEN
 
 
 class ViewAuditTemplatesContent(Screen):
+    screen_manager = ObjectProperty()
     templates_list = ObjectProperty()
 
     def __init__(self, **kw):
@@ -51,7 +53,8 @@ class ViewAuditTemplatesContent(Screen):
 
         for audit in audit_templates:
             if audit.locked is False:
-                self.templates_list.add_widget(ActiveAuditButton(text=audit.title))
+                audit_active_btn = ActiveAuditButton(text=audit.title, screen_manager=self.screen_manager)
+                self.templates_list.add_widget(audit_active_btn)
             else:
                 self.templates_list.add_widget(InactiveAuditButton(text=audit.title))
 
@@ -61,6 +64,8 @@ class ViewAuditTemplatesContent(Screen):
 
 
 class ActiveAuditButton(CilantroButton):
+    screen_manager = ObjectProperty()
+
     def on_release(self, *args):
         super(ActiveAuditButton, self).on_release(*args)
         self.screen_manager.get_screen(CREATE_COMPLETED_AUDIT_PAGE).populate_audit(self.text)

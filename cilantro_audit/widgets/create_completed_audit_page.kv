@@ -1,11 +1,10 @@
-#:import AUDITOR_PAGE cilantro_audit.constants.VIEW_AUDIT_TEMPLATES
 
 <CreateCompletedAuditPage>:
     stack_list: stack_list
     title_label: title_label
     auditor_name: auditor_name
-    size: root.width, root.height
     scrolling_panel: scrolling_panel
+    size: root.width, root.height
 
     GridLayout:
         rows: 2
@@ -56,11 +55,13 @@
                 size_hint_y: None
                 size: 400, 60
                 font_size: root.width/30
-                on_press: root.submit_audit_pop(root.manager)
+                on_release:
+                    root.submit_audit_pop(root.manager)
 
             Button:
                 text: "Back"
                 size_hint_y: None
                 size: 400, 60
                 font_size: root.width/30
-                on_press: root.back(root.manager)
+                on_release:
+                    root.back(root.manager)
