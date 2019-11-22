@@ -35,7 +35,7 @@ SEVERITY_PRECEDENCE = {
 TEST_DB = "testdb"
 PROD_DB = "prod"
 
-# Kivy Window Names
+# Kivy Screen Names
 HOME_SCREEN = "HomeScreen"
 ADMIN_SCREEN = "AdminScreen"
 AUDITOR_SCREEN = "AuditorScreen"
