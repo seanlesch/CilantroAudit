@@ -27,20 +27,6 @@ SEVERITY_VALUES = [
     "2:GREEN",
 ]
 
-SEVERITY_PRECEDENCE = {
-    "0:RED": 0,
-    "1:YELLOW": 1,
-    "2:GREEN": 2,
-}
-
-DEFAULT_SORT_ORDER = [
-    "-unresolved_count",
-    "severity",
-    "-datetime",
-    "title",
-    "auditor",
-]
-
 # Database Names
 TEST_DB = "testdb"
 PROD_DB = "prod"
