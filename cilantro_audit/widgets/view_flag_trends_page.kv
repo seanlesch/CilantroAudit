@@ -170,7 +170,6 @@
     size_hint_y: None
     text_size: self.width-20, None
     halign: 'center'
-    on_press: self.show_audit_list()
 
     canvas.before:
         Color:
@@ -187,5 +186,38 @@
             size: 1000, 5
 
 <AuditListPop>:
-    title: "Related Completed Audits"
     size_hint: .8, .8
+
+    GridLayout:
+        id: list_layout
+        rows: 2
+        spacing: 10
+
+        GridLayout:
+            id: headers
+            cols: 3
+            spacing: 10
+            size_hint_y: 0.15
+
+            EntryLabel:
+                id: name_header
+                text: "Auditor Name"
+                spacing: 10
+
+            EntryLabel:
+                id: date_header
+                text: "Audit Date"
+                spacing: 10
+
+            EntryLabel:
+                id: unresolved_header
+                text: "Unresolved Answers"
+                spacing: 10
+
+        ScrollView:
+            id: scrollable_list
+
+            GridLayout:
+                id: audit_list
+                cols: 1
+                size_hint_y: None

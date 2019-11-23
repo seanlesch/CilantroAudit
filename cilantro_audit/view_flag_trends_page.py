@@ -61,7 +61,8 @@ class ViewFlagTrendsPage(Screen):
 
         # Populate the unique entries into the widget cols
         for entry_row in self.unique_entry_rows:
-            self.question_text_col.add_widget(QuestionButton(text=entry_row[1]))
+            self.question_text_col.add_widget(QuestionButton(text=entry_row[1], on_press=lambda _:
+                                                             self.show_audit_list(entry_row[1], entry_row[0])))
             self.audit_title_col.add_widget(EntryLabel(text=entry_row[0]))
             self.times_flagged_col.add_widget(EntryLabel(text=str(entry_row[2])))
 
@@ -88,6 +89,11 @@ class ViewFlagTrendsPage(Screen):
             -obj[2], obj[0], obj[1]))
         self.populate_unique_entry_rows()
 
+    def show_audit_list(self, question_text, audit_title):
+        show = AuditListPop()
+        show.title = "Related completed audits for the question: " + question_text + " from " + audit_title
+        show.open()
+
 
 # A custom widget for retrieved entries
 class EntryLabel(Label):
@@ -96,9 +102,7 @@ class EntryLabel(Label):
 
 # A button containing answer text that will pull up the audit list popup when clicked
 class QuestionButton(Button):
-    def show_audit_list(self):
-        show = AuditListPop()
-        show.open()
+    pass
 
 
 # A popup listing all of the completed audits containing an answer
