@@ -30,14 +30,14 @@ from cilantro_audit.constants import AUDITOR_COMPLETED_AUDIT_PAGE
 
 require(KIVY_REQUIRED_VERSION)
 
-# Configures Default Window Settings
+# App Default Window Configuration
 Config.set('graphics', 'borderless', '0')
 Config.set('graphics', 'window_state', 'maximized')
 Config.set('graphics', 'minimum_height', '600')
 Config.set('graphics', 'minimum_width', '800')
 Config.set('input', 'mouse', 'mouse, multitouch_on_demand')
 
-# Build KV files
+# App KV file Builders
 Builder.load_file('./widgets/home_page.kv')
 Builder.load_file('./widgets/admin_page.kv')
 Builder.load_file("./widgets/view_audit_templates.kv")
