@@ -1,25 +1,24 @@
-from time import mktime
 from datetime import datetime
+from time import mktime
 
 from kivy import require
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
-from kivy.uix.label import Label
 from kivy.uix.button import Button
+from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 
-from cilantro_audit.completed_audit import CompletedAudit
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, AUDITOR_COMPLETED_AUDIT_PAGE
 from cilantro_audit.audit_template import AuditTemplate
+from cilantro_audit.completed_audit import CompletedAudit
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, AUDITOR_COMPLETED_AUDIT_PAGE, AUDITS_PER_PAGE
 
 EPOCH = datetime.utcfromtimestamp(0)
 require(KIVY_REQUIRED_VERSION)
 connect(PROD_DB)
 
 Builder.load_file("./widgets/auditor_completed_audits_list_page.kv")
-
 
 TITLE_SORT_ORDER = [
     "title",
@@ -45,6 +44,7 @@ AUDITOR_SORT_ORDER = [
     "title",
 ]
 
+
 class AuditorCompletedAuditsListPage(Screen):
     date_col = ObjectProperty()
     title_col = ObjectProperty()
@@ -61,7 +61,6 @@ class AuditorCompletedAuditsListPage(Screen):
         self.audit_templates = []
         self.load_audit_templates()
 
-
     def sort_by_title(self):
         self.load_completed_audits(TITLE_SORT_ORDER)
 
@@ -76,12 +75,11 @@ class AuditorCompletedAuditsListPage(Screen):
             (CompletedAudit
              .objects()
              .order_by(*sort_order)
-             .only("title", "datetime", "auditor")).limit(30))
+             .only("title", "datetime", "auditor")).limit(AUDITS_PER_PAGE))
         self.refresh_completed_audits()
 
     def load_audit_templates(self):
         self.audit_templates = list(AuditTemplate.objects().only("title", "questions"))
-
 
     # Refreshes the list of audits on the screen
     def refresh_completed_audits(self):
@@ -141,7 +139,7 @@ class AuditorCompletedAuditsListPage(Screen):
         self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).reset_scroll_to_top()
 
         for question in audit_template.questions:
-            self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE)\
+            self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE) \
                 .add_question_answer_auditor_version(question, completed_audit.answers[counter])
             counter += 1
 
