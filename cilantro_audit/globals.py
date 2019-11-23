@@ -1,5 +1,5 @@
 from kivy import require
-from kivy import Config
+from kivy.config import Config
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager
 
