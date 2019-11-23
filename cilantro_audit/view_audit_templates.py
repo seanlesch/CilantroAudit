@@ -63,7 +63,7 @@ class ViewAuditTemplatesContent(Screen):
 
 class ActiveAuditButton(CilantroButton):
     def on_release(self, *args):
-        super(ActiveAuditButton, self).on_release(*args)
+        super().on_release(*args)
         app_globals.screen_manager.current = CREATE_COMPLETED_AUDIT_PAGE
         app_globals.screen_manager.get_screen(CREATE_COMPLETED_AUDIT_PAGE).populate_audit(self.text)
 

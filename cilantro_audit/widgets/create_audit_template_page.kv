@@ -1,5 +1,5 @@
-<CreateAuditTemplatePage>:
 
+<CreateAuditTemplatePage>:
     stack_list: stack_list
     audit_title: audit_title
     size: root.width, root.height
@@ -30,30 +30,31 @@
     Button:
         text: "Add Question"
         size_hint: .15, .1
-        on_press: root.add_question()
+        on_release:
+            root.add_question()
 
     Button:
         text: "Submit"
         size_hint: .15, .1
         pos_hint: {"right": 1, "y": 0}
-        on_press: root.submit_audit_pop(root.manager)
+        on_release:
+            root.submit_audit_pop(root.manager)
 
     Button:
         text: "Back"
         size_hint: .15, .1
         pos_hint: {"right": .85, "bottom": 0}
-        on_press: root.back(root.manager)
+        on_release:
+            root.back(root.manager)
 
 
 <ConfirmationPop>:
-
     auto_dismiss: False
     title: "Confirmation"
     size_hint: .5, .5
     yes: yes
 
     FloatLayout:
-
         Label:
             text: "Are you sure?"
             font_size: root.width/20
@@ -66,24 +67,25 @@
             font_size: root.width/30
             size_hint: .3, .3
             pos_hint: {"x": 0, "y": 0}
-            on_press: root.return_admin_page()
+            on_release:
+                root.return_admin_page()
 
         Button:
             text: "No"
             font_size: root.width/30
             size_hint: .3, .3
             pos_hint: {"right": 1, "y": 0}
-            on_press: root.dismiss()
+            on_release:
+                root.dismiss()
+
 
 <ErrorPop>:
-
     auto_dismiss: False
     title: "Submit Error"
     size_hint: .5, .5
     error_message: error_message
 
     FloatLayout:
-
         Label:
             id: error_message
             font_size: root.width/20
@@ -95,4 +97,5 @@
             font_size: root.width/30
             size_hint: .3, .3
             pos_hint: {"center_x": .5, "y": 0.05}
-            on_press: root.dismiss()
+            on_release:
+                root.dismiss()

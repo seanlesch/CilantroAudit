@@ -1,3 +1,5 @@
+import cilantro_audit.globals as app_globals
+
 from kivy import require
 from kivy.app import App
 from kivy.lang import Builder
@@ -59,6 +61,18 @@ class CreateCompletedAuditPage(Screen):
             return question.question.no
         return question.question.other
 
+    def submit_audit_pop(self):
+        error_message = self.check_audit()
+        if error_message != "":
+            show = ErrorPop()
+            show.error_message.text = error_message
+        else:
+            show = ConfirmationPop()
+            show.yes.bind(on_press=self.clear_page)
+            show.yes.bind(on_press=self.submit_audit)
+        show.manager = app_globals.screen_manager
+        show.open()
+
     # Function called after user selects yes on the confirmation popup
     def submit_audit(self, callback):
         completed_audit = CompletedAuditBuilder()
@@ -77,24 +91,10 @@ class CreateCompletedAuditPage(Screen):
         # Send to database
         completed_audit.build().save()
 
-    def submit_audit_pop(self, manager):
-        error_message = self.check_audit()
-        if error_message != "":
-            show = ErrorPop()
-            show.error_message.text = error_message
-        else:
-            show = ConfirmationPop()
-            show.yes.bind(on_press=self.clear_page)
-            show.yes.bind(on_press=self.submit_audit)
-
-        show.manager = manager
-        show.open()
-
     # On press method for the back button
-    def back(self, manager):
+    def back(self):
         show = ConfirmationPop()
         show.yes.bind(on_press=self.clear_page)
-        show.manager = manager
         show.open()
 
     # Empties stack list and question list, should enable leaving early without a problem...
@@ -136,6 +136,11 @@ class ConfirmationPop(Popup):
     def return_admin_page(self):
         self.dismiss()
         self.manager.current = VIEW_AUDIT_TEMPLATES
+
+    def on_dismiss(self, *args):
+        super().on_dismiss(*args)
+        app_globals.screen_manager.get_screen(VIEW_AUDIT_TEMPLATES).populate_page()
+        app_globals.screen_manager.current = VIEW_AUDIT_TEMPLATES
 
 
 class TestApp(App):
