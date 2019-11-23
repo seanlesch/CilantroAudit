@@ -15,56 +15,76 @@
         spacing: 10
 
         GridLayout:
-            id: list_layout
-            rows: 2
-            size_hint_x: 1.8
+            id: list_area
+            cols: 2
             spacing: 10
 
             GridLayout:
-                id: headers
-                cols: 4
+                id: list_layout
+                rows: 2
+                size_hint_x: 1.8
                 spacing: 10
-                size_hint_y: 0.1
-
-                Button:
-                    id: title_header
-                    text: 'Title'
-                    spacing: 10
-                    on_press: root.manager.get_screen(AUDITOR_COMPLETED_AUDITS_LIST_PAGE).sort_by_title()
-
-                Button:
-                    id: date_header
-                    text: 'Date'
-                    spacing: 10
-                    on_press: root.manager.get_screen(AUDITOR_COMPLETED_AUDITS_LIST_PAGE).sort_by_date()
-
-                Button:
-                    id: auditor_header
-                    text: 'Auditor'
-                    spacing: 10
-                    on_press: root.manager.get_screen(AUDITOR_COMPLETED_AUDITS_LIST_PAGE).sort_by_auditor()
-
-            ScrollView:
-                id: scrollable_list
 
                 GridLayout:
-                    id: audit_list
+                    id: headers
                     cols: 4
                     spacing: 10
-                    size_hint_y: None
+                    size_hint_y: 0.1
+
+                    Button:
+                        id: title_header
+                        text: 'Title'
+                        spacing: 10
+                        on_press: root.manager.get_screen(AUDITOR_COMPLETED_AUDITS_LIST_PAGE).sort_by_title()
+
+                    Button:
+                        id: date_header
+                        text: 'Date'
+                        spacing: 10
+                        on_press: root.manager.get_screen(AUDITOR_COMPLETED_AUDITS_LIST_PAGE).sort_by_date()
+
+                    Button:
+                        id: auditor_header
+                        text: 'Auditor'
+                        spacing: 10
+                        on_press: root.manager.get_screen(AUDITOR_COMPLETED_AUDITS_LIST_PAGE).sort_by_auditor()
+
+                ScrollView:
+                    id: scrollable_list
 
                     GridLayout:
-                        id: title_col
-                        cols: 1
+                        id: audit_list
+                        cols: 4
+                        spacing: 10
+                        size_hint_y: None
 
-                    GridLayout:
-                        id: date_col
-                        cols: 1
+                        GridLayout:
+                            id: title_col
+                            cols: 1
 
-                    GridLayout:
-                        id: auditor_col
-                        cols: 1
+                        GridLayout:
+                            id: date_col
+                            cols: 1
 
+                        GridLayout:
+                            id: auditor_col
+                            cols: 1
+
+            GridLayout:
+                rows: 3
+                size_hint_x: 0.1
+                Label:
+                    text: "Page 1"
+                Button:
+                    id: next_page
+                    text: 'Next Page'
+                    size_hint_x: 0.1
+                    spacing: 10
+                Button:
+                    id: previous_page
+                    text: 'Prev Page'
+                    size_hint_x: 0.1
+                    spacing: 10
 
         GridLayout:
             id: navigation_options
