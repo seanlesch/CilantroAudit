@@ -13,7 +13,7 @@ from mongoengine import connect
 
 from cilantro_audit.audit_template import AuditTemplate, Severity
 from cilantro_audit.completed_audit import CompletedAudit
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, SEVERITY_PRECEDENCE, COMPLETED_AUDIT_PAGE, \
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, COMPLETED_AUDIT_PAGE, \
     RGB_RED, RGB_YELLOW, RGB_GREEN
 
 kivy.require(KIVY_REQUIRED_VERSION)
@@ -48,6 +48,47 @@ def get_severity_color(severity):
         return RGB_GREEN
 
 
+TITLE_SORT_ORDER = [
+    "title",
+    "-unresolved_count",
+    "severity",
+    "-datetime",
+    "auditor",
+]
+
+DATETIME_SORT_ORDER = [
+    "-datetime",
+    "-unresolved_count",
+    "severity",
+    "title",
+    "auditor",
+]
+
+AUDITOR_SORT_ORDER = [
+    "auditor",
+    "-unresolved_count",
+    "severity",
+    "-datetime",
+    "title",
+]
+
+SEVERITY_SORT_ORDER = [
+    "severity",
+    "-unresolved_count",
+    "-datetime",
+    "title",
+    "auditor",
+]
+
+UNRESOLVED_SORT_ORDER = [
+    "-unresolved_count",
+    "severity",
+    "-datetime",
+    "title",
+    "auditor",
+]
+
+
 class CompletedAuditsListPage(Screen):
     date_col = ObjectProperty()
     title_col = ObjectProperty()
@@ -66,58 +107,30 @@ class CompletedAuditsListPage(Screen):
         self.severity_col.bind(minimum_height=self.audit_list.setter("height"))
         self.audits = []
         self.audit_templates = []
-        self.load_completed_audits()
+        self.load_completed_audits(UNRESOLVED_SORT_ORDER)
         self.load_audit_templates()
 
-    """Sorts list items by title."""
-
     def sort_by_title(self):
-        self.audits = sorted(self.audits, key=lambda obj: (
-            obj.title, -obj.unresolved_count, SEVERITY_PRECEDENCE[obj.severity.severity], invert_datetime(obj.datetime),
-            obj.auditor))
-        self.refresh_completed_audits()
-
-    """Sorts list items by datetime."""
+        self.load_completed_audits(TITLE_SORT_ORDER)
 
     def sort_by_date(self):
-        self.audits = sorted(self.audits, key=lambda obj: (
-            invert_datetime(obj.datetime), -obj.unresolved_count, SEVERITY_PRECEDENCE[obj.severity.severity], obj.title,
-            obj.auditor))
-        self.refresh_completed_audits()
-
-    """Sorts list items by auditor name."""
+        self.load_completed_audits(DATETIME_SORT_ORDER)
 
     def sort_by_auditor(self):
-        self.audits = sorted(self.audits, key=lambda obj: (
-            obj.auditor, -obj.unresolved_count, SEVERITY_PRECEDENCE[obj.severity.severity],
-            invert_datetime(obj.datetime), obj.title))
-        self.refresh_completed_audits()
-
-    """Sorts list items by severity RED -> YELLOW -> GREEN"""
+        self.load_completed_audits(AUDITOR_SORT_ORDER)
 
     def sort_by_severity(self):
-        self.audits = sorted(self.audits, key=lambda obj: (
-            SEVERITY_PRECEDENCE[obj.severity.severity], -obj.unresolved_count, invert_datetime(obj.datetime), obj.title,
-            obj.auditor))
-        self.refresh_completed_audits()
-
-    """Sorts list items by number of unresolved answers"""
+        self.load_completed_audits(SEVERITY_SORT_ORDER)
 
     def sort_by_unresolved(self):
-        self.audits = sorted(self.audits, key=lambda obj: (
-            -obj.unresolved_count, SEVERITY_PRECEDENCE[obj.severity.severity], invert_datetime(obj.datetime),
-            obj.title, obj.auditor))
-        self.refresh_completed_audits()
+        self.load_completed_audits(UNRESOLVED_SORT_ORDER)
 
-    """Loads completed audits from the database and populates the list."""
-
-    def load_completed_audits(self):
+    def load_completed_audits(self, sort_order):
         self.audits = list(
             (CompletedAudit
              .objects()
-             .order_by("-unresolved_count", "severity", "-datetime", "title", "auditor")
-             .only("title", "datetime", "auditor", "severity", "unresolved_count")).limit(5))
-        self.sort_by_severity()
+             .order_by(*sort_order)
+             .only("title", "datetime", "auditor", "severity", "unresolved_count")).limit(30))
         self.refresh_completed_audits()
 
     def load_audit_templates(self):

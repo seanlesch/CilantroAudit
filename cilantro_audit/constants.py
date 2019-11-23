@@ -31,6 +31,14 @@ SEVERITY_PRECEDENCE = {
     "2:GREEN": 2,
 }
 
+DEFAULT_SORT_ORDER = [
+    "-unresolved_count",
+    "severity",
+    "-datetime",
+    "title",
+    "auditor",
+]
+
 # Database Names
 TEST_DB = "testdb"
 PROD_DB = "prod"

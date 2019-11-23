@@ -1,5 +1,6 @@
 #:import ADMIN_SCREEN cilantro_audit.constants.ADMIN_SCREEN
 #:import COMPLETED_AUDITS_LIST_PAGE cilantro_audit.constants.COMPLETED_AUDITS_LIST_PAGE
+#:import DEFAULT_SORT_ORDER cilantro_audit.constants.DEFAULT_SORT_ORDER
 
 <CompletedAuditsListPage>:
 
@@ -104,7 +105,7 @@
                 text: 'Refresh List'
                 size_hint_y: None
                 size: 400, 50
-                on_press: root.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).load_completed_audits()
+                on_press: root.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).load_completed_audits(DEFAULT_SORT_ORDER)
 
             Button:
                 text: 'Search'

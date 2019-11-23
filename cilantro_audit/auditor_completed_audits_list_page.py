@@ -21,6 +21,30 @@ connect(PROD_DB)
 Builder.load_file("./widgets/auditor_completed_audits_list_page.kv")
 
 
+TITLE_SORT_ORDER = [
+    "title",
+    "-unresolved_count",
+    "severity",
+    "-datetime",
+    "auditor",
+]
+
+DATETIME_SORT_ORDER = [
+    "-datetime",
+    "-unresolved_count",
+    "severity",
+    "title",
+    "auditor",
+]
+
+AUDITOR_SORT_ORDER = [
+    "auditor",
+    "-unresolved_count",
+    "severity",
+    "-datetime",
+    "title",
+]
+
 class AuditorCompletedAuditsListPage(Screen):
     date_col = ObjectProperty()
     title_col = ObjectProperty()
@@ -37,32 +61,27 @@ class AuditorCompletedAuditsListPage(Screen):
         self.audit_templates = []
         self.load_audit_templates()
 
-    # Sorts list items by title
+
     def sort_by_title(self):
-        self.audits = sorted(self.audits, key=lambda obj: (
-            obj.title, invert_datetime(obj.datetime), obj.auditor))
-        self.refresh_completed_audits()
+        self.load_completed_audits(TITLE_SORT_ORDER)
 
-    # Sorts list items by datetime
     def sort_by_date(self):
-        self.audits = sorted(self.audits, key=lambda obj: (
-            invert_datetime(obj.datetime), obj.title, obj.auditor))
-        self.refresh_completed_audits()
+        self.load_completed_audits(DATETIME_SORT_ORDER)
 
-    # Sorts list items by auditor name
     def sort_by_auditor(self):
-        self.audits = sorted(self.audits, key=lambda obj: (
-            obj.auditor, invert_datetime(obj.datetime), obj.title))
-        self.refresh_completed_audits()
+        self.load_completed_audits(AUDITOR_SORT_ORDER)
 
-    # Loads completed audits from the database and populates the list (Default Sort: By Date)
-    def load_completed_audits(self):
-        self.audits = list(CompletedAudit.objects().only("title", "datetime", "auditor"))
-        self.sort_by_date()
+    def load_completed_audits(self, sort_order):
+        self.audits = list(
+            (CompletedAudit
+             .objects()
+             .order_by(*sort_order)
+             .only("title", "datetime", "auditor")).limit(30))
         self.refresh_completed_audits()
 
     def load_audit_templates(self):
         self.audit_templates = list(AuditTemplate.objects().only("title", "questions"))
+
 
     # Refreshes the list of audits on the screen
     def refresh_completed_audits(self):
@@ -100,7 +119,7 @@ class AuditorCompletedAuditsListPage(Screen):
         at = AuditTemplate()
         ca = CompletedAudit()
 
-        ca_list = list(CompletedAudit.objects().only("title", "datetime", "auditor", "severity", "answers"))
+        ca_list = list(CompletedAudit.objects().only("title", "datetime", "auditor", "answers"))
 
         for audit_template in self.audit_templates:
             if audit_template.title == title:

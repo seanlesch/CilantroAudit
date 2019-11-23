@@ -2,6 +2,7 @@
 #:import CREATE_AUDIT_PAGE cilantro_audit.constants.CREATE_AUDIT_PAGE
 #:import COMPLETED_AUDITS_LIST_PAGE cilantro_audit.constants.COMPLETED_AUDITS_LIST_PAGE
 #:import VIEW_FLAG_TRENDS_PAGE cilantro_audit.constants.VIEW_FLAG_TRENDS_PAGE
+#:import DEFAULT_SORT_ORDER cilantro_audit.constants.DEFAULT_SORT_ORDER
 
 <AdminPage>:
 
@@ -42,7 +43,7 @@
                 pos_hint: {"center_x": -0.8, "center_y": 0.1}
                 on_release:
                     root.manager.current = COMPLETED_AUDITS_LIST_PAGE
-                    root.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).load_completed_audits()
+                    root.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).load_completed_audits(DEFAULT_SORT_ORDER)
 
             Button:
                 text: "View Flag Trends"
