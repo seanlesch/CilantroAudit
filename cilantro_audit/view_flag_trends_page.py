@@ -1,3 +1,5 @@
+import cilantro_audit.globals as app_globals
+
 from kivy import require
 from kivy.app import App
 from kivy.lang import Builder
@@ -23,7 +25,6 @@ connect(PROD_DB)
 
 
 class ViewFlagTrendsPage(Screen):
-    screen_manager = ObjectProperty()
     template_page = CilantroPage()
 
     def __init__(self, **kw):
@@ -34,10 +35,10 @@ class ViewFlagTrendsPage(Screen):
         self.add_widget(self.template_page)
 
     def go_back(self):
-        self.screen_manager.current = ADMIN_SCREEN
+        app_globals.screen_manager.current = ADMIN_SCREEN
 
     def go_home(self):
-        self.screen_manager.current = HOME_SCREEN
+        app_globals.screen_manager.current = HOME_SCREEN
 
 
 # A custom widget for retrieved entries
