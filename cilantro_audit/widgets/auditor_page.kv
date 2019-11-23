@@ -29,7 +29,7 @@
                 pos_hint: {"center_x": 1.8, "center_y": 0.8}
                 on_release:
                     root.manager.current = AUDITOR_COMPLETED_AUDITS_LIST_PAGE
-                    root.manager.get_screen(AUDITOR_COMPLETED_AUDITS_LIST_PAGE).load_completed_audits(DEFAULT_SORT_ORDER)
+                    root.manager.get_screen(AUDITOR_COMPLETED_AUDITS_LIST_PAGE).load_completed_audits()
                     root.manager.transition.duration = 0.3
                     root.manager.transition.direction = 'left'
 

@@ -51,6 +51,7 @@ class AuditorCompletedAuditsListPage(Screen):
     audit_list = ObjectProperty()
     auditor_col = ObjectProperty()
     refresh_button = ObjectProperty()
+    page_count_label = ObjectProperty()
 
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -59,23 +60,39 @@ class AuditorCompletedAuditsListPage(Screen):
         self.auditor_col.bind(minimum_height=self.audit_list.setter("height"))
         self.audits = []
         self.audit_templates = []
+        self.sort_order = DATETIME_SORT_ORDER
         self.load_audit_templates()
+        self.db_index = 0
+
+    def next_page(self):
+        self.db_index += 1
+        self.page_count_label.text = "Page " + str(self.db_index + 1)
+        self.load_completed_audits()
+
+    def prev_page(self):
+        if self.db_index >= 1:
+            self.db_index -= 1
+        self.page_count_label.text = "Page " + str(self.db_index + 1)
+        self.load_completed_audits()
 
     def sort_by_title(self):
-        self.load_completed_audits(TITLE_SORT_ORDER)
+        self.sort_order = TITLE_SORT_ORDER
+        self.load_completed_audits()
 
     def sort_by_date(self):
-        self.load_completed_audits(DATETIME_SORT_ORDER)
+        self.sort_order = DATETIME_SORT_ORDER
+        self.load_completed_audits()
 
     def sort_by_auditor(self):
-        self.load_completed_audits(AUDITOR_SORT_ORDER)
+        self.sort_order = AUDITOR_SORT_ORDER
+        self.load_completed_audits()
 
-    def load_completed_audits(self, sort_order):
+    def load_completed_audits(self):
         self.audits = list(
             (CompletedAudit
              .objects()
-             .order_by(*sort_order)
-             .only("title", "datetime", "auditor")).limit(AUDITS_PER_PAGE))
+             .order_by(*self.sort_order)
+             .only("title", "datetime", "auditor")).skip(self.db_index * AUDITS_PER_PAGE).limit(AUDITS_PER_PAGE))
         self.refresh_completed_audits()
 
     def load_audit_templates(self):

@@ -11,6 +11,7 @@
     severity_col: severity_col
     unresolved_col: unresolved_col
     refresh_button: refresh_button
+    page_count_label: page_count_label
 
     GridLayout:
         id: page_layout
@@ -97,17 +98,20 @@
                 rows: 3
                 size_hint_x: 0.1
                 Label:
+                    id: page_count_label
                     text: "Page 1"
                 Button:
                     id: next_page
                     text: 'Next Page'
                     size_hint_x: 0.1
                     spacing: 10
+                    on_press: root.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).next_page()
                 Button:
                     id: previous_page
                     text: 'Prev Page'
                     size_hint_x: 0.1
                     spacing: 10
+                    on_press: root.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).prev_page()
 
         GridLayout:
             id: navigation_options
@@ -126,7 +130,7 @@
                 text: 'Refresh List'
                 size_hint_y: None
                 size: 400, 50
-                on_press: root.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).load_completed_audits(DEFAULT_SORT_ORDER)
+                on_press: root.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).load_completed_audits()
 
             Button:
                 text: 'Search'
