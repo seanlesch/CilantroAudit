@@ -1,3 +1,4 @@
+#:import AUDITOR_PAGE cilantro_audit.constants.VIEW_AUDIT_TEMPLATES
 
 <CreateCompletedAuditPage>:
     stack_list: stack_list
@@ -11,7 +12,7 @@
         row_force_default: True
         row_default_height: 30
         size_hint_y: 0.1
-        pos_hint: {"top": .95}
+        pos_hint: {"top": .97}
 
         Label:
             id: title_label
@@ -28,10 +29,11 @@
     GridLayout:
         cols: 1
         rows: 2
-        size_hint_y: 0.85
+        size_hint_y: 0.77
+        pos_hint: {"top": .87}
 
         ScrollView:
-            pos_hint: {"top": .6}
+            pos_hint: {"top": .1}
             id: scrolling_panel
 
             StackLayout:
@@ -46,22 +48,23 @@
                     spacing: 200
                     size_hint_y: None
 
-        GridLayout:
-            cols: 2
-            size_hint_y: 0.1
+    GridLayout:
+        cols: 2
+        size_hint_y: 0.8
+        pos_hint: {"top": .09}
 
-            Button:
-                text: "Submit"
-                size_hint_y: None
-                size: 400, 60
-                font_size: root.width/30
-                on_release:
-                    root.submit_audit_pop(root.manager)
+        Button:
+            text: "Submit"
+            size_hint_y: None
+            size: 400, 60
+            font_size: root.width/30
+            on_release:
+                root.submit_audit_pop(root.manager)
 
-            Button:
-                text: "Back"
-                size_hint_y: None
-                size: 400, 60
-                font_size: root.width/30
-                on_release:
-                    root.back(root.manager)
+        Button:
+            text: "Back"
+            size_hint_y: None
+            size: 400, 60
+            font_size: root.width/30
+            on_release:
+                root.back(root.manager)

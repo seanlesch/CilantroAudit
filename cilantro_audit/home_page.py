@@ -14,10 +14,12 @@ from cilantro_audit.auditor_completed_audits_list_page import AuditorCompletedAu
 from cilantro_audit.view_audit_templates import ViewAuditTemplates
 from cilantro_audit.view_flag_trends_page import ViewFlagTrendsPage
 from cilantro_audit.create_completed_audit_page import CreateCompletedAuditPage
+from cilantro_audit.completed_audit_page import CompletedAuditPage
+from cilantro_audit.auditor_completed_audit_page import AuditorCompletedAuditPage
 
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, ADMIN_SCREEN, HOME_SCREEN, AUDITOR_SCREEN, \
     CREATE_AUDIT_TEMPLATE_PAGE, COMPLETED_AUDITS_LIST_PAGE, VIEW_AUDIT_TEMPLATES, VIEW_FLAG_TRENDS_PAGE, \
-    AUDITOR_COMPLETED_AUDITS_LIST_PAGE, CREATE_COMPLETED_AUDIT_PAGE
+    AUDITOR_COMPLETED_AUDITS_LIST_PAGE, CREATE_COMPLETED_AUDIT_PAGE, COMPLETED_AUDIT_PAGE, AUDITOR_COMPLETED_AUDIT_PAGE
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
@@ -63,6 +65,8 @@ class CilantroAudit(App):
         sm.add_widget(AuditorCompletedAuditsListPage(name=AUDITOR_COMPLETED_AUDITS_LIST_PAGE))
         sm.add_widget(ViewAuditTemplates(name=VIEW_AUDIT_TEMPLATES, screen_manager=sm))
         sm.add_widget(ViewFlagTrendsPage(name=VIEW_FLAG_TRENDS_PAGE, screen_manager=sm))
+        sm.add_widget(CompletedAuditPage(name=COMPLETED_AUDIT_PAGE))
+        sm.add_widget(AuditorCompletedAuditPage(name=AUDITOR_COMPLETED_AUDIT_PAGE))
 
         return sm
 
