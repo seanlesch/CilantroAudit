@@ -2,7 +2,6 @@
 #:import AUDITOR_COMPLETED_AUDITS_LIST_PAGE cilantro_audit.constants.AUDITOR_COMPLETED_AUDITS_LIST_PAGE
 
 <AuditorPage>:
-
     FloatLayout:
         FloatLayout:
             pos_hint: {"center_x": 0.5, "center_y": 0.6}
@@ -15,7 +14,6 @@
                 size_hint: None, None
                 pos_hint: {"center_x": -0.8, "center_y": 0.8}
                 on_release:
-                    root.manager.get_screen(VIEW_AUDIT_TEMPLATES).get_audit_templates(root.manager)
                     root.manager.current = VIEW_AUDIT_TEMPLATES
                     root.manager.transition.duration = 0.3
                     root.manager.transition.direction = 'left'

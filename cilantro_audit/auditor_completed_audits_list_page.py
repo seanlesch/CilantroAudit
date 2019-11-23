@@ -1,6 +1,5 @@
 from time import mktime
 from datetime import datetime
-
 from kivy import require
 from kivy.app import App
 from kivy.lang import Builder

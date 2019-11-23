@@ -2,7 +2,6 @@
 #:import COMPLETED_AUDITS_LIST_PAGE cilantro_audit.constants.COMPLETED_AUDITS_LIST_PAGE
 
 <CompletedAuditsListPage>:
-
     date_col: date_col
     title_col: title_col
     audit_list: audit_list
@@ -117,6 +116,7 @@
                 size_hint_y: None
                 size: 400, 50
                 on_press: root.refresh_completed_audits()
+
 
 <SearchPop>:
     auto_dismiss: True
