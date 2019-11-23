@@ -15,8 +15,6 @@
                 pos_hint: {"center_x": -0.8, "center_y": 0.8}
                 on_release:
                     root.manager.current = VIEW_AUDIT_TEMPLATES
-                    root.manager.transition.duration = 0.3
-                    root.manager.transition.direction = 'left'
 
             Button:
                 text: "View Submitted Audits"
@@ -27,8 +25,6 @@
                 on_release:
                     root.manager.current = AUDITOR_COMPLETED_AUDITS_LIST_PAGE
                     root.manager.get_screen(AUDITOR_COMPLETED_AUDITS_LIST_PAGE).load_completed_audits()
-                    root.manager.transition.duration = 0.3
-                    root.manager.transition.direction = 'left'
 
             Button:
                 text: "Return to Homepage"
@@ -36,7 +32,8 @@
                 size: 250, 100
                 size_hint: None, None
                 pos_hint: {"center_x": 0.5, "center_y": -0.3}
-                on_press: root.manager.current = 'HomeScreen'
+                on_release:
+                    root.manager.current = 'HomeScreen'
 
             Button:
                 text: "Exit"
@@ -44,4 +41,5 @@
                 size: 150, 100
                 size_hint: None, None
                 pos_hint: {"center_x": 0.5, "center_y": -1.4}
-                on_press: app.exit()
+                on_release:
+                    exit()

@@ -41,6 +41,7 @@ Config.set('input', 'mouse', 'mouse, multitouch_on_demand')
 Builder.load_file('./widgets/home_page.kv')
 Builder.load_file('./widgets/admin_page.kv')
 Builder.load_file("./widgets/view_audit_templates.kv")
+Builder.load_file("./widgets/view_flag_trends_page.kv")
 
 # App Screen Manager
 screen_manager = ScreenManager()
