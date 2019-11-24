@@ -170,6 +170,7 @@
     size_hint_y: None
     text_size: self.width-20, None
     halign: 'center'
+    audit_title: ''
 
     canvas.before:
         Color:
@@ -186,6 +187,9 @@
             size: 1000, 5
 
 <AuditListPop>:
+    name_col: name_col
+    date_col: date_col
+    unresolved_col: unresolved_col
     size_hint: .8, .8
 
     GridLayout:
@@ -219,5 +223,18 @@
 
             GridLayout:
                 id: audit_list
-                cols: 1
+                cols: 3
+                spacing: 10
                 size_hint_y: None
+
+                GridLayout:
+                    id: date_col
+                    cols: 1
+
+                GridLayout:
+                    id: name_col
+                    cols: 1
+
+                GridLayout:
+                    id: unresolved_col
+                    cols: 1
