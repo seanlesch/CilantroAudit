@@ -65,15 +65,16 @@ class AuditorCompletedAuditsListPage(Screen):
         self.db_index = 0
 
     def next_page(self):
-        self.db_index += 1
-        self.page_count_label.text = "Page " + str(self.db_index + 1)
-        self.load_completed_audits()
+        if (self.db_index + 1) * AUDITS_PER_PAGE <= CompletedAudit.objects.count():
+            self.db_index += 1
+            self.page_count_label.text = "Page " + str(self.db_index + 1)
+            self.load_completed_audits()
 
     def prev_page(self):
         if self.db_index >= 1:
             self.db_index -= 1
-        self.page_count_label.text = "Page " + str(self.db_index + 1)
-        self.load_completed_audits()
+            self.page_count_label.text = "Page " + str(self.db_index + 1)
+            self.load_completed_audits()
 
     def sort_by_title(self):
         self.sort_order = TITLE_SORT_ORDER
