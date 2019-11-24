@@ -1,25 +1,29 @@
 from kivy import require
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.properties import ObjectProperty
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
-from kivy.properties import ObjectProperty
-
 from mongoengine import connect
 
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION
-from cilantro_audit.constants import PROD_DB
-from cilantro_audit.constants import HOME_SCREEN
-from cilantro_audit.constants import ADMIN_SCREEN
-
-from cilantro_audit.templates.cilantro_page import CilantroPage
-
-from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.audit_template import Severity
+from cilantro_audit.completed_audit import CompletedAudit
+from cilantro_audit.constants import ADMIN_SCREEN
+from cilantro_audit.constants import HOME_SCREEN
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, AUDITS_PER_PAGE
+from cilantro_audit.constants import PROD_DB
+from cilantro_audit.templates.cilantro_page import CilantroPage
 
 require(KIVY_REQUIRED_VERSION)
 Builder.load_file("./widgets/view_flag_trends_page.kv")
 connect(PROD_DB)
+
+FLAG_TRENDS_SORT_ORDER = [
+    "-unresolved_count",
+    "severity",
+    "-datetime",
+    "title",
+]
 
 
 class ViewFlagTrendsPage(Screen):
@@ -48,13 +52,30 @@ class ViewFlagTrendsPageContent(Screen):
 
     def __init__(self, **kw):
         super().__init__(**kw)
+        self.db_index = 0
         self.retrieve_flagged_answers()
         self.populate_unique_entry_rows()
+
+    def next_page(self):
+        self.db_index += 1
+        self.page_count_label.text = "Page " + str(self.db_index + 1)
+        self.refresh_flagged_questions()
+
+    def prev_page(self):
+        if self.db_index >= 1:
+            self.db_index -= 1
+        self.page_count_label.text = "Page " + str(self.db_index + 1)
+        self.refresh_flagged_questions()
 
     # Retrieve all flagged answers from the database and condense them (by question uniqueness) in a 3d array
     def retrieve_flagged_answers(self):
         self.unique_entry_rows = []
-        completed_audits = list(CompletedAudit.objects())
+        completed_audits = list(
+            CompletedAudit.objects \
+                .filter(severity=Severity.red()) \
+                .order_by(*FLAG_TRENDS_SORT_ORDER) \
+                .skip(self.db_index * AUDITS_PER_PAGE) \
+                .limit(AUDITS_PER_PAGE))
 
         # Go over each flagged answer and append them to a local 3d-array while counting the number of repeated flags
         for audit in completed_audits:
