@@ -63,7 +63,7 @@ class CompletedAuditPage(Screen):
     header_title = ObjectProperty()
     header_auditor = ObjectProperty()
     header_dt = ObjectProperty()
-    current_pupup = ObjectProperty()
+    main_popup = ObjectProperty()
     other_popup = ObjectProperty()
 
     def __init__(self, **kw):
@@ -137,20 +137,20 @@ class CompletedAuditPage(Screen):
     def dismiss_popup(self):
         self._popup.dismiss()
 
-    def show_save(self):
-        content = SaveDialog(save=self.save, cancel=self.dismiss_popup)
-        self._popup = Popup(title="Save file", content=content,
-                            size_hint=(0.9, 0.9))
-        self.other_popup = self._popup
+    def close_main_popup(self):
+        self.main_popup.dismiss()
 
-        self._popup.open()
+    def show_save(self):
+        content = SaveDialog(save=self.save, cancel=self.close_main_popup)
+        self.main_popup = Popup(title="Save file", content=content,
+                            size_hint=(0.9, 0.9))
+        self.main_popup.open()
 
     def save(self, path, filename):
         file_path = os.path.join(path, filename)
         ef = ExcelFile(self.header_title.text, self.header_auditor.text, self.header_dt.text, self.at, self.ca)
         sheetname = self.header_auditor.text + " - " + self.header_title.text
         wb = ef.open_file(sheetname, file_path)
-        # todo: add failsafe(s) for filename
         if file_path.endswith("\\"):
             content = ErrorPopup(ok=self.dismiss_popup)
             self._popup = Popup(title="File Error", content=content, size_hint=(0.5, 0.5))
@@ -174,7 +174,7 @@ class CompletedAuditPage(Screen):
                 self._popup.open()
             else:
                 wb.save(file_path)
-                self.dismiss_popup()
+                self.close_main_popup()
                 content = FileSavedPopup(ok=self.dismiss_popup)
                 self._popup = Popup(title="File Exported", content=content, size_hint=(0.5, 0.5))
                 self._popup.open()
@@ -187,3 +187,5 @@ class CompletedAuditPage(Screen):
         content = FileSavedPopup(ok=self.dismiss_popup)
         self._popup = Popup(title="File Exported", content=content, size_hint=(0.5, 0.5))
         self._popup.open()
+
+# todo: add some comments you loser
