@@ -1,50 +1,32 @@
-import kivy
-from kivy.app import App
-from kivy.lang import Builder
-from kivy.properties import ObjectProperty
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.popup import Popup
-from kivy.uix.screenmanager import Screen
-from mongoengine import connect
+import cilantro_audit.globals as app_globals
 
-from cilantro_audit.audit_template import AuditTemplateBuilder, Question, AuditTemplate
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, ADMIN_SCREEN, TITLE_MAX_LENGTH, TEXT_MAX_LENGTH
+from kivy.app import App
+from kivy.properties import ObjectProperty
+from kivy.uix.screenmanager import Screen
+from kivy.uix.popup import Popup
+
+from cilantro_audit.constants import PROD_DB
+from cilantro_audit.constants import ADMIN_SCREEN
+from cilantro_audit.constants import TITLE_MAX_LENGTH
+from cilantro_audit.constants import TEXT_MAX_LENGTH
+
+from cilantro_audit.audit_template import AuditTemplate
+from cilantro_audit.audit_template import AuditTemplateBuilder
+from cilantro_audit.audit_template import Question
 from cilantro_audit.question_module import QuestionModule
 
-kivy.require(KIVY_REQUIRED_VERSION)
+from mongoengine import connect
 
-# Loads in the .kv file which contains the CreateAuditPage layout.
-Builder.load_file("./widgets/create_audit_template_page.kv")
-
-
-# The popup used for both the back and submit buttons
-class ConfirmationPop(Popup):
-    yes = ObjectProperty(None)
-
-    def return_admin_page(self):
-        self.dismiss()
-        self.manager.current = ADMIN_SCREEN
+connect(PROD_DB)
 
 
-class ErrorPop(Popup):
-    error_message = ObjectProperty(None)
-
-
-# This class contains the functions and variables used in the audit creation page.
-class CreateAuditTemplatePage(Screen, FloatLayout):
-    # This counter tracks the number of questions added to the form
-    q_counter = 0
-    # The id for the StackLayout, Used to add questions to the layout.
+class CreateAuditTemplatePage(Screen):
     stack_list = ObjectProperty()
-    # The id for the title section of the audit.
     audit_title = ObjectProperty()
-    # A dictionary used to store and access questions.
     question_list = {}
+    q_counter = 0
 
-    connect(PROD_DB)
-
-    # The add_question method creates a new instance of the question widget, adds it to the StackLayout, and adds it
-    # to the question list dictionary.
+    # Adds an instance of question widget to the StackLayout and to the question list dictionary
     def add_question(self):
         self.stack_list.height += 200
         q_temp = QuestionModule()
@@ -54,47 +36,62 @@ class CreateAuditTemplatePage(Screen, FloatLayout):
         q_temp.delete_question.bind(on_press=lambda _: self.del_question(q_temp.q_id))
         self.question_list[str(q_temp.q_id)] = q_temp
 
-    # shows the confirmation popup and sets the yes button functions
-    def submit_audit_pop(self, manager):
-        error_message = self.check_audit()
-        if error_message != "":
-            show = ErrorPop()
-            show.error_message.text = error_message
-        else:
-            show = ConfirmationPop()
-            show.yes.bind(on_press=self.clear_page)
-            show.yes.bind(on_press=self.submit_audit)
+    # Popup for the back button
+    def back_pop(self):
+        show = ConfirmationPop()
 
-        show.manager = manager
+        # YES consequences (stack order)
+        show.yes.bind(on_release=lambda _: show.dismiss())
+        show.yes.bind(on_release=lambda _: self.clear_page())
+        show.yes.bind(on_release=lambda _: self.switch_back())
+
+        # NO consequences
+        show.no.bind(on_release=lambda _: show.dismiss())
+
         show.open()
 
-    # Function called after user selects yes on the confirmation popup
-    def submit_audit(self, callback):
-        # Create a new audit using the supplied text the admin has entered.
+    # Popup for the submit button
+    def submit_pop(self):
+        error_message = self.is_filled_out()
+
+        # No missing fields (ready to submit)
+        if error_message == "":
+            show = ConfirmationPop()
+
+            # YES consequences (stack order)
+            show.yes.bind(on_release=lambda _: show.dismiss())
+            show.yes.bind(on_release=lambda _: self.clear_page())
+            show.yes.bind(on_release=lambda _: self.switch_back())
+            show.yes.bind(on_release=lambda _: self.submit_audit())
+
+            # NO consequences
+            show.no.bind(on_release=lambda _: show.dismiss())
+
+            show.open()
+
+        # Some fields were missing
+        else:
+            show = ErrorPop()
+            show.error_message.text = error_message
+            show.open()
+
+    # Saves the new audit template to the database
+    def submit_audit(self):
         audit_template = AuditTemplateBuilder()
         audit_template.with_title(self.audit_title.text)
         for question in self.question_list.values():
-            q = Question(text=question.question_text.text, yes=question.yes_severity, no=question.no_severity,
+            q = Question(text=question.question_text.text,
+                         yes=question.yes_severity,
+                         no=question.no_severity,
                          other=question.other_severity)
             audit_template.with_question(q)
-
         audit_template.build().save()
 
-    # shows the confirmation popup and sets the yes button function
-    def back(self, manager):
-        show = ConfirmationPop()
-        show.yes.bind(on_press=self.clear_page)
-        show.manager = manager
-        show.open()
-
-    # deletes the question with the passed in q_id from the stack_list and the question_list
-    def del_question(self, q_id):
-        self.stack_list.remove_widget(self.question_list[str(q_id)])
-        del self.question_list[str(q_id)]
-        self.stack_list.height -= 200
+    def switch_back(self):
+        app_globals.screen_manager.current = ADMIN_SCREEN
 
     # deletes all questions from the stack_list and the question_list, sets all counters to their default values
-    def clear_page(self, callback):
+    def clear_page(self):
         for question in self.question_list:
             self.stack_list.remove_widget(self.question_list[question])
             self.stack_list.height -= 200
@@ -103,7 +100,7 @@ class CreateAuditTemplatePage(Screen, FloatLayout):
         self.audit_title.text = ""
 
     # checks the audit template for errors
-    def check_audit(self):
+    def is_filled_out(self):
         error_message = ""
         q_missing = False
         q_long = False
@@ -127,6 +124,21 @@ class CreateAuditTemplatePage(Screen, FloatLayout):
                     break
 
         return error_message
+
+    # deletes the question with the passed in q_id from the stack_list and the question_list
+    def del_question(self, q_id):
+        self.stack_list.remove_widget(self.question_list[str(q_id)])
+        del self.question_list[str(q_id)]
+        self.stack_list.height -= 200
+
+
+# The popup used for both the back and submit buttons
+class ConfirmationPop(Popup):
+    yes = ObjectProperty(None)
+
+
+class ErrorPop(Popup):
+    error_message = ObjectProperty(None)
 
 
 class TestApp(App):
