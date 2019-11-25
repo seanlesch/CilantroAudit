@@ -1,16 +1,11 @@
 import cilantro_audit.globals as app_globals
 
-from kivy import require
 from kivy.app import App
-from kivy.lang import Builder
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 from kivy.properties import StringProperty
 
-from mongoengine import connect
-
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION
 from cilantro_audit.constants import PROD_DB
 from cilantro_audit.constants import VIEW_AUDIT_TEMPLATES
 from cilantro_audit.constants import ANSWER_MODULE_DISPLACEMENT
@@ -22,8 +17,8 @@ from cilantro_audit.completed_audit import Response
 from cilantro_audit.completed_audit import CompletedAuditBuilder
 from cilantro_audit.create_audit_template_page import ErrorPop
 
-require(KIVY_REQUIRED_VERSION)
-Builder.load_file("./widgets/create_completed_audit_page.kv")
+from mongoengine import connect
+
 connect(PROD_DB)
 
 
@@ -33,12 +28,10 @@ class CreateCompletedAuditPage(Screen):
     auditor_name = ObjectProperty()
     scrolling_panel = ObjectProperty()
     audit_title = StringProperty()
+    questions = []
 
-    def __init__(self, **kw):
-        super().__init__(**kw)
-        self.questions = []
-
-    def populate_audit(self, audit_title):
+    # Populates the questions/answers of a completed audit
+    def populate_page(self, audit_title):
         self.audit_title = audit_title
 
         completed_audit = AuditTemplate.objects().filter(title=self.audit_title).first()
@@ -53,65 +46,95 @@ class CreateCompletedAuditPage(Screen):
         self.scrolling_panel.scroll_y = 1
         self.auditor_name.text = ''
 
-    # Return the associated severity with question's response
-    def question_severity(self, question):
-        if question.response == Response.yes():
-            return question.question.yes
-        elif question.response == Response.no():
-            return question.question.no
-        return question.question.other
+    # Popup for the back button
+    def back_pop(self):
+        show = ConfirmationPop()
 
-    def submit_audit_pop(self):
-        error_message = self.check_audit()
-        if error_message != "":
+        # YES consequences (stack order)
+        show.yes.bind(on_release=lambda _: show.dismiss())
+        show.yes.bind(on_release=lambda _: self.clear_page())
+        show.yes.bind(on_release=lambda _: self.switch_back())
+
+        # NO consequences
+        show.no.bind(on_release=lambda _: show.dismiss())
+
+        show.open()
+
+    # Popup for the submit button
+    def submit_pop(self):
+        error_message = self.is_filled_out()
+
+        # No missing fields (ready to submit)
+        if error_message == "":
+            show = ConfirmationPop()
+
+            # YES consequences (stack order)
+            show.yes.bind(on_release=lambda _: show.dismiss())
+            show.yes.bind(on_release=lambda _: self.clear_page())
+            show.yes.bind(on_release=lambda _: self.switch_back())
+            show.yes.bind(on_release=lambda _: self.submit_audit())
+
+            # NO consequences
+            show.no.bind(on_release=lambda _: show.dismiss())
+
+            show.open()
+
+        # Some fields were missing
+        else:
             show = ErrorPop()
             show.error_message.text = error_message
-        else:
-            show = ConfirmationPop()
-            show.yes.bind(on_press=self.clear_page)
-            show.yes.bind(on_press=self.submit_audit)
-        show.manager = app_globals.screen_manager
-        show.open()
+            show.open()
 
-    # Function called after user selects yes on the confirmation popup
-    def submit_audit(self, callback):
+    # Saves a completely filled audit to the database
+    def submit_audit(self):
         completed_audit = CompletedAuditBuilder()
         completed_audit.with_title(self.audit_title)
+
         # The object returned from the .kv is a TextField, with a member text
         completed_audit.with_auditor(self.auditor_name.text)
+
         for a in self.questions:
             if a.other_comments.text:
-                temp_answer = Answer(text=a.question.text, severity=self.question_severity(a), response=a.response,
+                temp_answer = Answer(text=a.question.text,
+                                     severity=self.get_question_severity(a),
+                                     response=a.response,
                                      comment=a.other_comments.text)
             else:
-                temp_answer = Answer(text=a.question.text, severity=self.question_severity(a), response=a.response)
+                temp_answer = Answer(text=a.question.text,
+                                     severity=self.get_question_severity(a),
+                                     response=a.response)
             completed_audit.with_answer(temp_answer)
-        # Update the template with this title to be locked
-        AuditTemplate.objects().filter(title=self.audit_title).update(upsert=False, multi=True, locked=True)
-        # Send to database
+
+        # Save audit
         completed_audit.build().save()
 
-    # On press method for the back button
-    def back(self):
-        show = ConfirmationPop()
-        show.yes.bind(on_press=self.clear_page)
-        show.open()
+        # Update audit locked status
+        AuditTemplate.objects().filter(title=self.audit_title).update(upsert=False, multi=True, locked=True)
+
+    def switch_back(self):
+        app_globals.screen_manager.get_screen(VIEW_AUDIT_TEMPLATES).populate_page()
+        app_globals.screen_manager.current = VIEW_AUDIT_TEMPLATES
 
     # Empties stack list and question list, should enable leaving early without a problem...
-    def clear_page(self, callback):
+    def clear_page(self):
         self.audit_title = ""
         for question in self.questions:
             self.stack_list.remove_widget(question)
             self.stack_list.height -= 200
         self.questions.clear()
 
-    # Ensures that the completedAudit has everything filled out before trying to .save() it
-    def check_audit(self):
+    # Check whether the audit has been filled out before submitting it
+    def is_filled_out(self):
         for child in self.questions:
             child.no_answer_flag.opacity = 0
             child.no_comment_flag.opacity = 0
 
         error_message = ""
+
+        # Check if 'auditor name' is entered.
+        if not self.auditor_name.text:
+            error_message = "Please enter your name."
+
         for question in self.questions:
             # Check if all questions are answered
             if question.response is None:
@@ -123,24 +146,20 @@ class CreateCompletedAuditPage(Screen):
                 error_message = "Answers with 'Other' must have comments."
                 question.no_comment_flag.opacity = 1
 
-        if not self.auditor_name.text:
-            error_message = "Please enter your name."
-
         return error_message
 
+    # Return the associated severity with question's response
+    def get_question_severity(self, question):
+        if question.response == Response.yes():
+            return question.question.yes
+        elif question.response == Response.no():
+            return question.question.no
+        return question.question.other
 
-# The popup used for both the back and submit buttons
+
 class ConfirmationPop(Popup):
     yes = ObjectProperty(None)
-
-    def return_admin_page(self):
-        self.dismiss()
-        self.manager.current = VIEW_AUDIT_TEMPLATES
-
-    def on_dismiss(self, *args):
-        super().on_dismiss(*args)
-        app_globals.screen_manager.get_screen(VIEW_AUDIT_TEMPLATES).populate_page()
-        app_globals.screen_manager.current = VIEW_AUDIT_TEMPLATES
+    no = ObjectProperty(None)
 
 
 class TestApp(App):

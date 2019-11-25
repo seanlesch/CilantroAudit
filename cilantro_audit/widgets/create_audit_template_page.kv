@@ -1,3 +1,4 @@
+#:import app_globals cilantro_audit.globals
 
 <CreateAuditTemplatePage>:
     stack_list: stack_list
@@ -38,45 +39,43 @@
         size_hint: .15, .1
         pos_hint: {"right": 1, "y": 0}
         on_release:
-            root.submit_audit_pop(root.manager)
+            app.submit_pop()
 
     Button:
         text: "Back"
         size_hint: .15, .1
         pos_hint: {"right": .85, "bottom": 0}
         on_release:
-            root.back(root.manager)
+            app.back_pop()
 
 
 <ConfirmationPop>:
-    auto_dismiss: False
     title: "Confirmation"
+    auto_dismiss: False
     size_hint: .5, .5
     yes: yes
+    no: no
 
     FloatLayout:
         Label:
             text: "Are you sure?"
-            font_size: root.width/20
             size_hint: 0.6, 0.2
+            font_size: root.width/20
             pos_hint: {"x": .2, "top": .9}
 
         Button:
             id: yes
             text: "Yes"
-            font_size: root.width/30
             size_hint: .3, .3
+            font_size: root.width/30
             pos_hint: {"x": 0, "y": 0}
-            on_release:
-                root.return_admin_page()
 
         Button:
+            id: no
             text: "No"
-            font_size: root.width/30
             size_hint: .3, .3
+            font_size: root.width/30
             pos_hint: {"right": 1, "y": 0}
-            on_release:
-                root.dismiss()
 
 
 <ErrorPop>:

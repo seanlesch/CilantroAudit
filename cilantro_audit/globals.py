@@ -40,6 +40,8 @@ Config.set('input', 'mouse', 'mouse, multitouch_on_demand')
 # App KV file Builders
 Builder.load_file('./widgets/home_page.kv')
 Builder.load_file('./widgets/admin_page.kv')
+Builder.load_file('./widgets/auditor_page.kv')
+Builder.load_file("./widgets/create_completed_audit_page.kv")
 Builder.load_file("./widgets/view_audit_templates.kv")
 Builder.load_file("./widgets/view_flag_trends_page.kv")
 

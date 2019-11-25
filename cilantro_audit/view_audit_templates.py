@@ -5,8 +5,6 @@ from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 
-from mongoengine import connect
-
 from cilantro_audit.constants import PROD_DB
 from cilantro_audit.constants import HOME_SCREEN
 from cilantro_audit.constants import AUDITOR_SCREEN
@@ -15,6 +13,8 @@ from cilantro_audit.constants import CREATE_COMPLETED_AUDIT_PAGE
 from cilantro_audit.audit_template import AuditTemplate
 from cilantro_audit.templates.cilantro_page import CilantroPage
 from cilantro_audit.templates.cilantro_button import CilantroButton
+
+from mongoengine import connect
 
 connect(PROD_DB)
 
@@ -44,28 +44,23 @@ class ViewAuditTemplatesContent(Screen):
 
     def __init__(self, **kw):
         super().__init__(**kw)
-        self.retrieve_audit_titles()
+        self.populate_content()
 
-    def retrieve_audit_titles(self):
-        audit_templates = list(AuditTemplate.objects())
-
-        for audit in audit_templates:
-            if audit.locked is False:
-                audit_active_btn = ActiveAuditButton(text=audit.title)
-                self.templates_list.add_widget(audit_active_btn)
-            else:
-                self.templates_list.add_widget(InactiveAuditButton(text=audit.title))
-
-    def refresh_audit_templates(self):
+    def populate_content(self):
         self.templates_list.clear_widgets()
-        self.retrieve_audit_titles()
+
+        for audit in list(AuditTemplate.objects()):
+            if audit.locked is True:
+                self.templates_list.add_widget(InactiveAuditButton(text=audit.title))
+            else:
+                self.templates_list.add_widget(ActiveAuditButton(text=audit.title))
 
 
 class ActiveAuditButton(CilantroButton):
     def on_release(self, *args):
         super().on_release(*args)
         app_globals.screen_manager.current = CREATE_COMPLETED_AUDIT_PAGE
-        app_globals.screen_manager.get_screen(CREATE_COMPLETED_AUDIT_PAGE).populate_audit(self.text)
+        app_globals.screen_manager.get_screen(CREATE_COMPLETED_AUDIT_PAGE).populate_page(self.text)
 
 
 class InactiveAuditButton(CilantroButton):
