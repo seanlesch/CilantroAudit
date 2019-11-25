@@ -1,5 +1,4 @@
-import cilantro_audit.globals as app_globals
-
+from cilantro_audit import globals
 from kivy.app import App
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
@@ -112,8 +111,8 @@ class CreateCompletedAuditPage(Screen):
         AuditTemplate.objects().filter(title=self.audit_title).update(upsert=False, multi=True, locked=True)
 
     def switch_back(self):
-        app_globals.screen_manager.get_screen(VIEW_AUDIT_TEMPLATES).populate_page()
-        app_globals.screen_manager.current = VIEW_AUDIT_TEMPLATES
+        globals.screen_manager.get_screen(VIEW_AUDIT_TEMPLATES).populate_page()
+        globals.screen_manager.current = VIEW_AUDIT_TEMPLATES
 
     # Empties stack list and question list, should enable leaving early without a problem...
     def clear_page(self):

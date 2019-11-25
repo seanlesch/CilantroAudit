@@ -1,5 +1,3 @@
-import cilantro_audit.globals as app_globals
-
 from kivy.app import App
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
@@ -13,6 +11,7 @@ from cilantro_audit.constants import CREATE_COMPLETED_AUDIT_PAGE
 from cilantro_audit.audit_template import AuditTemplate
 from cilantro_audit.templates.cilantro_page import CilantroPage
 from cilantro_audit.templates.cilantro_button import CilantroButton
+from cilantro_audit import globals
 
 from mongoengine import connect
 
@@ -33,10 +32,10 @@ class ViewAuditTemplates(Screen):
         self.add_widget(template_page)
 
     def go_back(self, callback):
-        app_globals.screen_manager.current = AUDITOR_SCREEN
+        globals.screen_manager.current = AUDITOR_SCREEN
 
     def go_home(self, callback):
-        app_globals.screen_manager.current = HOME_SCREEN
+        globals.screen_manager.current = HOME_SCREEN
 
 
 class ViewAuditTemplatesContent(Screen):
@@ -59,8 +58,8 @@ class ViewAuditTemplatesContent(Screen):
 class ActiveAuditButton(CilantroButton):
     def on_release(self, *args):
         super().on_release(*args)
-        app_globals.screen_manager.current = CREATE_COMPLETED_AUDIT_PAGE
-        app_globals.screen_manager.get_screen(CREATE_COMPLETED_AUDIT_PAGE).populate_page(self.text)
+        globals.screen_manager.current = CREATE_COMPLETED_AUDIT_PAGE
+        globals.screen_manager.get_screen(CREATE_COMPLETED_AUDIT_PAGE).populate_page(self.text)
 
 
 class InactiveAuditButton(CilantroButton):
