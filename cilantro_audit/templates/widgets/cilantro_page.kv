@@ -2,6 +2,9 @@
 <CilantroPage>:
     page: page
     header: header
+    header_back: header_back
+    header_title: header_title
+    header_home: header_home
     body: body
     footer: footer
 
@@ -25,28 +28,28 @@
             size_hint: 1, 0.1
 
             CilantroButton:
-                text: 'Return to Homepage'
+                id: header_back
+                text: 'Back'
 
             CilantroLabel:
-                text: 'Audit Page Template'
+                id: header_title
+                text: 'Template Page'
 
             CilantroButton:
-                text: 'Exit'
-                on_release:
-                    exit(1)
+                id: header_home
+                text: 'Return to Homepage'
 
         GridLayout:
             id: body
             name: 'body-grid'
             rows: 1
-            cols: 3
-            size_hint: 1, 0.8
+            cols: 1
 
         GridLayout:
             id: footer
             name: 'footer-grid'
             rows: 1
-            cols: 3
+            cols: 1
             size_hint: 1, 0.1
 
             canvas.before:
@@ -55,9 +58,3 @@
                 Rectangle:
                     pos: self.x, self.y+self.height
                     size: self.width, self.height/(self.height-1)
-
-            CilantroButton:
-                text: 'Back'
-
-            CilantroButton:
-                text: 'Refresh Page'
