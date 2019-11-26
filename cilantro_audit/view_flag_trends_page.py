@@ -10,19 +10,47 @@ from kivy.uix.button import Button
 
 from mongoengine import connect
 
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION
-from cilantro_audit.constants import PROD_DB
-
-from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.audit_template import Severity
 from cilantro_audit.completed_audits_list_page import format_datetime, utc_to_local
+
+from cilantro_audit.completed_audit import CompletedAudit
+from cilantro_audit.constants import ADMIN_SCREEN
+from cilantro_audit.constants import HOME_SCREEN
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, AUDITS_PER_PAGE
+from cilantro_audit.constants import PROD_DB
+from cilantro_audit.templates.cilantro_page import CilantroPage
 
 require(KIVY_REQUIRED_VERSION)
 Builder.load_file("./widgets/view_flag_trends_page.kv")
 connect(PROD_DB)
 
+FLAG_TRENDS_SORT_ORDER = [
+    "-unresolved_count",
+    "severity",
+    "-datetime",
+    "title",
+]
+
 
 class ViewFlagTrendsPage(Screen):
+    template_page = CilantroPage()
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.template_page.header_back.bind(on_release=lambda _: self.go_back())
+        self.template_page.header_home.bind(on_release=lambda _: self.go_home())
+        self.template_page.body.add_widget(ViewFlagTrendsPageContent())
+        self.add_widget(self.template_page)
+
+    def go_back(self):
+        self.manager.current = ADMIN_SCREEN
+
+    def go_home(self):
+        self.manager.current = HOME_SCREEN
+
+
+# A custom widget for retrieved entries
+class ViewFlagTrendsPageContent(Screen):
     audit_title_col = ObjectProperty()
     question_text_col = ObjectProperty()
     times_flagged_col = ObjectProperty()
@@ -30,13 +58,31 @@ class ViewFlagTrendsPage(Screen):
 
     def __init__(self, **kw):
         super().__init__(**kw)
+        self.db_index = 0
         self.retrieve_flagged_answers()
         self.populate_unique_entry_rows()
+
+    def next_page(self):
+        if (self.db_index + 1) * AUDITS_PER_PAGE <= CompletedAudit.objects.filter(severity=Severity.red()).count():
+            self.db_index += 1
+            self.page_count_label.text = "Page " + str(self.db_index + 1)
+            self.refresh_flagged_questions()
+
+    def prev_page(self):
+        if self.db_index >= 1:
+            self.db_index -= 1
+            self.page_count_label.text = "Page " + str(self.db_index + 1)
+            self.refresh_flagged_questions()
 
     # Retrieve all flagged answers from the database and condense them (by question uniqueness) in a 3d array
     def retrieve_flagged_answers(self):
         self.unique_entry_rows = []
-        completed_audits = list(CompletedAudit.objects(severity=Severity.red()))
+        completed_audits = list(
+            CompletedAudit.objects \
+                .filter(severity=Severity.red()) \
+                .order_by(*FLAG_TRENDS_SORT_ORDER) \
+                .skip(self.db_index * AUDITS_PER_PAGE) \
+                .limit(AUDITS_PER_PAGE))
 
         # Go over each flagged answer and append them to a local 3d-array while counting the number of repeated flags
         for audit in completed_audits:
