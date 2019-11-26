@@ -21,6 +21,7 @@ kvfile = Builder.load_file("./widgets/completed_audit_page.kv")
 connect(PROD_DB)
 
 
+# Class for adding a block of text on a completed audit page that holds one question and the answers provided.
 class QuestionAnswer(FloatLayout):
     question_label = ObjectProperty()
     question_text = StringProperty()
@@ -35,25 +36,30 @@ class QuestionAnswer(FloatLayout):
     answer_severity_text = StringProperty()
 
 
+# Class for the save dialog popup.
 class SaveDialog(FloatLayout):
     save = ObjectProperty(None)
     text_input = ObjectProperty(None)
     cancel = ObjectProperty(None)
 
 
+# Class for the popup that asks you if you want to overwrite a file.
 class OverwritePopup(FloatLayout):
     yes = ObjectProperty(None)
     no = ObjectProperty(None)
 
 
+# Class for the popup that lets you know your file was saved.
 class FileSavedPopup(FloatLayout):
     ok = ObjectProperty(None)
 
 
+# Class for the popup that gives you an error if you are not saving a file.
 class ErrorPopup(FloatLayout):
     ok = ObjectProperty(None)
 
 
+# Class for the completed audit.
 class CompletedAuditPage(Screen):
     stack_list = ObjectProperty()
     grid_list = ObjectProperty()
@@ -93,12 +99,14 @@ class CompletedAuditPage(Screen):
         # touch the top side.
         self.scrolling_panel.scroll_y = 1
 
+    # Adds a title to the header
     def add_title(self, title):  # needs to be updated when you click out of one audit and load up another
         lbl = Label(text='[b]Audit: [/b]' + title, markup=True, size_hint_y=None, height=40, font_size=20,
                     halign="left")
         self.header_title = Label(text=title)
         self.grid_list.add_widget(lbl)
 
+    # Adds the name of the auditor to the header.
     def add_auditor(self, auditor):  # needs to be updated when you click out of one audit and load up another
         lbl = Label(text='[b]Auditor: [/b]' + auditor, markup=True, size_hint_y=None, height=40, font_size=20,
                     halign="left")
@@ -106,15 +114,18 @@ class CompletedAuditPage(Screen):
 
         self.grid_list.add_widget(lbl)
 
+    # Adds the date/time to the header
     def add_date_time(self, dt):  # needs to be updated when you click out of one audit and load up another
         lbl = Label(text='[b]Date: [/b]' + dt, markup=True, size_hint_y=None, height=40, font_size=20, halign="left")
         self.header_dt = Label(text=dt)
         self.grid_list.add_widget(lbl)
 
+    # Adds a blank label to the header for spacing.
     def add_blank_label(self, text):
         lbl = Label(text=text, size_hint_y=None, height=40, font_size=20, halign="left")
         self.grid_list.add_widget(lbl)
 
+    # Adds one question/answer block to a completed audit page.
     def add_question_answer(self, question, answer):
         self.stack_list.height += 130  # integer (80) comes from question_answer size
         qa = QuestionAnswer()
@@ -130,34 +141,37 @@ class CompletedAuditPage(Screen):
             qa.answer_severity_text = "[b]Severity: [/b][color=#21ff2c]GREEN[/color]"
         self.stack_list.add_widget(qa)
 
+    # Clears the page.
     def clear_page(self):
         self.grid_list.clear_widgets()
         self.stack_list.clear_widgets()
         self.stack_list.height = 0  # resets the height of the scrolling view. otherwise it grows with each new audit
         self.reset_scroll_to_top()
 
-    # todo: Remove this
-    def dismiss_popup(self):
-        self._popup.dismiss()
-
+    # Closes the main file dialog popup.
     def close_main_popup(self):
         self.main_popup.dismiss()
 
+    # Closes the overwrite popup.
     def close_overwrite_popup(self):
         self.overwrite_popup.dismiss()
 
+    # Closes the error popup.
     def close_error_popup(self):
         self.error_popup.dismiss()
 
+    # Closes the file saved popup.
     def close_file_saved_popup(self):
         self.file_saved_popup.dismiss()
 
+    # Opens/builds the save dialog popup
     def show_save(self):
         content = SaveDialog(save=self.save, cancel=self.close_main_popup)
         self.main_popup = Popup(title="Save file", content=content,
                             size_hint=(0.9, 0.9))
         self.main_popup.open()
 
+    # Saves the file and does necessary checks.
     def save(self, path, filename):
         file_path = os.path.join(path, filename)
         ef = ExcelFile(self.header_title.text, self.header_auditor.text, self.header_dt.text, self.at, self.ca)
@@ -191,13 +205,12 @@ class CompletedAuditPage(Screen):
                 self.file_saved_popup = Popup(title="File Exported", content=content, size_hint=(0.5, 0.5))
                 self.file_saved_popup.open()
 
+    # Overwrites a file.
     def replace_file(self, wb, path_to_file):
         os.remove(path_to_file)
         wb.save(path_to_file)
         self.overwrite_popup.dismiss()
-        self.main_popup.dismiss()
+        self.close_main_popup()
         content = FileSavedPopup(ok=self.close_file_saved_popup)
         self.file_saved_popup = Popup(title="File Exported", content=content, size_hint=(0.5, 0.5))
         self.file_saved_popup.open()
-
-# todo: add some comments you loser
