@@ -139,7 +139,7 @@ class CompletedAuditPage(Screen):
         elif qa.answer_severity_text == "[b]Severity: [/b]YELLOW":
             qa.answer_severity_text = "[b]Severity: [/b][color="+get_hex_from_color(RGB_YELLOW)+"]YELLOW[/color]"
         elif qa.answer_severity_text == "[b]Severity: [/b]GREEN":
-            qa.answer_severity_text = "[b]Severity: [/b][color=#21ff2c]GREEN[/color]"
+            qa.answer_severity_text = "[b]Severity: [/b][color="+get_hex_from_color(RGB_GREEN)+"]GREEN[/color]"
         self.stack_list.add_widget(qa)
 
     # Clears the page.
