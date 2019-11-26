@@ -1,4 +1,4 @@
-import cilantro_audit.globals as app_globals
+from cilantro_audit import globals
 
 from kivy.app import App
 from kivy.properties import ObjectProperty
@@ -88,7 +88,7 @@ class CreateAuditTemplatePage(Screen):
         audit_template.build().save()
 
     def switch_back(self):
-        app_globals.screen_manager.current = ADMIN_SCREEN
+        globals.screen_manager.current = ADMIN_SCREEN
 
     # deletes all questions from the stack_list and the question_list, sets all counters to their default values
     def clear_page(self):

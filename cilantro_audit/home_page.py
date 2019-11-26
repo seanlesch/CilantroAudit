@@ -1,4 +1,4 @@
-import cilantro_audit.globals as app_globals
+from cilantro_audit import globals
 
 from kivy.app import App
 from kivy.uix.popup import Popup
@@ -19,7 +19,7 @@ class AdminLoginPopup(Popup):
     def validate_password(self, value):
         if value == '12345':
             self.dismiss()
-            app_globals.screen_manager.current = app_globals.ADMIN_SCREEN
+            globals.screen_manager.current = globals.ADMIN_SCREEN
 
 
 class HomePageTest(App):

@@ -1,4 +1,4 @@
-import cilantro_audit.globals as app_globals
+from cilantro_audit import globals
 
 from kivy.app import App
 from kivy.uix.label import Label
@@ -33,10 +33,10 @@ class ViewFlagTrendsPage(Screen):
         self.add_widget(template_page)
 
     def go_back(self):
-        app_globals.screen_manager.current = ADMIN_SCREEN
+        globals.screen_manager.current = ADMIN_SCREEN
 
     def go_home(self):
-        app_globals.screen_manager.current = HOME_SCREEN
+        globals.screen_manager.current = HOME_SCREEN
 
 
 class ViewFlagTrendsPageContent(Screen):
