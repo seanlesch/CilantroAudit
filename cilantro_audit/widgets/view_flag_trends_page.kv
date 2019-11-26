@@ -1,3 +1,4 @@
+#:import VIEW_FLAG_TRENDS_PAGE cilantro_audit.constants.VIEW_FLAG_TRENDS_PAGE
 
 <ViewFlagTrendsPage>:
 
@@ -6,6 +7,7 @@
     audit_title_col: audit_title_col
     question_text_col: question_text_col
     times_flagged_col: times_flagged_col
+    page_count_label: page_count_label
 
     GridLayout:
         name: 'body-grid'
@@ -31,59 +33,78 @@
             size_hint: 0.1, 1
 
         GridLayout:
-            rows: 2
-            cols: 1
-            spacing: 5
+            cols: 2
+            spacing: 10
 
             GridLayout:
                 rows: 2
                 cols: 1
                 spacing: 5
-                size_hint_x: 1.8
 
                 GridLayout:
-                    rows: 1
-                    cols: 3
+                    rows: 2
+                    cols: 1
                     spacing: 5
-                    size_hint_y: 0.1
+                    size_hint_x: 1.8
 
-                    CilantroButton:
-                        text: 'Audit Title'
-                        on_release:
-                            root.sort_by_audit_template()
-
-                    CilantroButton:
-                        text: 'Question'
-                        on_release:
-                            root.sort_by_question()
-
-                    CilantroButton:
-                        text: 'Flagged Answers'
-                        on_release:
-                            root.sort_by_times_flagged()
-
-                ScrollView:
                     GridLayout:
                         rows: 1
                         cols: 3
                         spacing: 5
-                        size_hint_y: None
-                        height: self.minimum_height
+                        size_hint_y: 0.1
 
-                        StackLayout:
-                            id: audit_title_col
+                        CilantroButton:
+                            text: 'Audit Title'
+                            on_release:
+                                root.sort_by_audit_template()
+
+                        CilantroButton:
+                            text: 'Question'
+                            on_release:
+                                root.sort_by_question()
+
+                        CilantroButton:
+                            text: 'Flagged Answers'
+                            on_release:
+                                root.sort_by_times_flagged()
+
+                    ScrollView:
+                        GridLayout:
+                            rows: 1
+                            cols: 3
+                            spacing: 5
                             size_hint_y: None
                             height: self.minimum_height
 
-                        StackLayout:
-                            id: question_text_col
-                            size_hint_y: None
-                            height: self.minimum_height
+                            StackLayout:
+                                id: audit_title_col
+                                size_hint_y: None
+                                height: self.minimum_height
 
-                        StackLayout:
-                            id: times_flagged_col
-                            size_hint_y: None
-                            height: self.minimum_height
+                            StackLayout:
+                                id: question_text_col
+                                size_hint_y: None
+                                height: self.minimum_height
+
+                            StackLayout:
+                                id: times_flagged_col
+                                size_hint_y: None
+                                height: self.minimum_height
+
+            GridLayout:
+                rows: 3
+                size_hint_x: 0.1
+                Button:
+                    id: next_page
+                    text: 'Next Page'
+                    on_press: root.next_page()
+                Label:
+                    id: page_count_label
+                    text: "Page 1"
+                Button:
+                    id: previous_page
+                    text: 'Prev Page'
+                    on_press: root.prev_page()
 
         Widget:
             name: 'place-holder'

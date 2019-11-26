@@ -18,18 +18,14 @@ COMMENT_MAX_LENGTH = 250
 
 ANSWER_MODULE_DISPLACEMENT = 200
 
+AUDITS_PER_PAGE = 30
+
 # Enumerated Values
 SEVERITY_VALUES = [
-    "RED",
-    "YELLOW",
-    "GREEN",
+    "0:RED",
+    "1:YELLOW",
+    "2:GREEN",
 ]
-
-SEVERITY_PRECEDENCE = {
-    "RED": 0,
-    "YELLOW": 1,
-    "GREEN": 2,
-}
 
 # Database Names
 TEST_DB = "testdb"
