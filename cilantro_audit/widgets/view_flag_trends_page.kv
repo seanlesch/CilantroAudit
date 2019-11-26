@@ -71,12 +71,12 @@
                         height: self.minimum_height
 
                         StackLayout:
-                            id: audit_title_col
+                            id: question_text_col
                             size_hint_y: None
                             height: self.minimum_height
 
                         StackLayout:
-                            id: question_text_col
+                            id: audit_title_col
                             size_hint_y: None
                             height: self.minimum_height
 
@@ -189,15 +189,22 @@
                 cols: 3
                 spacing: 10
                 size_hint_y: None
+                height: self.minimum_height
 
                 GridLayout:
                     id: date_col
                     cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
 
                 GridLayout:
                     id: name_col
                     cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
 
                 GridLayout:
                     id: unresolved_col
                     cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height

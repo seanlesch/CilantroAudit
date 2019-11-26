@@ -13,7 +13,7 @@ from mongoengine import connect
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION
 from cilantro_audit.constants import PROD_DB
 from cilantro_audit.constants import HOME_SCREEN
-from cilantro_audit.constants import ADMIN_SCREEN
+from cilantro_audit.constants import ADMIN_SCREEN, COMPLETED_AUDITS_LIST_PAGE
 
 from cilantro_audit.templates.cilantro_page import CilantroPage
 
@@ -128,8 +128,14 @@ class ViewFlagTrendsPageContent(Screen):
             for answer in audit.answers:
                 if ans == answer.text and answer.severity == Severity.red():
                     pop.name_col.add_widget(EntryLabel(text=audit.auditor))
-                    pop.date_col.add_widget(QuestionButton(text=format_datetime(utc_to_local(audit.datetime))))
+                    pop.date_col.add_widget(QuestionButton(id=str(audit.datetime),
+                                                           text=format_datetime(utc_to_local(audit.datetime)),
+                                                           on_press=self.load_completed_audit))
                     pop.unresolved_col.add_widget(EntryLabel(text=str(audit.unresolved_count)))
+
+    def load_completed_audit(self, instance):
+        pass
+        #self.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).populate_completed_audit_page(instance.id)
 
 
 # A custom widget for retrieved entries
