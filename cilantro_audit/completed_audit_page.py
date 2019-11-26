@@ -7,7 +7,6 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from mongoengine import connect
-from cilantro_audit.completed_audit import CompletedAudit
 
 from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.audit_template import AuditTemplate
@@ -64,6 +63,9 @@ class CompletedAuditPage(Screen):
     header_auditor = ObjectProperty()
     header_dt = ObjectProperty()
     main_popup = ObjectProperty()
+    overwrite_popup = ObjectProperty()
+    file_saved_popup = ObjectProperty()
+    error_popup = ObjectProperty()
     other_popup = ObjectProperty()
 
     def __init__(self, **kw):
@@ -134,11 +136,21 @@ class CompletedAuditPage(Screen):
         self.stack_list.height = 0  # resets the height of the scrolling view. otherwise it grows with each new audit
         self.reset_scroll_to_top()
 
+    # todo: Remove this
     def dismiss_popup(self):
         self._popup.dismiss()
 
     def close_main_popup(self):
         self.main_popup.dismiss()
+
+    def close_overwrite_popup(self):
+        self.overwrite_popup.dismiss()
+
+    def close_error_popup(self):
+        self.error_popup.dismiss()
+
+    def close_file_saved_popup(self):
+        self.file_saved_popup.dismiss()
 
     def show_save(self):
         content = SaveDialog(save=self.save, cancel=self.close_main_popup)
@@ -152,40 +164,40 @@ class CompletedAuditPage(Screen):
         sheetname = self.header_auditor.text + " - " + self.header_title.text
         wb = ef.open_file(sheetname, file_path)
         if file_path.endswith("\\"):
-            content = ErrorPopup(ok=self.dismiss_popup)
-            self._popup = Popup(title="File Error", content=content, size_hint=(0.5, 0.5))
-            self._popup.open()
+            content = ErrorPopup(ok=self.close_error_popup)
+            self.error_popup = Popup(title="File Error", content=content, size_hint=(0.5, 0.5))
+            self.error_popup.open()
         elif not file_path.endswith(".xlsx"):
             file_path = file_path + ".xlsx"
             if os.path.exists(file_path):
-                content = OverwritePopup(yes=lambda: self.replace_file(wb, file_path), no=self.dismiss_popup)
-                self._popup = Popup(title="Overwrite File?", content=content, size_hint=(0.5, 0.5))
-                self._popup.open()
-            else:
-                wb.save(file_path)
-                self.dismiss_popup()
-                content = FileSavedPopup(ok=self.dismiss_popup)
-                self._popup = Popup(title="File Exported", content=content, size_hint=(0.5, 0.5))
-                self._popup.open()
-        else:
-            if os.path.exists(file_path):
-                content = OverwritePopup(yes=lambda: self.replace_file(wb, file_path), no=self.dismiss_popup)
-                self._popup = Popup(title="Overwrite File?", content=content, size_hint=(0.5, 0.5))
-                self._popup.open()
+                content = OverwritePopup(yes=lambda: self.replace_file(wb, file_path), no=self.close_overwrite_popup)
+                self.overwrite_popup = Popup(title="Overwrite File?", content=content, size_hint=(0.5, 0.5))
+                self.overwrite_popup.open()
             else:
                 wb.save(file_path)
                 self.close_main_popup()
-                content = FileSavedPopup(ok=self.dismiss_popup)
-                self._popup = Popup(title="File Exported", content=content, size_hint=(0.5, 0.5))
-                self._popup.open()
+                content = FileSavedPopup(ok=self.close_file_saved_popup)
+                self.file_saved_popup = Popup(title="File Exported", content=content, size_hint=(0.5, 0.5))
+                self.file_saved_popup.open()
+        else:
+            if os.path.exists(file_path):
+                content = OverwritePopup(yes=lambda: self.replace_file(wb, file_path), no=self.close_overwrite_popup)
+                self.overwrite_popup = Popup(title="Overwrite File?", content=content, size_hint=(0.5, 0.5))
+                self.overwrite_popup.open()
+            else:
+                wb.save(file_path)
+                self.close_main_popup()
+                content = FileSavedPopup(ok=self.close_file_saved_popup)
+                self.file_saved_popup = Popup(title="File Exported", content=content, size_hint=(0.5, 0.5))
+                self.file_saved_popup.open()
 
     def replace_file(self, wb, path_to_file):
         os.remove(path_to_file)
         wb.save(path_to_file)
-        self.dismiss_popup()
-        self.other_popup.dismiss()
-        content = FileSavedPopup(ok=self.dismiss_popup)
-        self._popup = Popup(title="File Exported", content=content, size_hint=(0.5, 0.5))
-        self._popup.open()
+        self.overwrite_popup.dismiss()
+        self.main_popup.dismiss()
+        content = FileSavedPopup(ok=self.close_file_saved_popup)
+        self.file_saved_popup = Popup(title="File Exported", content=content, size_hint=(0.5, 0.5))
+        self.file_saved_popup.open()
 
 # todo: add some comments you loser
