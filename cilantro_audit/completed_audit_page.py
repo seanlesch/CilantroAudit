@@ -6,11 +6,12 @@ from kivy.uix.popup import Popup
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
+from kivy.utils import get_hex_from_color
 from mongoengine import connect
 
 from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.audit_template import AuditTemplate
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB
+from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, RGB_RED, RGB_YELLOW, RGB_GREEN
 
 import os
 
@@ -134,9 +135,9 @@ class CompletedAuditPage(Screen):
         qa.answer_comments_text = "[b]Comments: [/b]" + str(answer.comment)
         qa.answer_severity_text = "[b]Severity: [/b]" + str(answer.severity.severity)
         if qa.answer_severity_text == "[b]Severity: [/b]RED":
-            qa.answer_severity_text = "[b]Severity: [/b][color=#ed1c1c]RED[/color]"
+            qa.answer_severity_text = "[b]Severity: [/b][color="+get_hex_from_color(RGB_RED)+"]RED[/color]"
         elif qa.answer_severity_text == "[b]Severity: [/b]YELLOW":
-            qa.answer_severity_text = "[b]Severity: [/b][color=#fbff21]YELLOW[/color]"
+            qa.answer_severity_text = "[b]Severity: [/b][color="+get_hex_from_color(RGB_YELLOW)+"]YELLOW[/color]"
         elif qa.answer_severity_text == "[b]Severity: [/b]GREEN":
             qa.answer_severity_text = "[b]Severity: [/b][color=#21ff2c]GREEN[/color]"
         self.stack_list.add_widget(qa)

@@ -58,6 +58,8 @@ class CilantroAudit(App):
 
     # Initialize screen manager and other necessary fields
     def build(self):
+        self.title = 'CilantroAudit'
+
         sm.add_widget(HomePage(name=HOME_SCREEN))
         sm.add_widget(AdminPage(name=ADMIN_SCREEN))
         sm.add_widget(AuditorPage(name=AUDITOR_SCREEN))
@@ -70,7 +72,6 @@ class CilantroAudit(App):
         sm.add_widget(AuditorCompletedAuditPage(name=AUDITOR_COMPLETED_AUDIT_PAGE))
         sm.add_widget(CreateCompletedAuditPage(name=CREATE_COMPLETED_AUDIT_PAGE))
 
-        self.title = 'CilantroAudit'
         return sm
 
     # Set the text field inside of the popup to be focused

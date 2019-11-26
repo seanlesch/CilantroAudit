@@ -1,5 +1,5 @@
 import random
-import time
+from datetime import timedelta
 from itertools import permutations
 
 from mongoengine import connect
@@ -13,10 +13,14 @@ db.drop_database(PROD_DB)
 
 connect(PROD_DB)
 
-DELAY = 0.1
 NUM_TEMPLATES = 10
 NUM_COMPLETED_PER_TEMPLATE = 5
+MAX_YEAR_DELTA = 4
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+
+def time_delta(max_years):
+    return timedelta(days=random.randint(0, 31) * random.randint(1, 12) * random.randint(1, max_years))
 
 
 def inverse_factorial(value: int):
@@ -139,12 +143,9 @@ def random_answer_from_question(question):
 
 if __name__ == '__main__':
     print("\nGenerating", NUM_TEMPLATES, "audit template(s), each with", NUM_COMPLETED_PER_TEMPLATE,
-          "completed audit(s)...")
-    print("Using", DELAY, "ms delay: Estimated time = ", NUM_TEMPLATES * NUM_COMPLETED_PER_TEMPLATE * DELAY,
-          " second(s)\n")
+          "completed audit(s), with dates ranging up to", MAX_YEAR_DELTA, "years ago...")
     for _ in range(NUM_TEMPLATES):
         title = next_title()
-        time.sleep(DELAY)
         q0 = random_question()
         q1 = random_question()
         q2 = random_question()
@@ -162,8 +163,7 @@ if __name__ == '__main__':
             .save()
 
         for _ in range(NUM_COMPLETED_PER_TEMPLATE):
-            time.sleep(DELAY)
-            CompletedAuditBuilder() \
+            audit = CompletedAuditBuilder() \
                 .with_title(title) \
                 .with_auditor(random.choice(AUDITORS)) \
                 .with_answer(random_answer_from_question(q0)) \
@@ -171,5 +171,6 @@ if __name__ == '__main__':
                 .with_answer(random_answer_from_question(q2)) \
                 .with_answer(random_answer_from_question(q3)) \
                 .with_answer(random_answer_from_question(q4)) \
-                .build() \
-                .save()
+                .build()
+            audit.datetime -= time_delta(MAX_YEAR_DELTA)
+            audit.save()
