@@ -6,9 +6,9 @@ from cilantro_audit.constants import SEVERITY_VALUES, TEXT_MAX_LENGTH, TEXT_MIN_
 
 
 class SeverityEnum:
-    RED = "RED"
-    YELLOW = "YELLOW"
-    GREEN = "GREEN"
+    RED = "0:RED"
+    YELLOW = "1:YELLOW"
+    GREEN = "2:GREEN"
 
 
 class Severity(EmbeddedDocument):
@@ -46,7 +46,7 @@ class Severity(EmbeddedDocument):
     def validate(self, clean=True):
         super().validate(clean)
         if self.severity not in SEVERITY_VALUES:
-            raise ValidationError("Severity must be one of { \"RED\", \"YELLOW\", \"GREEN\" }")
+            raise ValidationError("Severity must be one of { \"0:RED\", \"1:YELLOW\", \"2:GREEN\" }")
 
 
 class Question(EmbeddedDocument):
