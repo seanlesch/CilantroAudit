@@ -2,7 +2,6 @@ from os import path
 from kivy import require
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.uix.stacklayout import StackLayout
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 
@@ -22,7 +21,7 @@ class CilantroNavigator(Screen):
     body = ObjectProperty()
     body_nav_btns = ObjectProperty()
     footer = ObjectProperty()
-    footer_home = ObjectProperty()
+    footer_logout = ObjectProperty()
     pass
 
 

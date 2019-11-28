@@ -3,6 +3,8 @@ from cilantro_audit import globals
 from kivy.app import App
 from kivy.uix.screenmanager import Screen
 
+from cilantro_audit.constants import RGB_GREEN
+
 from cilantro_audit.templates.cilantro_navigator import CilantroNavigator
 from cilantro_audit.templates.cilantro_button import CilantroButton
 from cilantro_audit.templates.cilantro_label import CilantroLabel
@@ -18,7 +20,8 @@ class AuditorPage(Screen):
         template_page = CilantroNavigator()
 
         template_page.header_title.clear_widgets()
-        template_page.header_title.add_widget(CilantroLabel(text='Auditor Page'))
+        template_page.header_title.add_widget(CilantroLabel(text='Auditor Page',
+                                                            color=RGB_GREEN))
 
         template_page.body_nav_btns.add_widget(CilantroButton(text='Submit New Audit',
                                                               size_hint_y=None,
@@ -29,7 +32,7 @@ class AuditorPage(Screen):
                                                               height=70,
                                                               on_release=view_submitted_audits_page))
 
-        template_page.footer_home.bind(on_release=lambda _: go_home())
+        template_page.footer_logout.bind(on_release=lambda _: logout())
 
         self.add_widget(template_page)
 
@@ -48,7 +51,7 @@ def view_submitted_audits_page(callback):
     globals.screen_manager.current = globals.AUDITOR_COMPLETED_AUDITS_LIST_PAGE
 
 
-def go_home():
+def logout():
     globals.screen_manager.current = globals.HOME_SCREEN
 
 

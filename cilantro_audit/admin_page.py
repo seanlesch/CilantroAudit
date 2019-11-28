@@ -4,6 +4,8 @@ from kivy.app import App
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 
+from cilantro_audit.constants import RGB_RED
+
 from cilantro_audit.templates.cilantro_navigator import CilantroNavigator
 from cilantro_audit.templates.cilantro_button import CilantroButton
 from cilantro_audit.templates.cilantro_label import CilantroLabel
@@ -21,7 +23,8 @@ class AdminPage(Screen):
         template_page = CilantroNavigator()
 
         template_page.header_title.clear_widgets()
-        template_page.header_title.add_widget(CilantroLabel(text='Admin Page'))
+        template_page.header_title.add_widget(CilantroLabel(text='Admin Page',
+                                                            color=RGB_RED))
 
         template_page.body_nav_btns.add_widget(CilantroButton(text='Create Audit',
                                                               size_hint_y=None,
@@ -40,7 +43,7 @@ class AdminPage(Screen):
                                                               height=70,
                                                               on_release=clear_all_audit_locks))
 
-        template_page.footer_home.bind(on_release=lambda _: go_home())
+        template_page.footer_logout.bind(on_release=lambda _: logout())
 
         self.add_widget(template_page)
 
@@ -67,7 +70,7 @@ def clear_all_audit_locks(callback):
     TemplatesUnlockedPop().open()
 
 
-def go_home():
+def logout():
     globals.screen_manager.current = globals.HOME_SCREEN
 
 
