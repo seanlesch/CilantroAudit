@@ -48,6 +48,8 @@ VIEW_FLAG_TRENDS_PAGE = "ViewFlagTrendsPage"
 # Colors
 RGB_RED = get_color_from_hex("#FF4500")
 RGB_GREEN = get_color_from_hex("#00FA9A")
+RGB_LIGHT_RED = get_color_from_hex("#ff8585")
+RGB_LIGHT_GREEN = get_color_from_hex("#85ff85")
 RGB_YELLOW = get_color_from_hex("#FFFF00")
 RGB_GREY_LIGHT = get_color_from_hex("D3D3D3")
 RGB_BACKGROUND = get_color_from_hex("#191919")

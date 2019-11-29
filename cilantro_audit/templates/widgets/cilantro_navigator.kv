@@ -57,7 +57,6 @@
                 name: 'place-holder'
 
         GridLayout:
-            id: body
             name: 'body-grid'
             rows: 3
             cols: 3
@@ -146,12 +145,17 @@
                         size_hint_y: 1.0
 
                     # BODY CONTENT
-                    ScrollView:
-                        StackLayout:
-                            id: body_nav_btns
-                            height: self.minimum_height
-                            size_hint_y: None
-                            spacing: 30
+                    GridLayout:
+                        id: body
+                        rows: 1
+                        rows: 1
+
+                        ScrollView:
+                            StackLayout:
+                                id: body_nav_btns
+                                height: self.minimum_height
+                                size_hint_y: None
+                                spacing: 30
 
                     Widget:
                         name: 'place-holder'
@@ -209,10 +213,6 @@
                     pos: self.x, self.y+self.height
                     size: self.width, self.height/(self.height-1)
 
-            GridLayout:
-                rows: 1
-                cols: 1
-
-                CilantroButton:
-                    text: 'Logout'
-                    id: footer_logout
+            CilantroButton:
+                id: footer_logout
+                text: 'LOGOUT'
