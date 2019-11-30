@@ -19,9 +19,8 @@ class AuditorPage(Screen):
         self.clear_widgets()
         template_page = CilantroNavigator()
 
-        template_page.header_title.clear_widgets()
-        template_page.header_title.add_widget(CilantroLabel(text='AUDITOR PAGE',
-                                                            color=RGB_GREEN))
+        template_page.header_title.text = 'AUDITOR PAGE'
+        template_page.header_title.color = RGB_GREEN
 
         template_page.body_nav_btns.add_widget(CilantroButton(text='Submit New Audit',
                                                               size_hint_y=None,
@@ -32,13 +31,10 @@ class AuditorPage(Screen):
                                                               height=70,
                                                               on_release=view_submitted_audits_page))
 
-        template_page.footer_logout.bind(on_release=lambda _: logout())
+        template_page.footer_logout.text = 'LOGOUT'
+        template_page.footer_logout.bind(on_release=logout)
 
         self.add_widget(template_page)
-
-
-class CDF(Screen):
-    pass
 
 
 def submit_new_audit(callback):
@@ -51,10 +47,11 @@ def view_submitted_audits_page(callback):
     globals.screen_manager.current = globals.AUDITOR_COMPLETED_AUDITS_LIST_PAGE
 
 
-def logout():
+def logout(callback):
     globals.screen_manager.current = globals.HOME_SCREEN
     globals.screen_manager.transition.duration = 0.3
     globals.screen_manager.transition.direction = 'up'
+
 
 class TestApp(App):
     def build(self):

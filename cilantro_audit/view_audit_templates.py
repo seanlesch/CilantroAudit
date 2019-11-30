@@ -6,8 +6,6 @@ from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 
 from cilantro_audit.constants import PROD_DB
-from cilantro_audit.constants import HOME_SCREEN
-from cilantro_audit.constants import AUDITOR_SCREEN
 from cilantro_audit.constants import CREATE_COMPLETED_AUDIT_PAGE
 
 from cilantro_audit.audit_template import AuditTemplate
@@ -27,16 +25,19 @@ class ViewAuditTemplates(Screen):
     def populate_page(self):
         self.clear_widgets()
         template_page = CilantroPage()
-        template_page.header_back.bind(on_release=self.go_back)
-        template_page.header_home.bind(on_release=self.go_home)
+        template_page.header_title.text = 'Available Audit Templates'
+        template_page.header_back.bind(on_release=go_back)
+        template_page.header_home.bind(on_release=go_home)
         template_page.body.add_widget(ViewAuditTemplatesContent())
         self.add_widget(template_page)
 
-    def go_back(self, callback):
-        globals.screen_manager.current = AUDITOR_SCREEN
 
-    def go_home(self, callback):
-        globals.screen_manager.current = HOME_SCREEN
+def go_back(callback):
+    globals.screen_manager.current = globals.AUDITOR_SCREEN
+
+
+def go_home(callback):
+    globals.screen_manager.current = globals.HOME_SCREEN
 
 
 class ViewAuditTemplatesContent(Screen):

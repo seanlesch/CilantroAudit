@@ -25,13 +25,9 @@ class HomePage(Screen):
         row_1 = GridLayout(size_hint=(1.0, None), rows=1, cols=1)
         row_2 = GridLayout(size_hint=(1.0, None), height=200, rows=1, cols=2, spacing=10)
 
-        template_page.header_title.clear_widgets()
-        template_page.header_title.add_widget(CilantroLabel(text='HOME PAGE'))
-
-        template_page.body.clear_widgets()
+        template_page.header_title.text = 'HOME PAGE'
 
         row_1.add_widget(CilantroLabel(text='LOGIN AS:'))
-
         row_2.add_widget(CilantroButton(text='Admin',
                                         background_color=RGB_LIGHT_RED,
                                         on_release=login_admin))
@@ -42,13 +38,27 @@ class HomePage(Screen):
         container.add_widget(row_1)
         container.add_widget(row_2)
 
+        template_page.body.clear_widgets()
         template_page.body.add_widget(container)
 
-        template_page.footer.clear_widgets()
-        template_page.footer.add_widget(CilantroButton(text='EXIT',
-                                                       on_release=lambda _: exit(1)))
+        template_page.footer_logout.text = 'EXIT'
+        template_page.footer_logout.bind(on_release=exit_app)
 
         self.add_widget(template_page)
+
+
+def login_admin(callback):
+    AdminLoginPopup().open()
+
+
+def login_auditor(callback):
+    globals.screen_manager.current = globals.AUDITOR_SCREEN
+    globals.screen_manager.transition.duration = 0.3
+    globals.screen_manager.transition.direction = 'left'
+
+
+def exit_app(callback):
+    exit(1)
 
 
 class AdminLoginPopup(Popup):
@@ -63,16 +73,6 @@ class AdminLoginPopup(Popup):
             globals.screen_manager.current = globals.ADMIN_SCREEN
             globals.screen_manager.transition.duration = 0.3
             globals.screen_manager.transition.direction = 'right'
-
-
-def login_admin(callback):
-    AdminLoginPopup().open()
-
-
-def login_auditor(callback):
-    globals.screen_manager.current = globals.AUDITOR_SCREEN
-    globals.screen_manager.transition.duration = 0.3
-    globals.screen_manager.transition.direction = 'left'
 
 
 class TestApp(App):
