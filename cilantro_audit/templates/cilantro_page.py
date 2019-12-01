@@ -15,7 +15,6 @@ Builder.load_file(path.dirname(path.abspath(__file__)) + "/widgets/cilantro_page
 
 
 class CilantroPage(Screen):
-    page = ObjectProperty()
     header = ObjectProperty()
     header_back = ObjectProperty()
     header_title = ObjectProperty()
@@ -27,7 +26,9 @@ class CilantroPage(Screen):
 
 class TestApp(App):
     def build(self):
-        return CilantroPage()
+        temp = CilantroPage()
+        temp.body.add_widget(CilantroButton(text='Test'))
+        return temp
 
 
 if __name__ == '__main__':

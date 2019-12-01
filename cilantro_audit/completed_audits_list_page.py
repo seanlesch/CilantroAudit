@@ -268,11 +268,11 @@ class CompletedAuditsListPage(Screen):
         Clock.schedule_once(lambda _: self.schedule_focus(show), 0.2)
         show.open()
 
-    def build_header_row(self, title, dt, auditor):
-        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_title(title)
+    def build_header_row(self, title, auditor, dt):
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_blank_label("")
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_title(title)
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_auditor(auditor)
-        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_date_time(format_datetime(utc_to_local(dt)))
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_datetime(format_datetime(utc_to_local(dt)))
 
     def load_audit_template_and_completed_audit_with_title_and_datetime(self, dt):
         ca = list(CompletedAudit.objects(datetime=dt))
@@ -292,7 +292,7 @@ class CompletedAuditsListPage(Screen):
 
     def populate_completed_audit_page(self, title):
         ca = self.load_audit_template_and_completed_audit_with_title_and_datetime(title)
-        self.build_header_row(ca.title, ca.datetime, ca.auditor)
+        self.build_header_row(ca.title, ca.auditor, ca.datetime)
 
         self.build_completed_audit_page_body(ca)
 

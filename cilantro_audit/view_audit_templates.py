@@ -1,9 +1,9 @@
-from cilantro_audit import globals
-
 from kivy.app import App
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
+
+from cilantro_audit import globals
 
 from cilantro_audit.constants import PROD_DB
 from cilantro_audit.constants import CREATE_COMPLETED_AUDIT_PAGE
@@ -23,12 +23,16 @@ class ViewAuditTemplates(Screen):
         self.populate_page()
 
     def populate_page(self):
+
         self.clear_widgets()
         template_page = CilantroPage()
-        template_page.header_title.text = 'Available Audit Templates'
+        template_page.header_title.text = 'Available Audits'
+
+        template_page.body.add_widget(ViewAuditTemplatesContent())
+
         template_page.header_back.bind(on_release=go_back)
         template_page.header_home.bind(on_release=go_home)
-        template_page.body.add_widget(ViewAuditTemplatesContent())
+
         self.add_widget(template_page)
 
 

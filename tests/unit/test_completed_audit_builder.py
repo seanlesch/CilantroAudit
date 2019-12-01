@@ -87,6 +87,7 @@ class CompletedAuditBuilderTests(unittest.TestCase):
         audit = CompletedAuditBuilder() \
             .with_title("Title") \
             .with_auditor("Auditor") \
+            .with_datetime(datetime.utcnow())\
             .with_answer(VALID_ANSWER) \
             .build()
         self.assertGreaterEqual(datetime.utcnow(), audit.datetime)

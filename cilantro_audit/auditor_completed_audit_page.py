@@ -37,7 +37,8 @@ class AuditorCompletedAuditPage(Screen):
     def __init__(self, **kw):
         super().__init__(**kw)
 
-    def reset_scroll_to_top(self):  # needs to be used in the routine that first populates the questions.
+    def reset_scroll_to_top(self):
+        # needs to be used in the routine that first populates the questions.
         # https://kivy.org/doc/stable/api-kivy.uix.scrollview.html Y scrolling value, between 0 and 1. If 0,
         # the content’s bottom side will touch the bottom side of the ScrollView. If 1, the content’s top side will
         # touch the top side.
@@ -51,7 +52,7 @@ class AuditorCompletedAuditPage(Screen):
         lbl = Label(text='[b]Auditor: [/b]' + auditor, markup=True, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
-    def add_date_time(self, dt):  # needs to be updated when you click out of one audit and load up another
+    def add_datetime(self, dt):  # needs to be updated when you click out of one audit and load up another
         lbl = Label(text='[b]Date: [/b]' + dt, markup=True, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
