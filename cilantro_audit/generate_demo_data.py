@@ -1,37 +1,54 @@
-import random
+from random import choice
+from random import randint
+from random import shuffle
 from datetime import timedelta
-from itertools import permutations
-
-from mongoengine import connect
 
 from cilantro_audit.audit_template import Severity, Question, AuditTemplateBuilder
 from cilantro_audit.completed_audit import Response, CompletedAuditBuilder, Answer
 from cilantro_audit.constants import PROD_DB
 
+from mongoengine import connect
+
 db = connect(PROD_DB)
 db.drop_database(PROD_DB)
+db = connect(PROD_DB)
 
-connect(PROD_DB)
-
-NUM_TEMPLATES = 25
-NUM_COMPLETED_PER_TEMPLATE = 5
-MAX_YEAR_DELTA = 4
-ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-
-def time_delta(max_years):
-    return timedelta(days=random.randint(0, 31 * 12 * max_years))
-
-
-def inverse_factorial(value: int):
-    n = 1
-    while value > 0:
-        n += 1
-        value = int(value / n)
-    return n
-
-
-TITLES = ["".join(p) for p in permutations(ALPHABET[0:inverse_factorial(NUM_TEMPLATES)])]
+TITLES = [
+    "Outside Break Area (Off South Porch)",
+    "Offices",
+    "Basement (Storage and Meeting Rooms)",
+    "Basement - Computer Room",
+    "Art Department",
+    "Camera Department",
+    "Plate Department",
+    "Mounting Department",
+    "Plate Warehouse",
+    "Plant Lunchroom",
+    "Front Office Lunchroom",
+    "Office Area Men's Room",
+    "Men's Locker Room",
+    "Common Area",
+    "Office Area Lady's Room",
+    "Lady's Locker Room",
+    "Outside Basement Door Area",
+    "Beckart Working Area",
+    "Dumpster Areas",
+    "Flammable Storage Room (EPR)",
+    "Shipping/Receiving",
+    "Recycler Room (Next to Maintenance)",
+    "Compressor Room (Next to Maintenance)",
+    "Ink Lap (Upstairs)",
+    "Plate Mezzanine",
+    "Lab Mezzanine",
+    "Finished Goods Warehouse",
+    "Blend Room",
+    "QC Lap",
+    "Mill/Disperser Room Floor",
+    "Mill Deck Mezzanine",
+    "Mill Room Warehouse",
+    "Maintenance",
+    "Lift Trucks",
+]
 
 TEXTS = [
     "Who's the best auditor in town!? Is it you?",
@@ -82,6 +99,10 @@ AUDITORS = [
     "Jenson Wilkerson",
 ]
 
+NUM_TEMPLATES = len(TITLES)
+NUM_COMPLETED_PER_TEMPLATE = 5
+MAX_YEAR_DELTA = 4
+
 SEVERITIES = [
     Severity.red(),
     Severity.yellow(),
@@ -104,22 +125,25 @@ RESPONSES = [
 ]
 
 
+def random_titles():
+    shuffle(TITLES)
+
+
 def next_title():
     return TITLES.pop(0)
 
 
 def random_question():
     return Question(
-        text=random.choice(TEXTS),
-        yes=random.choice(SEVERITIES),
-        no=random.choice(SEVERITIES),
-        other=random.choice(SEVERITIES),
+        text=choice(TEXTS),
+        yes=choice(SEVERITIES),
+        no=choice(SEVERITIES),
+        other=choice(SEVERITIES),
     )
 
 
 def random_answer_from_question(question):
-    text = question.text
-    response = random.choice(RESPONSES)
+    response = choice(RESPONSES)
     if Response.yes() == response:
         return Answer(
             text=question.text,
@@ -137,13 +161,21 @@ def random_answer_from_question(question):
             text=question.text,
             severity=question.yes,
             response=response,
-            comment=random.choice(COMMENTS),
+            comment=choice(COMMENTS),
         )
+
+
+def time_delta(max_years):
+    return timedelta(days=randint(0, 31 * 12 * max_years))
 
 
 if __name__ == '__main__':
     print("\nGenerating", NUM_TEMPLATES, "audit template(s), each with", NUM_COMPLETED_PER_TEMPLATE,
-          "completed audit(s), with dates ranging up to", MAX_YEAR_DELTA, "years ago...")
+          "completed audit(s), with dates ranging up to", MAX_YEAR_DELTA, "years ago\n...")
+
+    # Shuffle existing titles' list
+    random_titles()
+
     for _ in range(NUM_TEMPLATES):
         title = next_title()
         q0 = random_question()
@@ -169,7 +201,7 @@ if __name__ == '__main__':
         for _ in range(NUM_COMPLETED_PER_TEMPLATE):
             audit = CompletedAuditBuilder() \
                 .with_title(title) \
-                .with_auditor(random.choice(AUDITORS)) \
+                .with_auditor(choice(AUDITORS)) \
                 .with_answer(random_answer_from_question(q0)) \
                 .with_answer(random_answer_from_question(q1)) \
                 .with_answer(random_answer_from_question(q2)) \
