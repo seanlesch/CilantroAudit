@@ -281,7 +281,6 @@ class CompletedAuditsListPage(Screen):
 
         # Have to set the scroll so there is not a major gap.
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).stack_list.clear_widgets()
-        self.manager.get_screen(COMPLETED_AUDIT_PAGE).stack_list.clear_widgets()
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).stack_list.height = 0
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).reset_scroll_to_top()
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).at = audit_template
