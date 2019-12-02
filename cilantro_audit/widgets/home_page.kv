@@ -1,7 +1,6 @@
+
 <HomePage>:
-
     FloatLayout:
-
         Label:
             text: 'Home Page'
             font_size: 40
@@ -9,7 +8,6 @@
             pos_hint: {"top": 1.21, "center_x": 0.5}
 
         FloatLayout:
-
             pos_hint: {"center_x": 0.5, "center_y": 0.5}
             size_hint: None, None
 
@@ -19,7 +17,8 @@
                 size: 250, 200
                 size_hint: None, None
                 pos_hint: {"center_x": -0.8, "center_y": 0.5}
-                on_press: app.open_admin_login_popup()
+                on_release:
+                    root.open_admin_login_popup()
 
             Button:
                 text: "Auditor"
@@ -29,19 +28,17 @@
                 pos_hint: {"center_x": 1.7, "center_y": 0.5}
                 on_release:
                     root.manager.current = 'AuditorScreen'
-                    root.manager.transition.duration = 0.3
-                    root.manager.transition.direction = 'left'
 
             Button:
                 text: 'Exit'
                 font_size: 30
                 size: 500, 100
                 size_hint: None, None
-                on_press: app.exit()
                 pos_hint: {"center_x": 0.45, "center_y": -1.0}
+                on_release:
+                    exit()
 
 <AdminLoginPopup>
-
     id: popup
     auto_dismiss: True
     title: "Enter Your Admin Password"
@@ -69,11 +66,13 @@
                 font_size: 30
                 size: 187.5, 30
                 size_hint: None, None
-                on_press: root.dismiss()
+                on_release:
+                    root.dismiss()
 
             Button:
                 text: "Login"
                 font_size: 30
                 size: 187.5, 30
                 size_hint: None, None
-                on_press: root.validate_password(root.content.children[1].text)
+                on_release:
+                    root.validate_password(root.content.children[1].text)
