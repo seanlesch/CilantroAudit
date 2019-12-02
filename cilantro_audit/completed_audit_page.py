@@ -130,10 +130,10 @@ class CompletedAuditPage(Screen):
     def add_question_answer(self, question, answer):
         self.stack_list.height += 130  # integer (80) comes from question_answer size
         qa = QuestionAnswer()
-        qa.question_text = "[b]Question: [/b]" + question.text
+        qa.question_text = "[b]Question: [/b]" + answer.text
         qa.answer_response_text = "[b]Response: [/b]" + str(answer.response.response)
         qa.answer_comments_text = "[b]Comments: [/b]" + str(answer.comment)
-        qa.answer_severity_text = "[b]Severity: [/b]" + str(answer.severity.severity)
+        qa.answer_severity_text = "[b]Severity: [/b]" + str(answer.severity.severity[2:])
         if qa.answer_severity_text == "[b]Severity: [/b]RED":
             qa.answer_severity_text = "[b]Severity: [/b][color="+get_hex_from_color(RGB_RED)+"]RED[/color]"
         elif qa.answer_severity_text == "[b]Severity: [/b]YELLOW":

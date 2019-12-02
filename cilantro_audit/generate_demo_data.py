@@ -13,14 +13,14 @@ db.drop_database(PROD_DB)
 
 connect(PROD_DB)
 
-NUM_TEMPLATES = 10
+NUM_TEMPLATES = 25
 NUM_COMPLETED_PER_TEMPLATE = 5
 MAX_YEAR_DELTA = 4
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
 def time_delta(max_years):
-    return timedelta(days=random.randint(0, 31) * random.randint(1, 12) * random.randint(1, max_years))
+    return timedelta(days=random.randint(0, 31 * 12 * max_years))
 
 
 def inverse_factorial(value: int):
@@ -151,6 +151,8 @@ if __name__ == '__main__':
         q2 = random_question()
         q3 = random_question()
         q4 = random_question()
+        q5 = random_question()
+        q6 = random_question()
 
         AuditTemplateBuilder() \
             .with_title(title) \
@@ -159,6 +161,8 @@ if __name__ == '__main__':
             .with_question(q2) \
             .with_question(q3) \
             .with_question(q4) \
+            .with_question(q5) \
+            .with_question(q6) \
             .build() \
             .save()
 
@@ -171,6 +175,8 @@ if __name__ == '__main__':
                 .with_answer(random_answer_from_question(q2)) \
                 .with_answer(random_answer_from_question(q3)) \
                 .with_answer(random_answer_from_question(q4)) \
+                .with_answer(random_answer_from_question(q5)) \
+                .with_answer(random_answer_from_question(q6)) \
                 .build()
             audit.datetime -= time_delta(MAX_YEAR_DELTA)
             audit.save()

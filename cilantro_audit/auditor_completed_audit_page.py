@@ -36,20 +36,6 @@ class AuditorCompletedAuditPage(Screen):
 
     def __init__(self, **kw):
         super().__init__(**kw)
-        self.completed_audits = []
-        self.audit_templates = []
-        self.load_completed_audits()
-        self.load_audit_templates()
-
-    # Loads all of the completed_audit objects from the database into a list.
-    def load_completed_audits(self):
-        self.completed_audits = list(CompletedAudit.objects().all_fields())
-        self.completed_audits = sorted(self.completed_audits, key=lambda completed_audit: completed_audit.title)
-
-    # Loads all of the audit_template objects from the database into a list.
-    def load_audit_templates(self):
-        self.audit_templates = list(AuditTemplate.objects().all_fields())
-        self.audit_templates = sorted(self.audit_templates, key=lambda audit_template: audit_template.title)
 
     def reset_scroll_to_top(self):  # needs to be used in the routine that first populates the questions.
         # https://kivy.org/doc/stable/api-kivy.uix.scrollview.html Y scrolling value, between 0 and 1. If 0,
@@ -77,7 +63,7 @@ class AuditorCompletedAuditPage(Screen):
     def add_question_answer_auditor_version(self, question, answer):
         self.stack_list.height += 110  # integer (80) comes from question_answer size
         qa = AuditorQuestionAnswer()
-        qa.question_text = "[b]Question: [/b]" + question.text
+        qa.question_text = "[b]Question: [/b]" + answer.text
         qa.answer_response_text = "[b]Response: [/b]" + str(answer.response.response)
         qa.answer_comments_text = "[b]Comments: [/b]" + str(answer.comment)
         self.stack_list.add_widget(qa)
