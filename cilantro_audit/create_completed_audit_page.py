@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import kivy
 from kivy.app import App
 from kivy.lang import Builder
@@ -88,6 +90,8 @@ class CreateCompletedAuditPage(Screen, FloatLayout):
         completed_audit.with_title(self.audit_title)
         # The object returned from the .kv is a TextField, with a member text
         completed_audit.with_auditor(self.auditor_name.text)
+        completed_audit.with_datetime(datetime.utcnow())
+
         for a in self.questions:
             if a.other_comments.text:
                 temp_answer = Answer(text=a.question.text, severity=self.question_severity(a), response=a.response,

@@ -1,39 +1,83 @@
-import random
-from datetime import timedelta
-from itertools import permutations
+from random import sample
+from random import choice
+from random import randint
+from random import shuffle
+from random import randrange
 
-from mongoengine import connect
+from datetime import datetime
+from datetime import timedelta
 
 from cilantro_audit.audit_template import Severity, Question, AuditTemplateBuilder
 from cilantro_audit.completed_audit import Response, CompletedAuditBuilder, Answer
 from cilantro_audit.constants import PROD_DB
 
+from mongoengine import connect
+
 db = connect(PROD_DB)
 db.drop_database(PROD_DB)
+db = connect(PROD_DB)
 
-connect(PROD_DB)
+AUDITORS = [
+    "Piers Thompson",
+    "Russell Hayes",
+    "Kade Saunders",
+    "Delores Wright",
+    "Matei Prosser",
+    "Sinead Mcnamara",
+    "Sila Blake",
+    "Aislinn Pace",
+    "Ismail Wells",
+    "Ikrah Tapia",
+    "Nell Lim",
+    "Damian Fry",
+    "Jaya Mills",
+    "Tai Sargent",
+    "Elizabeth Bentley",
+    "Wren O'Moore",
+    "Justin Lawson",
+    "Regina Mcculloch",
+    "Liberty Padilla",
+    "Jenson Wilkerson",
+]
 
-NUM_TEMPLATES = 25
-NUM_COMPLETED_PER_TEMPLATE = 5
-MAX_YEAR_DELTA = 4
-ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+AUDIT_TITLES = [
+    "Outside Break Area (Off South Porch)",
+    "Offices",
+    "Basement (Storage and Meeting Rooms)",
+    "Basement - Computer Room",
+    "Art Department",
+    "Camera Department",
+    "Plate Department",
+    "Mounting Department",
+    "Plate Warehouse",
+    "Plant Lunchroom",
+    "Front Office Lunchroom",
+    "Office Area Men's Room",
+    "Men's Locker Room",
+    "Common Area",
+    "Office Area Lady's Room",
+    "Lady's Locker Room",
+    "Outside Basement Door Area",
+    "Beckart Working Area",
+    "Dumpster Areas",
+    "Flammable Storage Room (EPR)",
+    "Shipping/Receiving",
+    "Recycler Room (Next to Maintenance)",
+    "Compressor Room (Next to Maintenance)",
+    "Ink Lap (Upstairs)",
+    "Plate Mezzanine",
+    "Lab Mezzanine",
+    "Finished Goods Warehouse",
+    "Blend Room",
+    "QC Lap",
+    "Mill/Disperser Room Floor",
+    "Mill Deck Mezzanine",
+    "Mill Room Warehouse",
+    "Maintenance",
+    "Lift Trucks",
+]
 
-
-def time_delta(max_years):
-    return timedelta(days=random.randint(0, 31 * 12 * max_years))
-
-
-def inverse_factorial(value: int):
-    n = 1
-    while value > 0:
-        n += 1
-        value = int(value / n)
-    return n
-
-
-TITLES = ["".join(p) for p in permutations(ALPHABET[0:inverse_factorial(NUM_TEMPLATES)])]
-
-TEXTS = [
+QUESTION_TEXTS = [
     "Who's the best auditor in town!? Is it you?",
     "Will you clean the thing today?",
     "Will you clean the thing tomorrow?",
@@ -59,28 +103,9 @@ COMMENTS = [
     "Does anyone read this feedback?",
 ]
 
-AUDITORS = [
-    "Piers Thompson",
-    "Russell Hayes",
-    "Kade Saunders",
-    "Delores Wright",
-    "Matei Prosser",
-    "Sinead Mcnamara",
-    "Sila Blake",
-    "Aislinn Pace",
-    "Ismail Wells",
-    "Ikrah Tapia",
-    "Nell Lim",
-    "Damian Fry",
-    "Jaya Mills",
-    "Tai Sargent",
-    "Elizabeth Bentley",
-    "Wren O'Moore",
-    "Justin Lawson",
-    "Regina Mcculloch",
-    "Liberty Padilla",
-    "Jenson Wilkerson",
-]
+NUM_TEMPLATES = len(AUDIT_TITLES)
+NUM_RESPONSES = randrange(1, len(AUDITORS))
+MAX_YEAR_DELTA = 4
 
 SEVERITIES = [
     Severity.red(),
@@ -104,22 +129,17 @@ RESPONSES = [
 ]
 
 
-def next_title():
-    return TITLES.pop(0)
-
-
-def random_question():
+def get_question(question_text):
     return Question(
-        text=random.choice(TEXTS),
-        yes=random.choice(SEVERITIES),
-        no=random.choice(SEVERITIES),
-        other=random.choice(SEVERITIES),
+        text=question_text,
+        yes=choice(SEVERITIES),
+        no=choice(SEVERITIES),
+        other=choice(SEVERITIES),
     )
 
 
-def random_answer_from_question(question):
-    text = question.text
-    response = random.choice(RESPONSES)
+def get_random_answer_for(question):
+    response = choice(RESPONSES)
     if Response.yes() == response:
         return Answer(
             text=question.text,
@@ -137,46 +157,42 @@ def random_answer_from_question(question):
             text=question.text,
             severity=question.yes,
             response=response,
-            comment=random.choice(COMMENTS),
+            comment=choice(COMMENTS),
         )
 
 
 if __name__ == '__main__':
-    print("\nGenerating", NUM_TEMPLATES, "audit template(s), each with", NUM_COMPLETED_PER_TEMPLATE,
-          "completed audit(s), with dates ranging up to", MAX_YEAR_DELTA, "years ago...")
-    for _ in range(NUM_TEMPLATES):
-        title = next_title()
-        q0 = random_question()
-        q1 = random_question()
-        q2 = random_question()
-        q3 = random_question()
-        q4 = random_question()
-        q5 = random_question()
-        q6 = random_question()
+    print("\nGenerating", NUM_TEMPLATES, "AuditTemplate(s), each with", NUM_RESPONSES,
+          "CompletedAudit(s) dated up to", MAX_YEAR_DELTA, "years ago.\n...")
 
-        AuditTemplateBuilder() \
-            .with_title(title) \
-            .with_question(q0) \
-            .with_question(q1) \
-            .with_question(q2) \
-            .with_question(q3) \
-            .with_question(q4) \
-            .with_question(q5) \
-            .with_question(q6) \
-            .build() \
-            .save()
+    # Randomize Data
+    shuffle(AUDIT_TITLES)
+    shuffle(COMMENTS)
 
-        for _ in range(NUM_COMPLETED_PER_TEMPLATE):
-            audit = CompletedAuditBuilder() \
+    # Create an AuditTemplate for each Audit Title and assign x-number of CompletedAudits (Responses) to it
+    for title in AUDIT_TITLES:
+        template_audit = AuditTemplateBuilder().with_title(title)
+
+        # Use a variable number of random questions for each template and add them to this Audit Template
+        rand_questions_list = []
+        for question_text in sample(QUESTION_TEXTS, randrange(1, len(QUESTION_TEXTS))):
+            q = get_question(question_text)
+            rand_questions_list.append(q)
+            template_audit.with_question(q)
+
+        template_audit.build().save()
+
+        # Assign a variable number of CompletedAudits (Responses) to this template (no duplicate auditors)
+        for unique_auditor in sample(AUDITORS, NUM_RESPONSES):
+            completed_audit = CompletedAuditBuilder() \
                 .with_title(title) \
-                .with_auditor(random.choice(AUDITORS)) \
-                .with_answer(random_answer_from_question(q0)) \
-                .with_answer(random_answer_from_question(q1)) \
-                .with_answer(random_answer_from_question(q2)) \
-                .with_answer(random_answer_from_question(q3)) \
-                .with_answer(random_answer_from_question(q4)) \
-                .with_answer(random_answer_from_question(q5)) \
-                .with_answer(random_answer_from_question(q6)) \
-                .build()
-            audit.datetime -= time_delta(MAX_YEAR_DELTA)
-            audit.save()
+                .with_auditor(unique_auditor) \
+                .with_datetime(datetime.utcnow() - timedelta(days=randint(0, (31 * 12 * MAX_YEAR_DELTA)),
+                                                             hours=randint(0, 24),
+                                                             minutes=randint(0, 60),
+                                                             seconds=randint(0, 60)))
+
+            for rand_question in rand_questions_list:
+                completed_audit.with_answer(get_random_answer_for(rand_question))
+
+            completed_audit.build().save()
