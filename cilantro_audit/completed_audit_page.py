@@ -37,6 +37,7 @@ class CompletedAuditPage(Screen):
     grid_list = ObjectProperty()
     question_text = ObjectProperty()
     scrolling_panel = ObjectProperty()
+    previous_page = ""
 
     def __init__(self, **kw):
         super().__init__(**kw)

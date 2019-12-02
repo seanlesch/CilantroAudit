@@ -38,7 +38,7 @@
         on_release:
             root.clear_page()
             root.manager.transition = SlideTransition(direction='right')
-            root.manager.current = 'CompletedAuditsListPage'
+            root.manager.current = root.previous_page
             root.manager.transition.duration = 0.3
 
 <QuestionAnswer>:

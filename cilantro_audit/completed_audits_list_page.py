@@ -14,7 +14,7 @@ from mongoengine import connect
 from cilantro_audit.audit_template import AuditTemplate, Severity
 from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, COMPLETED_AUDIT_PAGE, \
-    RGB_RED, RGB_YELLOW, RGB_GREEN, AUDITS_PER_PAGE
+    RGB_RED, RGB_YELLOW, RGB_GREEN, AUDITS_PER_PAGE, COMPLETED_AUDITS_LIST_PAGE
 
 kivy.require(KIVY_REQUIRED_VERSION)
 
@@ -299,6 +299,7 @@ class CompletedAuditsListPage(Screen):
         self.manager.current = COMPLETED_AUDIT_PAGE
 
     def callback(self, instance):
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).previous_page = COMPLETED_AUDITS_LIST_PAGE
         self.populate_completed_audit_page(instance.id)
 
 

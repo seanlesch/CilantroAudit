@@ -9,10 +9,8 @@ from kivy.properties import ObjectProperty, StringProperty
 
 from mongoengine import connect
 
-from cilantro_audit.constants import PROD_DB
-from cilantro_audit.constants import HOME_SCREEN
-from cilantro_audit.constants import ADMIN_SCREEN
-from cilantro_audit.constants import AUDITS_PER_PAGE
+from cilantro_audit.constants import PROD_DB, HOME_SCREEN, COMPLETED_AUDITS_LIST_PAGE, ADMIN_SCREEN, AUDITS_PER_PAGE, \
+    VIEW_FLAG_TRENDS_PAGE, COMPLETED_AUDIT_PAGE
 
 from cilantro_audit.templates.cilantro_page import CilantroPage
 
@@ -143,22 +141,23 @@ class ViewFlagTrendsPageContent(Screen):
         show = AuditListPop()
         show.title = "Related completed audits for the question: " + instance.text + " from " + instance.audit_title
         audit_list = list(CompletedAudit.objects(title=instance.audit_title, severity=Severity.red()))
-        self.populate_audit_list_pop(audit_list, show, instance.text)
+        self.populate_audit_list_pop(audit_list, show, instance.text, show)
         show.open()
 
-    def populate_audit_list_pop(self, al, pop, ans):
+    def populate_audit_list_pop(self, al, pop, ans, show):
         for audit in al:
             for answer in audit.answers:
                 if ans == answer.text and answer.severity == Severity.red():
                     pop.name_col.add_widget(EntryLabel(text=audit.auditor))
-                    pop.date_col.add_widget(QuestionButton(id=str(audit.datetime),
-                                                           text=format_datetime(utc_to_local(audit.datetime)),
-                                                           on_press=self.load_completed_audit))
+                    temp = QuestionButton(id=str(audit.datetime), text=format_datetime(utc_to_local(audit.datetime)),
+                                          on_press=show.dismiss)
+                    temp.bind(on_press=self.load_completed_audit)
+                    pop.date_col.add_widget(temp)
                     pop.unresolved_col.add_widget(EntryLabel(text=str(audit.unresolved_count)))
 
     def load_completed_audit(self, instance):
-        pass
-        #self.manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).populate_completed_audit_page(instance.id)
+        globals.screen_manager.get_screen(COMPLETED_AUDIT_PAGE).previous_page = VIEW_FLAG_TRENDS_PAGE
+        globals.screen_manager.get_screen(COMPLETED_AUDITS_LIST_PAGE).populate_completed_audit_page(instance.id)
 
 
 class EntryLabel(Label):
