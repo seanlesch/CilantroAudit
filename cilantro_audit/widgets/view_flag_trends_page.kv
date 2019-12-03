@@ -120,7 +120,6 @@
 
 <EntryLabel>:
     size_hint_y: None
-    text_size: self.width-20, None
     halign: 'center'
 
     canvas.before:
@@ -167,17 +166,17 @@
             spacing: 10
             size_hint_y: 0.15
 
-            Label:
+            CilantroLabel:
                 id: date_header
                 text: "Audit Date"
                 spacing: 10
 
-            Label:
+            CilantroLabel:
                 id: name_header
                 text: "Auditor Name"
                 spacing: 10
 
-            Label:
+            CilantroLabel:
                 id: unresolved_header
                 text: "Unresolved Answers"
                 spacing: 10
