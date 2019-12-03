@@ -7,6 +7,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.utils import get_hex_from_color
 from mongoengine import connect
 
+from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, RGB_RED, RGB_YELLOW, RGB_GREEN
 
 kivy.require(KIVY_REQUIRED_VERSION)
@@ -32,8 +33,18 @@ class QuestionAnswer(FloatLayout):
     resolve_button = ObjectProperty(None)
 
     def resolve_response(self):
+        audit_to_resolve = CompletedAudit.objects() \
+            .filter(title=self.resolve_button.title,
+                    auditor=self.resolve_button.auditor,
+                    datetime=self.resolve_button.datetime) \
+            .get(title=self.resolve_button.title,
+                 auditor=self.resolve_button.auditor,
+                 datetime=self.resolve_button.datetime)
+        audit_answer_to_resolve = audit_to_resolve.answers.filter(text=self.question_text)
+        audit_answer_to_resolve.resolved = True
+        audit_to_resolve.unresolved_count -= 1
+        audit_to_resolve.save()
         self.remove_widget(self.resolve_button)
-        # todo Change resolved in DB
 
 
 class CompletedAuditPage(Screen):
@@ -67,7 +78,7 @@ class CompletedAuditPage(Screen):
         lbl = Label(text=text, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
-    def add_question_answer(self, answer):
+    def add_question_answer(self, answer, title, datetime, auditor):
         self.stack_list.height += 80  # integer (80) comes from question_answer size
         qa = QuestionAnswer()
         qa.question_text = "[b]Question: [/b]" + answer.text
@@ -75,13 +86,16 @@ class CompletedAuditPage(Screen):
         qa.answer_comments_text = "[b]Comments: [/b]" + str(answer.comment)
         qa.answer_severity_text = "[b]Severity: [/b]" + str(answer.severity.severity[2:])
         if qa.answer_severity_text == "[b]Severity: [/b]RED":
-            qa.answer_severity_text = "[b]Severity: [/b][color="+get_hex_from_color(RGB_RED)+"]RED[/color]"
+            qa.answer_severity_text = "[b]Severity: [/b][color=" + get_hex_from_color(RGB_RED) + "]RED[/color]"
             if not answer.resolved:
                 qa.resolve_button.visible = True
+                qa.resolve_button.datetime = datetime
+                qa.resolve_button.title = title
+                qa.resolve_button.auditor = auditor
         elif qa.answer_severity_text == "[b]Severity: [/b]YELLOW":
-            qa.answer_severity_text = "[b]Severity: [/b][color="+get_hex_from_color(RGB_YELLOW)+"]YELLOW[/color]"
+            qa.answer_severity_text = "[b]Severity: [/b][color=" + get_hex_from_color(RGB_YELLOW) + "]YELLOW[/color]"
         elif qa.answer_severity_text == "[b]Severity: [/b]GREEN":
-            qa.answer_severity_text = "[b]Severity: [/b][color="+get_hex_from_color(RGB_GREEN)+"]GREEN[/color]"
+            qa.answer_severity_text = "[b]Severity: [/b][color=" + get_hex_from_color(RGB_GREEN) + "]GREEN[/color]"
         self.stack_list.add_widget(qa)
 
     def clear_page(self):

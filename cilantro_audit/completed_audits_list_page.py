@@ -288,7 +288,7 @@ class CompletedAuditsListPage(Screen):
 
         for answer in completed_audit.answers:
             self.manager.get_screen(COMPLETED_AUDIT_PAGE) \
-                .add_question_answer(answer)
+                .add_question_answer(answer, completed_audit.title, completed_audit.datetime, completed_audit.auditor)
 
     def populate_completed_audit_page(self, title):
         ca = self.load_audit_template_and_completed_audit_with_title_and_datetime(title)
