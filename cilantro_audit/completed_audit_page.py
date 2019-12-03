@@ -7,8 +7,6 @@ from kivy.uix.screenmanager import Screen
 from kivy.utils import get_hex_from_color
 from mongoengine import connect
 
-from cilantro_audit.completed_audit import CompletedAudit
-from cilantro_audit.audit_template import AuditTemplate
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, RGB_RED, RGB_YELLOW, RGB_GREEN
 
 kivy.require(KIVY_REQUIRED_VERSION)
@@ -30,6 +28,12 @@ class QuestionAnswer(FloatLayout):
 
     answer_severity_label = ObjectProperty()
     answer_severity_text = StringProperty()
+
+    resolve_button = ObjectProperty(None)
+
+    def resolve_response(self):
+        self.remove_widget(self.resolve_button)
+        # todo Change resolved in DB
 
 
 class CompletedAuditPage(Screen):
@@ -72,6 +76,8 @@ class CompletedAuditPage(Screen):
         qa.answer_severity_text = "[b]Severity: [/b]" + str(answer.severity.severity[2:])
         if qa.answer_severity_text == "[b]Severity: [/b]RED":
             qa.answer_severity_text = "[b]Severity: [/b][color="+get_hex_from_color(RGB_RED)+"]RED[/color]"
+            if not answer.resolved:
+                qa.resolve_button.visible = True
         elif qa.answer_severity_text == "[b]Severity: [/b]YELLOW":
             qa.answer_severity_text = "[b]Severity: [/b][color="+get_hex_from_color(RGB_YELLOW)+"]YELLOW[/color]"
         elif qa.answer_severity_text == "[b]Severity: [/b]GREEN":
