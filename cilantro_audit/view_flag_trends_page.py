@@ -57,31 +57,14 @@ class ViewFlagTrendsPageContent(Screen):
 
     def __init__(self, **kw):
         super().__init__(**kw)
-        self.db_index = 0
         self.retrieve_flagged_answers()
         self.populate_unique_entry_rows()
-
-    def next_page(self):
-        if (self.db_index + 1) * AUDITS_PER_PAGE <= CompletedAudit.objects.filter(severity=Severity.red()).count():
-            self.db_index += 1
-            self.page_count_label.text = "Page " + str(self.db_index + 1)
-            self.refresh_flagged_questions()
-
-    def prev_page(self):
-        if self.db_index >= 1:
-            self.db_index -= 1
-            self.page_count_label.text = "Page " + str(self.db_index + 1)
-            self.refresh_flagged_questions()
 
     # Retrieve all flagged answers from the database and condense them (by question uniqueness) in a 3d array
     def retrieve_flagged_answers(self):
         self.unique_entry_rows = []
         completed_audits = list(
-            CompletedAudit.objects \
-                .filter(severity=Severity.red()) \
-                .order_by(*FLAG_TRENDS_SORT_ORDER) \
-                .skip(self.db_index * AUDITS_PER_PAGE) \
-                .limit(AUDITS_PER_PAGE))
+            CompletedAudit.objects(severity=Severity.red()))
 
         # Go over each flagged answer and append them to a local 3d-array while counting the number of repeated flags
         for audit in completed_audits:
