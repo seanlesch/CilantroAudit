@@ -1,22 +1,18 @@
-from cilantro_audit import globals
-
 from kivy.app import App
-from kivy.uix.label import Label
-from kivy.uix.screenmanager import Screen
-from kivy.uix.button import Button
-from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty, StringProperty
-
+from kivy.uix.button import Button
+from kivy.uix.label import Label
+from kivy.uix.popup import Popup
+from kivy.uix.screenmanager import Screen
 from mongoengine import connect
 
-from cilantro_audit.constants import PROD_DB, HOME_SCREEN, COMPLETED_AUDITS_LIST_PAGE, ADMIN_SCREEN, AUDITS_PER_PAGE, \
-    VIEW_FLAG_TRENDS_PAGE, COMPLETED_AUDIT_PAGE
-
-from cilantro_audit.templates.cilantro_page import CilantroPage
-
-from cilantro_audit.completed_audit import CompletedAudit
+from cilantro_audit import globals
 from cilantro_audit.audit_template import Severity
+from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.completed_audits_list_page import format_datetime, utc_to_local
+from cilantro_audit.constants import PROD_DB, HOME_SCREEN, COMPLETED_AUDITS_LIST_PAGE, ADMIN_SCREEN, \
+    VIEW_FLAG_TRENDS_PAGE, COMPLETED_AUDIT_PAGE
+from cilantro_audit.templates.cilantro_page import CilantroPage
 
 connect(PROD_DB)
 
@@ -132,12 +128,12 @@ class ViewFlagTrendsPageContent(Screen):
         for audit in al:
             for answer in audit.answers:
                 if ans == answer.text and answer.severity == Severity.red():
-                    pop.name_col.add_widget(EntryLabel(text=audit.auditor))
-                    temp = QuestionButton(id=str(audit.datetime), text=format_datetime(utc_to_local(audit.datetime)),
-                                          on_press=show.dismiss)
+                    pop.name_col.add_widget(Label(text=audit.auditor, size_hint_y=None))
+                    temp = Button(id=str(audit.datetime), text=format_datetime(utc_to_local(audit.datetime)),
+                                  on_press=show.dismiss, size_hint_y=None)
                     temp.bind(on_press=self.load_completed_audit)
                     pop.date_col.add_widget(temp)
-                    pop.unresolved_col.add_widget(EntryLabel(text=str(audit.unresolved_count)))
+                    pop.unresolved_col.add_widget(Label(text=str(audit.unresolved_count), size_hint_y=None))
 
     def load_completed_audit(self, instance):
         globals.screen_manager.get_screen(COMPLETED_AUDIT_PAGE).previous_page = VIEW_FLAG_TRENDS_PAGE
