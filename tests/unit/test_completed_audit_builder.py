@@ -61,6 +61,7 @@ class CompletedAuditBuilderTests(unittest.TestCase):
         builder = CompletedAuditBuilder() \
             .with_title("Title") \
             .with_auditor("Auditor") \
+            .with_datetime(datetime.utcnow())\
             .with_answer(VALID_ANSWER) \
             .with_answer(VALID_ANSWER) \
             .with_answer(INVALID_ANSWER) \
