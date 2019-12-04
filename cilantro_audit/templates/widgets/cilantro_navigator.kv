@@ -1,0 +1,218 @@
+
+<CilantroNavigator>:
+    page: page
+    header: header
+    header_title: header_title
+    body: body
+    body_nav_btns: body_nav_btns
+    footer: footer
+    footer_logout: footer_logout
+
+    GridLayout:
+        id: page
+        rows: 3
+        cols: 1
+
+        canvas.before:
+            Color:
+                rgba: 0.1, 0.1, 0.1, 1.0
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        GridLayout:
+            id: header
+            name: 'header-grid'
+            rows: 1
+            cols: 3
+            size_hint: 1, 0.1
+
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1.0
+                Rectangle:
+                    pos: self.x, self.y
+                    size: self.width, self.height/(self.height-1)
+
+            Widget:
+                name: 'place-holder'
+
+            GridLayout:
+                id: header_title
+                name: 'title-grid'
+                rows: 1
+                cols: 1
+
+                canvas.before:
+                    Color:
+                        rgba: 1.0, 1.0, 1.0, 1.0
+                    Rectangle:
+                        pos: self.x, self.y
+                        size: self.width, self.height/(self.height-1)
+
+                CilantroLabel:
+                    text: 'Cilantro Navigator'
+
+            Widget:
+                name: 'place-holder'
+
+        GridLayout:
+            id: body
+            name: 'body-grid'
+            rows: 3
+            cols: 3
+
+            # 1st Row
+            Widget:
+                name: 'place-holder'
+                size_hint_x: 0.1
+                size_hint_y: 0.1
+
+            Widget:
+                name: 'place-holder'
+                size_hint_x: 1.0
+                size_hint_y: 0.1
+
+            Widget:
+                name: 'place-holder'
+                size_hint_x: 0.1
+                size_hint_y: 0.1
+
+            # 2nd Row
+            Widget:
+                name: 'place-holder'
+                size_hint_x: 0.1
+                size_hint_y: 1.0
+
+            GridLayout:
+                cols: 1
+                rows: 1
+
+                canvas.before:
+                    Color:
+                        rgba: 0.0, 0.0, 0.0, 1.0
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                    Color:
+                        rgba: 0.4, 0.4, 0.4, 1.0
+                    Rectangle:
+                        pos: self.x, self.y+self.height
+                        size: self.width, self.height/(self.height-1)
+
+                    Color:
+                        rgba: 0.4, 0.4, 0.4, 1.0
+                    Rectangle:
+                        pos: self.x, self.y
+                        size: self.width, self.height/(self.height-1)
+
+                    Color:
+                        rgba: 1.0, 1.0, 1.0, 1.0
+                    Rectangle:
+                        pos: self.x, self.y
+                        size: self.width/(self.width-1), self.height
+
+                    Color:
+                        rgba: 1.0, 1.0, 1.0, 1.0
+                    Rectangle:
+                        pos: self.x+self.width, self.y
+                        size: self.width/(self.width-1), self.height
+
+                GridLayout:
+                    rows: 3
+                    cols: 3
+
+                    # Row 1
+                    Widget:
+                        name: 'place-holder'
+                        size_hint_x: 0.1
+                        size_hint_y: 0.1
+
+                    Widget:
+                        name: 'place-holder'
+                        size_hint_x: 1.0
+                        size_hint_y: 0.155
+
+                    Widget:
+                        name: 'place-holder'
+                        size_hint_x: 0.1
+                        size_hint_y: 0.1
+
+                    # Row 2
+                    Widget:
+                        name: 'place-holder'
+                        size_hint_x: 0.1
+                        size_hint_y: 1.0
+
+                    # BODY CONTENT
+                    ScrollView:
+                        StackLayout:
+                            id: body_nav_btns
+                            height: self.minimum_height
+                            size_hint_y: None
+                            spacing: 30
+
+                    Widget:
+                        name: 'place-holder'
+                        size_hint_x: 0.1
+                        size_hint_y: 1.0
+
+                    # Row 3
+                    Widget:
+                        name: 'place-holder'
+                        size_hint_x: 0.1
+                        size_hint_y: 0.1
+
+                    Widget:
+                        name: 'place-holder'
+                        size_hint_x: 1.0
+                        size_hint_y: 0.1
+
+                    Widget:
+                        name: 'place-holder'
+                        size_hint_x: 0.1
+                        size_hint_y: 0.1
+
+            Widget:
+                name: 'place-holder'
+                size_hint_x: 0.1
+                size_hint_y: 1.0
+
+            # 3rd Row
+            Widget:
+                name: 'place-holder'
+                size_hint_x: 0.1
+                size_hint_y: 0.1
+
+            Widget:
+                name: 'place-holder'
+                size_hint_x: 1.0
+                size_hint_y: 0.1
+
+            Widget:
+                name: 'place-holder'
+                size_hint_x: 0.1
+                size_hint_y: 0.1
+
+        GridLayout:
+            id: footer
+            name: 'footer-grid'
+            rows: 1
+            cols: 1
+            size_hint: 1, 0.1
+
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1.0
+                Rectangle:
+                    pos: self.x, self.y+self.height
+                    size: self.width, self.height/(self.height-1)
+
+            GridLayout:
+                rows: 1
+                cols: 1
+
+                CilantroButton:
+                    text: 'Logout'
+                    id: footer_logout
