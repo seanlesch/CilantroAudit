@@ -1,15 +1,20 @@
+from cilantro_audit.completed_audit import CompletedAudit
 from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment
 
 
 class ExcelFile:
-    def __init__(self, title, auditor, dt, at, ca, **kw):
+    def __init__(self, title, auditor, dt, dt_obj, **kw):
         super().__init__(**kw)
         self.title = title
         self.auditor = auditor
         self.dt = dt
-        self.at = at
-        self.ca = ca
+        self.dt_obj = dt_obj
+        self.ca = self.get_completed_audit()
+
+    def get_completed_audit(self):
+        ca_list = list(CompletedAudit.objects(datetime=self.dt_obj))
+        return ca_list[0]
 
     def open_file(self, sheet_name, path_to_file):
         wb = Workbook()
@@ -34,7 +39,7 @@ class ExcelFile:
 
 
         # Write row descriptions
-        for question in self.at.questions:
+        for answer in self.ca.answers:
             ws.cell(row=row_counter, column=1).value = "Question:"
             ws.cell(row=row_counter, column=1).font = Font(bold=True)
             ws.cell(row=row_counter, column=1).alignment = Alignment(vertical='top')
@@ -53,8 +58,8 @@ class ExcelFile:
         row_counter = 4
 
         # Write question and answer
-        for question in self.at.questions:
-            ws.cell(row=row_counter, column=2).value = question.text
+        for answer in self.ca.answers:
+            ws.cell(row=row_counter, column=2).value = answer.text
             ws.cell(row=row_counter, column=2).alignment = Alignment(wrap_text=True, vertical='top')
             ws.cell(row=row_counter + 1, column=2).value = self.ca.answers[counter].response.response
             ws.cell(row=row_counter + 1, column=2).alignment = Alignment(wrap_text=True, vertical='top')
@@ -63,11 +68,11 @@ class ExcelFile:
             else:
                 ws.cell(row=row_counter + 2, column=2).value = self.ca.answers[counter].comment
             ws.cell(row=row_counter + 2, column=2).alignment = Alignment(wrap_text=True, vertical='top')
-            ws.cell(row=row_counter + 3, column=2).value = self.ca.answers[counter].severity.severity
+            ws.cell(row=row_counter + 3, column=2).value = self.ca.answers[counter].severity.severity[2:]
             ws.cell(row=row_counter + 3, column=2).alignment = Alignment(wrap_text=True,vertical='top')
 
             row_counter += 5
             counter += 1
 
     def print_stuff(self):
-        print(self.title, self.auditor, self.dt, self.at, self.ca)
+        print(self.title, self.auditor, self.dt, self.ca)

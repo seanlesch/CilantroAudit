@@ -81,7 +81,7 @@ class CompletedAuditPage(Screen):
         self.audit_templates = []
         self.load_completed_audits()
         self.load_audit_templates()
-        self.ca = CompletedAudit()
+        self.ca = CompletedAudit
         self.at = AuditTemplate()
 
     # Loads all of the completed_audit objects from the database into a list.
@@ -175,7 +175,7 @@ class CompletedAuditPage(Screen):
     # Saves the file and does necessary checks.
     def save(self, path, filename):
         file_path = os.path.join(path, filename)
-        ef = ExcelFile(self.header_title.text, self.header_auditor.text, self.header_dt.text, self.at, self.ca)
+        ef = ExcelFile(self.header_title.text, self.header_auditor.text, self.header_dt.text, self.ca.datetime)
         sheetname = self.header_auditor.text + " - " + self.header_title.text
         wb = ef.open_file(sheetname, file_path)
         if file_path.endswith("\\"):
