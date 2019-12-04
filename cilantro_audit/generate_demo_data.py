@@ -164,7 +164,7 @@ if __name__ == '__main__':
           "CompletedAudit(s) dated up to", MAX_YEAR_DELTA, "years ago.\n...")
 
     AuditTemplate.objects.delete()
-    CompletedAeardit.objects.delete()
+    CompletedAudit.objects.delete()
 
     # Randomize Data
     shuffle(AUDIT_TITLES)
