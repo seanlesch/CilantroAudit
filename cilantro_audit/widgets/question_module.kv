@@ -1,4 +1,5 @@
-#:import GREEN cilantro_audit.constants.RGB_GREEN
+#:import CILANTRO_GREEN_THEME cilantro_audit.constants.CILANTRO_GREEN_THEME
+#:import CILANTRO_BLACK_THEME cilantro_audit.constants.CILANTRO_BLACK_THEME
 
 <QuestionModule>
     question_text: question_text
@@ -31,7 +32,8 @@
     Button:
         id: yes_button
         text: 'G'
-        background_color: GREEN
+        color: CILANTRO_BLACK_THEME
+        background_color: CILANTRO_GREEN_THEME
         size: 40, 40
         size_hint: None, None
         pos_hint: {"top": 0.3, "center_x": 0.2}
@@ -45,7 +47,8 @@
     Button:
         id: no_button
         text: 'G'
-        background_color: GREEN
+        color: CILANTRO_BLACK_THEME
+        background_color: CILANTRO_GREEN_THEME
         size: 40, 40
         size_hint: None, None
         pos_hint: {"top": 0.3, "center_x": 0.4}
@@ -59,10 +62,11 @@
     Button:
         id: other_button
         text: 'G'
+        color: CILANTRO_BLACK_THEME
+        background_color: CILANTRO_GREEN_THEME
         size: 40, 40
         size_hint: None, None
         pos_hint: {"top": 0.3, "center_x": 0.6}
-        background_color: GREEN
         on_release:
             root.other_btn_press()
 
