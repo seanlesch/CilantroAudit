@@ -29,8 +29,8 @@
                 GridLayout:
                     id: headers
                     cols: 5
-                    spacing: 10
                     size_hint_y: 0.1
+                    spacing: 10
 
                     Button:
                         id: title_header
@@ -71,9 +71,9 @@
                     GridLayout:
                         id: audit_list
                         cols: 5
-                        spacing: 10
                         size_hint_y: None
                         height: self.minimum_height
+                        spacing: 10
 
                         GridLayout:
                             id: title_col
@@ -131,8 +131,8 @@
         GridLayout:
             id: navigation_options
             cols: 4
-            spacing: 10
             size_hint_y: 0.1
+            spacing: 10
 
             Button:
                 text: 'Return to Admin Page'
@@ -165,18 +165,17 @@
 
 
 <SearchPop>:
-    auto_dismiss: True
-    title: "Search Criteria"
-    size_hint: .5, .5
-
     search_text: search_text
     popup_search_button: popup_search_button
+    auto_dismiss: True
+    size_hint: .5, .5
+    title: "Search Criteria"
 
     GridLayout:
         rows: 3
 
         Label:
-            text: "Please enter the title of the audit you are looking for."
+            text: "Please enter the title of the audit you are looking for:"
 
         TextInput:
             id: search_text
