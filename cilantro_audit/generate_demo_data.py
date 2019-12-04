@@ -7,15 +7,13 @@ from random import randrange
 from datetime import datetime
 from datetime import timedelta
 
-from cilantro_audit.audit_template import Severity, Question, AuditTemplateBuilder
-from cilantro_audit.completed_audit import Response, CompletedAuditBuilder, Answer
+from cilantro_audit.audit_template import Severity, Question, AuditTemplateBuilder, AuditTemplate
+from cilantro_audit.completed_audit import Response, CompletedAuditBuilder, Answer, CompletedAudit
 from cilantro_audit.constants import PROD_DB
 
 from mongoengine import connect
 
-db = connect(PROD_DB)
-db.drop_database(PROD_DB)
-db = connect(PROD_DB)
+connect(PROD_DB)
 
 AUDITORS = [
     "Piers Thompson",
@@ -164,6 +162,9 @@ def get_random_answer_for(question):
 if __name__ == '__main__':
     print("\nGenerating", NUM_TEMPLATES, "AuditTemplate(s), each with", NUM_RESPONSES,
           "CompletedAudit(s) dated up to", MAX_YEAR_DELTA, "years ago.\n...")
+
+    AuditTemplate.objects.delete()
+    CompletedAeardit.objects.delete()
 
     # Randomize Data
     shuffle(AUDIT_TITLES)
