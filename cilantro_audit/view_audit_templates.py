@@ -1,16 +1,15 @@
-from cilantro_audit import globals
-
 from kivy.app import App
+from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
-from kivy.properties import ObjectProperty
+
+from cilantro_audit import globals
 
 from cilantro_audit.constants import PROD_DB
-from cilantro_audit.constants import HOME_SCREEN
-from cilantro_audit.constants import AUDITOR_SCREEN
 from cilantro_audit.constants import CREATE_COMPLETED_AUDIT_PAGE
 
 from cilantro_audit.audit_template import AuditTemplate
+
 from cilantro_audit.templates.cilantro_page import CilantroPage
 from cilantro_audit.templates.cilantro_button import CilantroButton
 
@@ -27,16 +26,24 @@ class ViewAuditTemplates(Screen):
     def populate_page(self):
         self.clear_widgets()
         template_page = CilantroPage()
-        template_page.header_back.bind(on_release=self.go_back)
-        template_page.header_home.bind(on_release=self.go_home)
+        template_page.header_title.text = 'Available Audits'
+
         template_page.body.add_widget(ViewAuditTemplatesContent())
+
+        template_page.footer_back.bind(on_release=go_back)
+
+        template_page.footer_refresh.text = 'Refresh Page'
+        template_page.footer_refresh.bind(on_release=refresh)
+
         self.add_widget(template_page)
 
-    def go_back(self, callback):
-        globals.screen_manager.current = AUDITOR_SCREEN
 
-    def go_home(self, callback):
-        globals.screen_manager.current = HOME_SCREEN
+def go_back(callback):
+    globals.screen_manager.current = globals.AUDITOR_SCREEN
+
+
+def refresh(callback):
+    globals.screen_manager.get_screen(globals.VIEW_AUDIT_TEMPLATES).populate_page()
 
 
 class ViewAuditTemplatesContent(Screen):

@@ -36,6 +36,7 @@ class CompletedAuditTests(unittest.TestCase):
         CompletedAuditBuilder() \
             .with_title(title) \
             .with_auditor(auditor) \
+            .with_datetime(datetime.utcnow())\
             .with_answer(
             Answer(
                 text=a0_text,
