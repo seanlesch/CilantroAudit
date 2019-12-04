@@ -41,6 +41,7 @@ class QuestionAnswer(FloatLayout):
                  auditor=self.resolve_button.auditor,
                  datetime=self.resolve_button.datetime)
         audit_answer_to_resolve = audit_to_resolve.answers.filter(text=self.question_text)
+        print(audit_answer_to_resolve.text)
         audit_answer_to_resolve.resolved = True
         audit_to_resolve.unresolved_count -= 1
         audit_to_resolve.save()
