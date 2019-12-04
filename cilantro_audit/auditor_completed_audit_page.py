@@ -60,8 +60,8 @@ class AuditorCompletedAuditPage(Screen):
         lbl = Label(text=text, size_hint_y=None, height=40, font_size=20, halign="left")
         self.grid_list.add_widget(lbl)
 
-    def add_question_answer_auditor_version(self, question, answer):
-        self.stack_list.height += 110  # integer (80) comes from question_answer size
+    def add_question_answer_auditor_version(self, answer):
+        self.stack_list.height += 105  # integer (80) comes from question_answer size
         qa = AuditorQuestionAnswer()
         qa.question_text = "[b]Question: [/b]" + answer.text
         qa.answer_response_text = "[b]Response: [/b]" + str(answer.response.response)
