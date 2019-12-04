@@ -1,21 +1,20 @@
-from kivy import require
 from kivy.app import App
-from kivy.lang import Builder
-from kivy.properties import ObjectProperty
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
-from mongoengine import connect
+from kivy.properties import ObjectProperty
 
-from cilantro_audit.audit_template import Severity
-from cilantro_audit.completed_audit import CompletedAudit
-from cilantro_audit.constants import ADMIN_SCREEN
-from cilantro_audit.constants import HOME_SCREEN
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, AUDITS_PER_PAGE
+from cilantro_audit import globals
+
 from cilantro_audit.constants import PROD_DB
+from cilantro_audit.constants import AUDITS_PER_PAGE
+
 from cilantro_audit.templates.cilantro_page import CilantroPage
 
-require(KIVY_REQUIRED_VERSION)
-Builder.load_file("./widgets/view_flag_trends_page.kv")
+from cilantro_audit.completed_audit import CompletedAudit
+from cilantro_audit.audit_template import Severity
+
+from mongoengine import connect
+
 connect(PROD_DB)
 
 FLAG_TRENDS_SORT_ORDER = [
@@ -27,23 +26,30 @@ FLAG_TRENDS_SORT_ORDER = [
 
 
 class ViewFlagTrendsPage(Screen):
-    template_page = CilantroPage()
-
     def __init__(self, **kw):
         super().__init__(**kw)
-        self.template_page.header_back.bind(on_release=lambda _: self.go_back())
-        self.template_page.header_home.bind(on_release=lambda _: self.go_home())
-        self.template_page.body.add_widget(ViewFlagTrendsPageContent())
-        self.add_widget(self.template_page)
+        self.populate_page()
 
-    def go_back(self):
-        self.manager.current = ADMIN_SCREEN
+    def populate_page(self):
+        self.clear_widgets()
+        template_page = CilantroPage()
+        template_page.header_title.text = 'Flagged Questions Trend'
 
-    def go_home(self):
-        self.manager.current = HOME_SCREEN
+        template_page.footer_back.bind(on_release=go_back)
+
+        template_page.body.add_widget(ViewFlagTrendsPageContent())
+
+        self.add_widget(template_page)
 
 
-# A custom widget for retrieved entries
+def go_back(callback):
+    globals.screen_manager.current = globals.ADMIN_SCREEN
+
+
+def go_home(callback):
+    globals.screen_manager.current = globals.HOME_SCREEN
+
+
 class ViewFlagTrendsPageContent(Screen):
     audit_title_col = ObjectProperty()
     question_text_col = ObjectProperty()
@@ -96,7 +102,6 @@ class ViewFlagTrendsPageContent(Screen):
 
     # Populate the unique entry rows into the widget cols
     def populate_unique_entry_rows(self):
-        # Make sure widget cols are clear
         self.audit_title_col.clear_widgets()
         self.question_text_col.clear_widgets()
         self.times_flagged_col.clear_widgets()
@@ -131,7 +136,6 @@ class ViewFlagTrendsPageContent(Screen):
         self.populate_unique_entry_rows()
 
 
-# A custom widget for retrieved entries
 class EntryLabel(Label):
     pass
 

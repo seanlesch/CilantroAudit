@@ -4,20 +4,28 @@ from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.popup import Popup
 from kivy.uix.floatlayout import FloatLayout
+from kivy.app import App
+from kivy.properties import ObjectProperty
+from kivy.properties import StringProperty
+from kivy.utils import get_hex_from_color
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
-from kivy.utils import get_hex_from_color
-from mongoengine import connect
+from kivy.uix.floatlayout import FloatLayout
+
+from cilantro_audit import globals
+
+from cilantro_audit.constants import PROD_DB
+from cilantro_audit.constants import RGB_RED
+from cilantro_audit.constants import RGB_GREEN
+from cilantro_audit.constants import RGB_YELLOW
 
 from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.audit_template import AuditTemplate
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, RGB_RED, RGB_YELLOW, RGB_GREEN
 
 import os
 
-kivy.require(KIVY_REQUIRED_VERSION)
-
 kvfile = Builder.load_file("./widgets/completed_audit_page.kv")
+from mongoengine import connect
 
 connect(PROD_DB)
 
@@ -94,10 +102,7 @@ class CompletedAuditPage(Screen):
         self.audit_templates = list(AuditTemplate.objects().all_fields())
         self.audit_templates = sorted(self.audit_templates, key=lambda audit_template: audit_template.title)
 
-    def reset_scroll_to_top(self):  # needs to be used in the routine that first populates the questions.
-        # https://kivy.org/doc/stable/api-kivy.uix.scrollview.html Y scrolling value, between 0 and 1. If 0,
-        # the content’s bottom side will touch the bottom side of the ScrollView. If 1, the content’s top side will
-        # touch the top side.
+    def reset_scroll_to_top(self):
         self.scrolling_panel.scroll_y = 1
 
     # Adds a title to the header
@@ -135,11 +140,11 @@ class CompletedAuditPage(Screen):
         qa.answer_comments_text = "[b]Comments: [/b]" + str(answer.comment)
         qa.answer_severity_text = "[b]Severity: [/b]" + str(answer.severity.severity[2:])
         if qa.answer_severity_text == "[b]Severity: [/b]RED":
-            qa.answer_severity_text = "[b]Severity: [/b][color="+get_hex_from_color(RGB_RED)+"]RED[/color]"
+            qa.answer_severity_text = "[b]Severity: [/b][color=" + get_hex_from_color(RGB_RED) + "]RED[/color]"
         elif qa.answer_severity_text == "[b]Severity: [/b]YELLOW":
-            qa.answer_severity_text = "[b]Severity: [/b][color="+get_hex_from_color(RGB_YELLOW)+"]YELLOW[/color]"
+            qa.answer_severity_text = "[b]Severity: [/b][color=" + get_hex_from_color(RGB_YELLOW) + "]YELLOW[/color]"
         elif qa.answer_severity_text == "[b]Severity: [/b]GREEN":
-            qa.answer_severity_text = "[b]Severity: [/b][color="+get_hex_from_color(RGB_GREEN)+"]GREEN[/color]"
+            qa.answer_severity_text = "[b]Severity: [/b][color=" + get_hex_from_color(RGB_GREEN) + "]GREEN[/color]"
         self.stack_list.add_widget(qa)
 
     # Clears the page.

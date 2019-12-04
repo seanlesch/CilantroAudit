@@ -1,5 +1,5 @@
-<CreateAuditTemplatePage>:
 
+<CreateAuditTemplatePage>:
     stack_list: stack_list
     audit_title: audit_title
     size: root.width, root.height
@@ -30,60 +30,60 @@
     Button:
         text: "Add Question"
         size_hint: .15, .1
-        on_press: root.add_question()
+        on_release:
+            root.add_question()
 
     Button:
         text: "Submit"
         size_hint: .15, .1
         pos_hint: {"right": 1, "y": 0}
-        on_press: root.submit_audit_pop(root.manager)
+        on_release:
+            root.submit_pop()
 
     Button:
         text: "Back"
         size_hint: .15, .1
         pos_hint: {"right": .85, "bottom": 0}
-        on_press: root.back(root.manager)
+        on_release:
+            root.back_pop()
 
 
 <ConfirmationPop>:
-
-    auto_dismiss: False
     title: "Confirmation"
+    auto_dismiss: False
     size_hint: .5, .5
     yes: yes
+    no: no
 
     FloatLayout:
-
         Label:
             text: "Are you sure?"
-            font_size: root.width/20
             size_hint: 0.6, 0.2
+            font_size: root.width/20
             pos_hint: {"x": .2, "top": .9}
 
         Button:
             id: yes
             text: "Yes"
-            font_size: root.width/30
             size_hint: .3, .3
+            font_size: root.width/30
             pos_hint: {"x": 0, "y": 0}
-            on_press: root.return_admin_page()
 
         Button:
+            id: no
             text: "No"
-            font_size: root.width/30
             size_hint: .3, .3
+            font_size: root.width/30
             pos_hint: {"right": 1, "y": 0}
-            on_press: root.dismiss()
+
 
 <ErrorPop>:
-
     auto_dismiss: False
     title: "Submit Error"
     size_hint: .5, .5
     error_message: error_message
 
     FloatLayout:
-
         Label:
             id: error_message
             font_size: root.width/20
@@ -95,4 +95,5 @@
             font_size: root.width/30
             size_hint: .3, .3
             pos_hint: {"center_x": .5, "y": 0.05}
-            on_press: root.dismiss()
+            on_release:
+                root.dismiss()

@@ -43,16 +43,12 @@
             text: "Back"
             on_release:
                 root.clear_page()
-                root.manager.transition = SlideTransition(direction='right')
-                root.manager.current = 'CompletedAuditsListPage'
-                root.manager.transition.duration = 0.3
 
         Button:
             text: "Export to Excel"
             on_release: root.show_save()
 
 <QuestionAnswer>:
-
     question_label: question_label
     answer_response_label: answer_response_label
     answer_comments_label: answer_comments_label
@@ -197,4 +193,4 @@
             Button:
                 text: "Ok"
                 on_release: root.ok()
-                
+

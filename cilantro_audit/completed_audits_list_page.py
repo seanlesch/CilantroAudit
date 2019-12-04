@@ -1,28 +1,30 @@
-import time
+from time import mktime
 from datetime import datetime
 
-import kivy
+from kivy.app import App
 from kivy.clock import Clock
-from kivy.lang import Builder
 from kivy.properties import ObjectProperty
-from kivy.uix.button import Button
 from kivy.uix.label import Label
-from kivy.uix.popup import Popup
+from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
+from kivy.uix.popup import Popup
+
+from cilantro_audit import globals
+
+from cilantro_audit.constants import PROD_DB
+from cilantro_audit.constants import RGB_RED
+from cilantro_audit.constants import RGB_GREEN
+from cilantro_audit.constants import RGB_YELLOW
+from cilantro_audit.constants import AUDITS_PER_PAGE
+from cilantro_audit.constants import COMPLETED_AUDIT_PAGE
+
+from cilantro_audit.audit_template import AuditTemplate
+from cilantro_audit.completed_audit import CompletedAudit
+from cilantro_audit.audit_template import Severity
+
 from mongoengine import connect
 
-from cilantro_audit.audit_template import AuditTemplate, Severity
-from cilantro_audit.completed_audit import CompletedAudit
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, COMPLETED_AUDIT_PAGE, \
-    RGB_RED, RGB_YELLOW, RGB_GREEN, AUDITS_PER_PAGE
-
-kivy.require(KIVY_REQUIRED_VERSION)
-
-kvfile = Builder.load_file("./widgets/completed_audits_list_page.kv")
-
 connect(PROD_DB)
-
-EPOCH = datetime.utcfromtimestamp(0)
 
 
 def format_datetime(dt):
@@ -30,13 +32,13 @@ def format_datetime(dt):
 
 
 def utc_to_local(utc):
-    epoch = time.mktime(utc.timetuple())
+    epoch = mktime(utc.timetuple())
     offset = datetime.fromtimestamp(epoch) - datetime.utcfromtimestamp(epoch)
     return utc + offset
 
 
 def invert_datetime(dt):
-    return -(dt - EPOCH).total_seconds()
+    return -(dt - datetime.utcfromtimestamp(0)).total_seconds()
 
 
 def get_severity_color(severity):
@@ -158,8 +160,7 @@ class CompletedAuditsListPage(Screen):
     def load_audit_templates(self):
         self.audit_templates = list(AuditTemplate.objects().only("title", "questions"))
 
-    """Refreshes the list of audits on the screen."""
-
+    # Refreshes the list of audits on the screen
     def refresh_completed_audits(self):
         self.date_col.clear_widgets()
         self.title_col.clear_widgets()
@@ -190,7 +191,9 @@ class CompletedAuditsListPage(Screen):
             self.auditor_col.add_widget(lbl)
 
         for severity in audit_severities:
-            lbl = Label(text=severity.severity[2:], color=get_severity_color(severity), size_hint_y=None,
+            lbl = Label(text=severity.severity[2:],
+                        color=get_severity_color(severity),
+                        size_hint_y=None,
                         height=40)
             self.severity_col.add_widget(lbl)
 
@@ -266,7 +269,7 @@ class CompletedAuditsListPage(Screen):
         Clock.schedule_once(lambda _: self.schedule_focus(show), 0.2)
         show.open()
 
-    def build_header_row(self, title, dt, auditor):
+    def build_header_row(self, title, auditor, dt):
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_title(title)
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_blank_label("")
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_auditor(auditor)
@@ -292,7 +295,7 @@ class CompletedAuditsListPage(Screen):
 
     def populate_completed_audit_page(self, title):
         ca = self.load_audit_template_and_completed_audit_with_title_and_datetime(title)
-        self.build_header_row(ca.title, ca.datetime, ca.auditor)
+        self.build_header_row(ca.title, ca.auditor, ca.datetime)
 
         self.build_completed_audit_page_body(ca)
 
@@ -306,3 +309,12 @@ class CompletedAuditsListPage(Screen):
 class SearchPop(Popup):
     search_text = ObjectProperty(None)
     popup_search_button = ObjectProperty(None)
+
+
+class TestApp(App):
+    def build(self):
+        return CompletedAuditsListPage()
+
+
+if __name__ == '__main__':
+    TestApp().run()

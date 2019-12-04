@@ -1,3 +1,5 @@
+#:import CILANTRO_BLACK_THEME cilantro_audit.constants.CILANTRO_BLACK_THEME
+#:import CILANTRO_WHITE_THEME cilantro_audit.constants.CILANTRO_WHITE_THEME
 
 <CilantroLabel@Label>:
     text: 'Label Template'
@@ -6,8 +8,8 @@
     text_size: self.width, self.height
     font_name:
     font_family:
-    font_size: self.height/2
-    color: 0.9, 0.9, 0.9, 1.0
+    font_size: 30
+    color: CILANTRO_WHITE_THEME
     disabled_color: 0, 0, 0, 0
     bold: 0
     italic: 0
@@ -35,3 +37,11 @@
     font_features:
     base_direction:
     text_language:
+
+    # Label Background Color
+    canvas.before:
+        Color:
+            rgba: CILANTRO_BLACK_THEME
+        Rectangle:
+            pos: self.x+1, self.y+2
+            size: self.width-2, self.height-2

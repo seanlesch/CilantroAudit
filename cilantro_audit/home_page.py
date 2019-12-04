@@ -1,93 +1,84 @@
-import kivy
+from cilantro_audit import globals
+
 from kivy.app import App
-from kivy.lang import Builder
-from kivy.config import Config
 from kivy.uix.popup import Popup
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import Screen
-from kivy.uix.screenmanager import ScreenManager
 
-from cilantro_audit.admin_page import AdminPage
-from cilantro_audit.auditor_page import AuditorPage
-from cilantro_audit.create_audit_template_page import CreateAuditTemplatePage
-from cilantro_audit.completed_audits_list_page import CompletedAuditsListPage
-from cilantro_audit.auditor_completed_audits_list_page import AuditorCompletedAuditsListPage
-from cilantro_audit.view_audit_templates import ViewAuditTemplates
-from cilantro_audit.view_flag_trends_page import ViewFlagTrendsPage
-from cilantro_audit.completed_audit_page import CompletedAuditPage
-from cilantro_audit.create_completed_audit_page import CreateCompletedAuditPage
-from cilantro_audit.auditor_completed_audit_page import AuditorCompletedAuditPage
+from cilantro_audit.constants import RGB_LIGHT_RED
+from cilantro_audit.constants import RGB_LIGHT_GREEN
 
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, ADMIN_SCREEN, HOME_SCREEN, AUDITOR_SCREEN, \
-    CREATE_AUDIT_TEMPLATE_PAGE, COMPLETED_AUDITS_LIST_PAGE, VIEW_AUDIT_TEMPLATES, VIEW_FLAG_TRENDS_PAGE, \
-    AUDITOR_COMPLETED_AUDITS_LIST_PAGE, CREATE_COMPLETED_AUDIT_PAGE, COMPLETED_AUDIT_PAGE, AUDITOR_COMPLETED_AUDIT_PAGE
-
-from cilantro_audit.create_completed_audit_page import CreateCompletedAuditPage
-
-kivy.require(KIVY_REQUIRED_VERSION)
-
-# Configures the default window settings
-Config.set('graphics', 'borderless', '0')
-Config.set('graphics', 'window_state', 'maximized')
-Config.set('graphics', 'minimum_height', '600')
-Config.set('graphics', 'minimum_width', '800')
-
-# https://stackoverflow.com/questions/12692851/why-does-right-clicking-create-an-orange-dot-in-the-center-of-the-circle
-# Removes the multi-touch simulation (red/orange dots on right click)
-Config.set('input', 'mouse', 'mouse, multitouch_on_demand')
-
-Builder.load_file('./widgets/home_page.kv')
-Builder.load_file('./widgets/admin_page.kv')
-
-# Create the screen manager
-sm = ScreenManager()
+from cilantro_audit.templates.cilantro_navigator import CilantroNavigator
+from cilantro_audit.templates.cilantro_button import CilantroButton
+from cilantro_audit.templates.cilantro_label import CilantroLabel
 
 
 class HomePage(Screen):
-    pass
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.populate_page()
+
+    def populate_page(self):
+        self.clear_widgets()
+        template_page = CilantroNavigator()
+        container = GridLayout(rows=2, cols=1)
+        row_1 = GridLayout(size_hint=(1.0, None), rows=1, cols=1)
+        row_2 = GridLayout(size_hint=(1.0, None), height=200, rows=1, cols=2, spacing=10)
+
+        template_page.header_title.text = 'HOME PAGE'
+
+        row_1.add_widget(CilantroLabel(text='LOGIN AS:'))
+        row_2.add_widget(CilantroButton(text='Admin',
+                                        background_color=RGB_LIGHT_RED,
+                                        on_release=login_admin))
+        row_2.add_widget(CilantroButton(text='Auditor',
+                                        background_color=RGB_LIGHT_GREEN,
+                                        on_release=login_auditor))
+
+        container.add_widget(row_1)
+        container.add_widget(row_2)
+
+        template_page.body.clear_widgets()
+        template_page.body.add_widget(container)
+
+        template_page.footer_logout.text = 'EXIT'
+        template_page.footer_logout.bind(on_release=exit_app)
+
+        self.add_widget(template_page)
+
+
+def login_admin(callback):
+    AdminLoginPopup().open()
+
+
+def login_auditor(callback):
+    globals.screen_manager.current = globals.AUDITOR_SCREEN
+    globals.screen_manager.transition.duration = 0.3
+    globals.screen_manager.transition.direction = 'left'
+
+
+def exit_app(callback):
+    exit(1)
 
 
 class AdminLoginPopup(Popup):
+    def on_open(self, *args):
+        super().on_open(*args)
+        if self:
+            self.content.children[1].focus = True
 
     def validate_password(self, value):
         if value == '12345':
-            sm.current = ADMIN_SCREEN
             self.dismiss()
+            globals.screen_manager.current = globals.ADMIN_SCREEN
+            globals.screen_manager.transition.duration = 0.3
+            globals.screen_manager.transition.direction = 'right'
 
 
-class CilantroAudit(App):
-
-    # Initialize screen manager and other necessary fields
+class TestApp(App):
     def build(self):
-        self.title = 'CilantroAudit'
-
-        sm.add_widget(HomePage(name=HOME_SCREEN))
-        sm.add_widget(AdminPage(name=ADMIN_SCREEN))
-        sm.add_widget(AuditorPage(name=AUDITOR_SCREEN))
-        sm.add_widget(CreateAuditTemplatePage(name=CREATE_AUDIT_TEMPLATE_PAGE))
-        sm.add_widget(CompletedAuditsListPage(name=COMPLETED_AUDITS_LIST_PAGE))
-        sm.add_widget(AuditorCompletedAuditsListPage(name=AUDITOR_COMPLETED_AUDITS_LIST_PAGE))
-        sm.add_widget(ViewAuditTemplates(name=VIEW_AUDIT_TEMPLATES))
-        sm.add_widget(ViewFlagTrendsPage(name=VIEW_FLAG_TRENDS_PAGE))
-        sm.add_widget(CompletedAuditPage(name=COMPLETED_AUDIT_PAGE))
-        sm.add_widget(AuditorCompletedAuditPage(name=AUDITOR_COMPLETED_AUDIT_PAGE))
-        sm.add_widget(CreateCompletedAuditPage(name=CREATE_COMPLETED_AUDIT_PAGE))
-
-        return sm
-
-    # Set the text field inside of the popup to be focused
-    def on_popup_parent(self, popup):
-        if popup:
-            popup.content.children[1].focus = True
-
-    # Show the admin login, and focus onto the text field
-    def open_admin_login_popup(self):
-        t = AdminLoginPopup()
-        t.bind(on_open=self.on_popup_parent)
-        t.open()
-
-    def exit(self):
-        exit(1)
+        return HomePage()
 
 
 if __name__ == '__main__':
-    CilantroAudit().run()
+    TestApp().run()

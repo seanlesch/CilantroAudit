@@ -1,126 +1,103 @@
+#:import CILANTRO_BLACK_THEME cilantro_audit.constants.CILANTRO_BLACK_THEME
+
 <ViewAuditTemplates>:
 
-#:kivy 1.11.1
-#:import GREY_LIGHT cilantro_audit.constants.RGB_GREY_LIGHT
 
-    name: 'ViewAuditTemplates'
+<ViewAuditTemplatesContent>:
     templates_list: templates_list
 
-    BoxLayout:
-        orientation: 'vertical'
+    GridLayout:
+        rows: 4
+        cols: 3
 
-        BoxLayout:
-            name: 'header'
+        # 1st Row
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
+
+        Widget:
+            name: 'place-holder'
             size_hint: 1, 0.1
 
-            orientation: 'horizontal'
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
 
-            canvas.before:
-                Color:
-                    rgb: 0.275, 0.314, 0.275, 1
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
+        # 2nd Row
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 1
 
-            Button:
-                text: 'Back'
-                size_hint: 0.3, 1.0
-                on_release:
-                    app.root.current = 'AuditorScreen'
-                    app.root.transition.duration = 0.3
-                    app.root.transition.direction = 'right'
+        GridLayout:
+            rows: 2
+            cols: 1
 
-            Label:
-                text: 'Available Audits'
-                color: 1.0, 1.0, 1.0, 1
-
-            Button:
-                text: 'Exit'
-                size_hint: 0.3, 1.0
-                on_release:
-                    exit(1)
-
-        BoxLayout:
-            name: 'body'
-            size_hint: 1, 0.8
-            orientation: 'vertical'
-
-            canvas.before:
-                Color:
-                    rgb: 0.275, 0.314, 0.275, 1
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
-
-            BoxLayout:
-                orientation: 'horizontal'
-                size_hint: 1.0, 0.1
-
-            BoxLayout:
-                orientation: 'horizontal'
-
-                Label:
-                    name: 'left-col'
-                    size_hint: 0.3, 1.0
+            GridLayout:
+                rows: 2
+                cols: 1
 
                 ScrollView:
-                    name: 'middle-col'
-
                     StackLayout:
                         id: templates_list
                         height: self.minimum_height
-                        size_hint_y: None
+                        size_hint: 1, None
+                        spacing: 2
 
-                Label:
-                    name: 'right-col'
-                    size_hint: 0.3, 1.0
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 1
 
-            Label:
-                name: 'bottom-row'
-                size_hint: 1.0, 0.1
+        # 3rd Row
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
 
-        BoxLayout:
-            name: 'footer'
+        CilantroButton:
+            text: 'Refresh List'
             size_hint: 1, 0.1
-            orientation: 'horizontal'
+            on_release:
+                root.populate_content()
 
-            canvas.before:
-                Color:
-                    rgb: 0.2, 0.2, 0.2, 1
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
 
-            Button:
-                text: 'Return Home'
-                on_release:
-                    app.root.current = 'HomeScreen'
-                    app.root.transition.duration = 0.3
-                    app.root.transition.direction = 'down'
+        # 4th Row
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
 
-            Button:
-                text: 'Refresh Audit List'
-                on_release:
-                    root.refresh_audit_templates()
+        Widget:
+            name: 'place-holder'
+            size_hint: 1, 0.1
+
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
 
 
-<AuditButton@Button>:
-    name: 'button_template'
+<ActiveAuditButton@CilantroButton>:
+    name: 'active_button_template'
     size_hint_y: None
+    height: 70
+
+    on_release:
+        self.text
+
 
 <InactiveAuditButton@Button>:
     name: 'inactive_button_template'
     size_hint_y: None
+    height: 70
     background_normal: ''
-    background_color: GREY_LIGHT
-    color: 0, 0, 0, 1
+    background_color: CILANTRO_BLACK_THEME
+
 
 <LockedTemplatePop>:
     title: "Can't Open Template"
     size_hint: .5, .5
 
     FloatLayout:
-
         Label:
             text: "The audit you selected has already been completed."
             size_hint: 0.6, 0.2
@@ -130,4 +107,5 @@
             text: "OK"
             size_hint: .3, .3
             pos_hint: {"center_x": .5, "y": 0}
-            on_press: root.dismiss()
+            on_release:
+                root.dismiss()
