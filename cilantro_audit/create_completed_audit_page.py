@@ -1,10 +1,12 @@
-from cilantro_audit import globals
+from datetime import datetime
 
 from kivy.app import App
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 from kivy.properties import StringProperty
+
+from cilantro_audit import globals
 
 from cilantro_audit.constants import PROD_DB
 from cilantro_audit.constants import VIEW_AUDIT_TEMPLATES
@@ -92,6 +94,7 @@ class CreateCompletedAuditPage(Screen):
 
         # The object returned from the .kv is a TextField, with a member text
         completed_audit.with_auditor(self.auditor_name.text)
+        completed_audit.with_datetime(datetime.utcnow())
 
         for a in self.questions:
             if a.other_comments.text:
