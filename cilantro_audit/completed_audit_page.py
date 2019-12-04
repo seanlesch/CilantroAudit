@@ -32,6 +32,8 @@ class QuestionAnswer(FloatLayout):
 
     resolve_button = ObjectProperty(None)
 
+    # Marks a question response as resolved in the database. NOTE: Currently if there are repeated questions in the
+    # audit the behavior of which question will be resolved is undefined.
     def resolve_response(self):
         audit_to_resolve = CompletedAudit.objects() \
             .filter(title=self.resolve_button.title,
@@ -40,8 +42,9 @@ class QuestionAnswer(FloatLayout):
             .get(title=self.resolve_button.title,
                  auditor=self.resolve_button.auditor,
                  datetime=self.resolve_button.datetime)
-        audit_answer_to_resolve = audit_to_resolve.answers.filter(text=self.question_text)
-        print(audit_answer_to_resolve.text)
+        # Remove string label, which has 17 chars as defined in CompletedAuditPage.add_question_answer
+        audit_answer_to_resolve = audit_to_resolve.answers.filter(text=self.question_text[17:])\
+            .get(text=self.question_text[17:])
         audit_answer_to_resolve.resolved = True
         audit_to_resolve.unresolved_count -= 1
         audit_to_resolve.save()
