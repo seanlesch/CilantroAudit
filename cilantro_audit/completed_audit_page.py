@@ -127,8 +127,8 @@ class CompletedAuditPage(Screen):
         self.grid_list.add_widget(lbl)
 
     # Adds one question/answer block to a completed audit page.
-    def add_question_answer(self, question, answer):
-        self.stack_list.height += 130  # integer (80) comes from question_answer size
+    def add_question_answer(self, answer):
+        self.stack_list.height += 125  # integer (80) comes from question_answer size
         qa = QuestionAnswer()
         qa.question_text = "[b]Question: [/b]" + answer.text
         qa.answer_response_text = "[b]Response: [/b]" + str(answer.response.response)
