@@ -13,6 +13,7 @@ from cilantro_audit.templates.cilantro_label import CilantroLabel
 from cilantro_audit.audit_template import AuditTemplate
 
 
+
 class AdminPage(Screen):
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -42,6 +43,10 @@ class AdminPage(Screen):
                                                               size_hint_y=None,
                                                               height=70,
                                                               on_release=clear_all_audit_locks))
+        template_page.body_nav_btns.add_widget(CilantroButton(text='Reset Password',
+                                                              size_hint_y=None,
+                                                              height=70,
+                                                              on_release=open_reset_password_popup))
 
         template_page.footer_logout.text = 'LOGOUT'
         template_page.footer_logout.bind(on_release=logout)
@@ -72,11 +77,23 @@ def logout(callback):
     globals.screen_manager.transition.duration = 0.3
     globals.screen_manager.transition.direction = 'up'
 
-    def open_reset_password_popup(self):
-        ResetPasswordPopup().open()
 
+def open_reset_password_popup(callback):
+    InputCurrentPasswordPopup().open()
 
-class ResetPasswordPopup(Popup):
+class PasswordMismatchPopup(Popup):
+    def on_open(self, *args):
+        super().on_open(*args)
+        if self:
+            self.content.focus = True
+
+class InvalidPasswordPopup(Popup):
+    def on_open(self, *args):
+        super().on_open(*args)
+        if self:
+            self.content.focus = True
+
+class InputCurrentPasswordPopup(Popup):
     def on_open(self, *args):
         super().on_open(*args)
         if self:
@@ -87,10 +104,30 @@ class ResetPasswordPopup(Popup):
             return True
         return False
 
-    def validate_password(self, value):
-        if value == '12345':
+    def try_create_password(self, value):
+        if self.current_password_is_valid(value):
             self.dismiss()
-            globals.screen_manager.current = globals.ADMIN_SCREEN
+            InputNewPasswordPopup().open()
+        else:
+            InvalidPasswordPopup().open()
+
+
+class InputNewPasswordPopup(Popup):
+    def on_open(self, *args):
+        super().on_open(*args)
+        if self:
+            self.content.children[1].focus = True
+
+    def passwords_match(self, pw1, pw2):
+        return pw1 == pw2
+
+    def try_update_password(self, pw1, pw2):
+        if pw1 != "" and pw1 == pw2:
+            self.dismiss()
+        else:
+            PasswordMismatchPopup().open()
+
+
 
 class TemplatesUnlockedPop(Popup):
     pass

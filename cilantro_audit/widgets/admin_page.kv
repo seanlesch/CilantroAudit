@@ -19,53 +19,53 @@
             on_release:
                 root.dismiss()
 
-<ResetPasswordPopup>
-    id: popup
+<PasswordMismatchPopup>
+    id: password_mismatch_popup
     auto_dismiss: True
-    title: "Reset Admin Password"
+    title: "Passwords do not match."
     size_hint: None, None
-    size: 400, 400
+    size: 400, 150
+
+    Button:
+        text: "OK"
+        font_size: 30
+        size: 187.5, 30
+        size_hint: None, None
+        on_release: root.dismiss()
+
+<InvalidPasswordPopup>
+    id: invalid_password_popup
+    auto_dismiss: True
+    title: "Invalid Password"
+    size_hint: None, None
+    size: 400, 150
+
+    Button:
+        text: "OK"
+        font_size: 30
+        size: 187.5, 30
+        size_hint: None, None
+        on_release: root.dismiss()
+
+<InputCurrentPasswordPopup>
+    id: confirm_old_password
+    auto_dismiss: True
+    title: "Enter Current Password"
+    size_hint: None, None
+    size: 400, 150
 
     GridLayout:
-        rows: 7
-
-        Label:
-            text: "Current Password"
+        rows: 2
+        spacing: 10
 
         TextInput:
-            id: current_password_input
+            id: current_password_input_popup
             focus: False
             password: True
             multiline: False
             size: 375, 30
             size_hint: None, None
-            on_text_validate: root.validate_password(self.text)
-
-        Label:
-            text: "New Password"
-
-        TextInput:
-            id: new_password_input1
-            focus: False
-            password: True
-            multiline: False
-            size: 375, 30
-            size_hint: None, None
-            on_text_validate: root.validate_password(self.text)
-
-        Label:
-            text: "New Password (Again)"
-
-        TextInput:
-            id: new_password_input2
-            focus: False
-            password: True
-            multiline: False
-            size: 375, 30
-            size_hint: None, None
-            on_text_validate: root.validate_password(self.text)
-
-
+            on_text_validate: root.try_create_password(self.text)
 
         GridLayout:
             rows: 1
@@ -84,5 +84,57 @@
                 font_size: 30
                 size: 187.5, 30
                 size_hint: None, None
-                on_release:
-                    root.validate_password(root.content.children[1].text)
+                on_release: root.try_create_password(root.content.children[1].text)
+
+<InputNewPasswordPopup>
+    id: popup
+    auto_dismiss: True
+    title: "Create New Password"
+    size_hint: None, None
+    size: 400, 300
+
+    GridLayout:
+        rows: 5
+        spacing: 10
+
+        Label:
+            text: "New Password"
+
+        TextInput:
+            id: new_password_input1
+            focus: False
+            password: True
+            multiline: False
+            size: 375, 30
+            size_hint: None, None
+
+        Label:
+            text: "New Password (Again)"
+
+        TextInput:
+            id: new_password_input2
+            focus: False
+            password: True
+            multiline: False
+            size: 375, 30
+            size_hint: None, None
+
+
+
+        GridLayout:
+            rows: 1
+            cols: 2
+
+            Button:
+                text: "Cancel"
+                font_size: 30
+                size: 187.5, 30
+                size_hint: None, None
+                on_release: root.dismiss()
+
+            Button:
+                text: "Submit"
+                font_size: 30
+                size: 187.5, 30
+                size_hint: None, None
+                on_release: root.try_update_password(root.content.children[1].text, root.content.children[3].text)
