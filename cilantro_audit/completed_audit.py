@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from mongoengine import Document, StringField, DateTimeField, EmbeddedDocument, EmbeddedDocumentField, \
     EmbeddedDocumentListField, ValidationError, BooleanField, IntField
 
@@ -46,8 +44,8 @@ class Answer(EmbeddedDocument):
 class CompletedAuditBuilder:
     def __init__(self):
         self.title = None
-        self.datetime = None
         self.auditor = None
+        self.datetime = None
         self.max_severity = Severity.green()
         self.answers = []
         self.unresolved_count = 0
@@ -58,6 +56,10 @@ class CompletedAuditBuilder:
 
     def with_auditor(self, auditor):
         self.auditor = auditor
+        return self
+
+    def with_datetime(self, datetime):
+        self.datetime = datetime
         return self
 
     def with_answer(self, answer):
@@ -73,8 +75,8 @@ class CompletedAuditBuilder:
     def build(self):
         audit = CompletedAudit(
             title=self.title,
-            datetime=datetime.utcnow(),
             auditor=self.auditor,
+            datetime=self.datetime,
             severity=self.max_severity,
             answers=self.answers,
             unresolved_count=self.unresolved_count,
@@ -85,8 +87,8 @@ class CompletedAuditBuilder:
 
 class CompletedAudit(Document):
     title = StringField(required=True, max_length=TITLE_MAX_LENGTH, min_length=TITLE_MIN_LENGTH)
-    datetime = DateTimeField(required=True)
     auditor = StringField(required=True, max_length=AUDITOR_MAX_LENGTH, min_length=AUDITOR_MIN_LENGTH)
+    datetime = DateTimeField(required=True)
     severity = EmbeddedDocumentField(Severity, required=True)
     answers = EmbeddedDocumentListField(Answer, required=True)
     unresolved_count = IntField(required=True, default=0)

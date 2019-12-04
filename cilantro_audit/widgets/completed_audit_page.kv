@@ -1,4 +1,3 @@
-#:import SlideTransition kivy.uix.screenmanager.SlideTransition
 
 <CompletedAuditPage>:
 
@@ -37,12 +36,9 @@
         size_hint: .15, .1
         on_release:
             root.clear_page()
-            root.manager.transition = SlideTransition(direction='right')
             root.manager.current = 'CompletedAuditsListPage'
-            root.manager.transition.duration = 0.3
 
 <QuestionAnswer>:
-
     question_label: question_label
     answer_response_label: answer_response_label
     answer_comments_label: answer_comments_label

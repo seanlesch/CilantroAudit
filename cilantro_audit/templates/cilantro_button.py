@@ -3,6 +3,7 @@ import kivy
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.button import Button
+
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION
 
 # Required Version

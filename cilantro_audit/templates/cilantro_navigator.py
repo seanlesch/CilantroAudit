@@ -11,22 +11,23 @@ from cilantro_audit.templates.cilantro_button import CilantroButton
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION
 
 require(KIVY_REQUIRED_VERSION)
-Builder.load_file(path.dirname(path.abspath(__file__)) + "/widgets/cilantro_page.kv")
+Builder.load_file(path.dirname(path.abspath(__file__)) + "/widgets/cilantro_navigator.kv")
 
 
-class CilantroPage(Screen):
+class CilantroNavigator(Screen):
+    page = ObjectProperty()
     header = ObjectProperty()
     header_title = ObjectProperty()
     body = ObjectProperty()
+    body_nav_btns = ObjectProperty()
     footer = ObjectProperty()
-    footer_back = ObjectProperty()
-    footer_refresh = ObjectProperty()
+    footer_logout = ObjectProperty()
     pass
 
 
 class TestApp(App):
     def build(self):
-        return CilantroPage()
+        return CilantroNavigator()
 
 
 if __name__ == '__main__':

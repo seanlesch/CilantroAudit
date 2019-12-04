@@ -4,7 +4,7 @@ Capstone Team C Summer/Fall 2019
 ---
 ## Overview
 
-This project will be an electronic auditing system which should simplify the process of creating audits, filling them out and tracking the data they provide in order to better analyze trends and safety risks.
+This project is an auditing system, which simplifies the process of creating audits, filling them out, and tracking the data they provide in order to better analyze trends and safety risks.
 
 ## License
 
@@ -14,19 +14,19 @@ Copyright (c) 2019 Sean Lesch
 ## Contributors
 
 (Summer/Fall 2019) - Team C
-- Aaron
+- Aaron Dawson
 - Bader Alshaya
-- Bradley
-- Erik
-- Kegan
-- Josiah
+- Bradley Thompson
+- Erik Nordin
+- Kegan Bako-Listy
+- Josiah Vincent
 - Sean Lesch
-- Steven
+- Steven Tran
 
 ### How to Contribute
 
 This project will be developed using a feature-branch strategy.
-1. Create a new branch. Good convention to have the name describe the feature being implemented.
+1. Create a new branch. It's good convention to have the name describe the feature being implemented.
 2. Fully implement that feature with necessary tests.
 3. Ensure there are no bugs that can break the master branch/release build.
 4. Merge into master using a pull request.
@@ -75,5 +75,3 @@ This project will be developed using a feature-branch strategy.
 #### Development Information
 - Style guide
   - https://www.python.org/dev/peps/pep-0008/
-
-## (TBA) Program Usage
