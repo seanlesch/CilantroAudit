@@ -1,3 +1,4 @@
+import difflib
 from time import mktime
 from datetime import datetime
 
@@ -205,8 +206,8 @@ class CompletedAuditsListPage(Screen):
     def grab_audits_with_title(self, title):
         audits_with_title = []
 
-        for audit in self.audits:
-            if audit.title == title:
+        for audit in list(CompletedAudit.objects()):
+            if difflib.get_close_matches(title.lower(), [audit.title.lower()]):
                 audits_with_title.append(audit)
 
         return audits_with_title
