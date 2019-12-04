@@ -58,10 +58,18 @@
             Button:
                 text: "Return To Homepage"
                 font_size: 25
-                size: 500, 100
+                size: 250, 100
                 size_hint: None, None
-                pos_hint: {"center_x": 0.45, "center_y": -.9}
+                pos_hint: {"center_x": -0.8, "center_y": -.9}
                 on_press: root.manager.current = HOME_SCREEN
+
+            Button:
+                text: "Reset Password"
+                font_size: 25
+                size: 250, 100
+                size_hint: None, None
+                pos_hint: {"center_x": 1.7, "center_y": -.9}
+                on_press: root.open_reset_password_popup()
 
 
         Button:
@@ -90,3 +98,71 @@
             size_hint: .3, .3
             pos_hint: {"center_x": .5, "y": 0}
             on_press: root.dismiss()
+
+<ResetPasswordPopup>
+    id: popup
+    auto_dismiss: True
+    title: "Reset Admin Password"
+    size_hint: None, None
+    size: 400, 400
+
+    GridLayout:
+        rows: 7
+
+        Label:
+            text: "Current Password"
+
+        TextInput:
+            id: current_password_input
+            focus: False
+            password: True
+            multiline: False
+            size: 375, 30
+            size_hint: None, None
+            on_text_validate: root.validate_password(self.text)
+
+        Label:
+            text: "New Password"
+
+        TextInput:
+            id: new_password_input1
+            focus: False
+            password: True
+            multiline: False
+            size: 375, 30
+            size_hint: None, None
+            on_text_validate: root.validate_password(self.text)
+
+        Label:
+            text: "New Password (Again)"
+
+        TextInput:
+            id: new_password_input2
+            focus: False
+            password: True
+            multiline: False
+            size: 375, 30
+            size_hint: None, None
+            on_text_validate: root.validate_password(self.text)
+
+
+
+        GridLayout:
+            rows: 1
+            cols: 2
+
+            Button:
+                text: "Cancel"
+                font_size: 30
+                size: 187.5, 30
+                size_hint: None, None
+                on_release:
+                    root.dismiss()
+
+            Button:
+                text: "Submit"
+                font_size: 30
+                size: 187.5, 30
+                size_hint: None, None
+                on_release:
+                    root.validate_password(root.content.children[1].text)
