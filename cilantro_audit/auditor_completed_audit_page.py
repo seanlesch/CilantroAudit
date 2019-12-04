@@ -4,8 +4,6 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import Screen
 from kivy.uix.label import Label
 
-from cilantro_audit import globals
-
 from cilantro_audit.constants import PROD_DB
 
 

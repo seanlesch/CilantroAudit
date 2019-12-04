@@ -9,8 +9,6 @@ from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
 from kivy.uix.popup import Popup
 
-from cilantro_audit import globals
-
 from cilantro_audit.constants import PROD_DB
 from cilantro_audit.constants import RGB_RED
 from cilantro_audit.constants import RGB_GREEN
