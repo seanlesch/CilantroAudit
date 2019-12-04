@@ -46,7 +46,7 @@
     resolve_button: resolve_button
 
     size_hint: 1, None
-    height: 80
+    height: 70
 
     Label:
         id: question_label
@@ -92,5 +92,5 @@
         opacity: 1 if self.visible else 0
         disabled: not self.visible
         text: 'Mark as resolved'
-        pos_hint: {"top": 0.5, "center_x": 0.4}
+        pos_hint: {"top": 0.5, "center_x": 0.9}
         on_release: root.resolve_response()

@@ -18,6 +18,8 @@ from cilantro_audit.audit_template import AuditTemplate
 
 from mongoengine import connect
 
+from cilantro_audit.create_completed_audit_page import ConfirmationPop
+
 connect(PROD_DB)
 
 
@@ -79,6 +81,11 @@ class CompletedAuditPage(Screen):
         self.reset_scroll_to_top()
 
 
+class ResolvePop(ConfirmationPop):
+    yes = ObjectProperty(None)
+    no = ObjectProperty(None)
+
+
 class QuestionAnswer(FloatLayout):
     question_label = ObjectProperty()
     question_text = StringProperty()
@@ -94,9 +101,17 @@ class QuestionAnswer(FloatLayout):
 
     resolve_button = ObjectProperty(None)
 
+    # Handles popup to confirm the resolving of a flagged question.
+    def resolve_response(self):
+        show = ResolvePop()
+        show.yes.bind(on_release=lambda _: show.dismiss())
+        show.yes.bind(on_release=lambda _: self.resolve_submit())
+        show.no.bind(on_release=lambda _: show.dismiss())
+        show.open()
+
     # Marks a question response as resolved in the database. NOTE: Currently if there are repeated questions in the
     # audit the behavior of which question will be resolved is undefined.
-    def resolve_response(self):
+    def resolve_submit(self):
         audit_to_resolve = CompletedAudit.objects() \
             .filter(title=self.resolve_button.title,
                     auditor=self.resolve_button.auditor,
@@ -105,7 +120,7 @@ class QuestionAnswer(FloatLayout):
                  auditor=self.resolve_button.auditor,
                  datetime=self.resolve_button.datetime)
         # Remove string label, which has 17 chars as defined in CompletedAuditPage.add_question_answer
-        audit_answer_to_resolve = audit_to_resolve.answers.filter(text=self.question_text[17:])\
+        audit_answer_to_resolve = audit_to_resolve.answers.filter(text=self.question_text[17:]) \
             .get(text=self.question_text[17:])
         audit_answer_to_resolve.resolved = True
         audit_to_resolve.unresolved_count -= 1
