@@ -28,12 +28,15 @@ class QuestionModule(FloatLayout):
         self.yes_severity = self.yes_severity.next()
 
         if self.yes_severity == Severity.green():
+            self.yes_button.text = 'G'
             self.yes_button.background_normal = ''
             self.yes_button.background_color = RGB_GREEN
         elif self.yes_severity == Severity.yellow():
+            self.yes_button.text = 'Y'
             self.yes_button.background_normal = ''
             self.yes_button.background_color = RGB_YELLOW
         elif self.yes_severity == Severity.red():
+            self.yes_button.text = 'R'
             self.yes_button.background_normal = ''
             self.yes_button.background_color = RGB_RED
 
@@ -42,12 +45,15 @@ class QuestionModule(FloatLayout):
         self.no_severity = Severity.next(self.no_severity)
 
         if self.no_severity == Severity.green():
+            self.no_button.text = 'G'
             self.no_button.background_normal = ''
             self.no_button.background_color = RGB_GREEN
         elif self.no_severity == Severity.yellow():
+            self.no_button.text = 'Y'
             self.no_button.background_normal = ''
             self.no_button.background_color = RGB_YELLOW
         elif self.no_severity == Severity.red():
+            self.no_button.text = 'R'
             self.no_button.background_normal = ''
             self.no_button.background_color = RGB_RED
 
@@ -56,12 +62,15 @@ class QuestionModule(FloatLayout):
         self.other_severity = Severity.next(self.other_severity)
 
         if self.other_severity == Severity.green():
+            self.other_button.text = 'G'
             self.other_button.background_normal = ''
             self.other_button.background_color = RGB_GREEN
         elif self.other_severity == Severity.yellow():
+            self.other_button.text = 'Y'
             self.other_button.background_normal = ''
             self.other_button.background_color = RGB_YELLOW
         elif self.other_severity == Severity.red():
+            self.other_button.text = 'R'
             self.other_button.background_normal = ''
             self.other_button.background_color = RGB_RED
 
