@@ -5,6 +5,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 
 from cilantro_audit.constants import RGB_RED
+from cilantro_audit.password_manager import update_password, password_is_valid
 
 from cilantro_audit.templates.cilantro_navigator import CilantroNavigator
 from cilantro_audit.templates.cilantro_button import CilantroButton
@@ -99,13 +100,8 @@ class InputCurrentPasswordPopup(Popup):
         if self:
             self.content.children[1].focus = True
 
-    def current_password_is_valid(self, value):
-        if value == '12345':
-            return True
-        return False
-
-    def try_create_password(self, value):
-        if self.current_password_is_valid(value):
+    def try_create_password(self, current_password):
+        if password_is_valid(current_password):
             self.dismiss()
             InputNewPasswordPopup().open()
         else:
@@ -123,6 +119,7 @@ class InputNewPasswordPopup(Popup):
 
     def try_update_password(self, pw1, pw2):
         if pw1 != "" and pw1 == pw2:
+            update_password(pw1)
             self.dismiss()
         else:
             PasswordMismatchPopup().open()

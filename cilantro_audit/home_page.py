@@ -7,6 +7,7 @@ from kivy.uix.screenmanager import Screen
 
 from cilantro_audit.constants import RGB_LIGHT_RED
 from cilantro_audit.constants import RGB_LIGHT_GREEN
+from cilantro_audit.password_manager import password_is_valid
 
 from cilantro_audit.templates.cilantro_navigator import CilantroNavigator
 from cilantro_audit.templates.cilantro_button import CilantroButton
@@ -68,7 +69,7 @@ class AdminLoginPopup(Popup):
             self.content.children[1].focus = True
 
     def validate_password(self, value):
-        if value == '12345':
+        if password_is_valid(value):
             self.dismiss()
             globals.screen_manager.current = globals.ADMIN_SCREEN
             globals.screen_manager.transition.duration = 0.3
