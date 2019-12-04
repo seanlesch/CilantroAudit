@@ -1,3 +1,7 @@
+#:import CILANTRO_BLACK_THEME cilantro_audit.constants.CILANTRO_BLACK_THEME
+#:import CILANTRO_DARK_THEME cilantro_audit.constants.CILANTRO_DARK_THEME
+#:import CILANTRO_GREY_THEME cilantro_audit.constants.CILANTRO_GREY_THEME
+#:import CILANTRO_WHITE_THEME cilantro_audit.constants.CILANTRO_WHITE_THEME
 
 <CilantroNavigator>:
     page: page
@@ -15,7 +19,7 @@
 
         canvas.before:
             Color:
-                rgba: 0.1, 0.1, 0.1, 1.0
+                rgba: CILANTRO_DARK_THEME
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -29,7 +33,7 @@
 
             canvas.before:
                 Color:
-                    rgba: 0.4, 0.4, 0.4, 1.0
+                    rgba: CILANTRO_BLACK_THEME
                 Rectangle:
                     pos: self.x, self.y
                     size: self.width, self.height/(self.height-1)
@@ -38,26 +42,25 @@
                 name: 'place-holder'
 
             GridLayout:
-                id: header_title
                 name: 'title-grid'
                 rows: 1
                 cols: 1
 
                 canvas.before:
                     Color:
-                        rgba: 1.0, 1.0, 1.0, 1.0
+                        rgba: CILANTRO_GREY_THEME
                     Rectangle:
                         pos: self.x, self.y
                         size: self.width, self.height/(self.height-1)
 
                 CilantroLabel:
+                    id: header_title
                     text: 'Cilantro Navigator'
 
             Widget:
                 name: 'place-holder'
 
         GridLayout:
-            id: body
             name: 'body-grid'
             rows: 3
             cols: 3
@@ -90,31 +93,31 @@
 
                 canvas.before:
                     Color:
-                        rgba: 0.0, 0.0, 0.0, 1.0
+                        rgba: CILANTRO_BLACK_THEME
                     Rectangle:
                         pos: self.pos
                         size: self.size
 
                     Color:
-                        rgba: 0.4, 0.4, 0.4, 1.0
+                        rgba: CILANTRO_GREY_THEME
                     Rectangle:
                         pos: self.x, self.y+self.height
                         size: self.width, self.height/(self.height-1)
 
                     Color:
-                        rgba: 0.4, 0.4, 0.4, 1.0
+                        rgba: CILANTRO_GREY_THEME
                     Rectangle:
                         pos: self.x, self.y
                         size: self.width, self.height/(self.height-1)
 
                     Color:
-                        rgba: 1.0, 1.0, 1.0, 1.0
+                        rgba: CILANTRO_WHITE_THEME
                     Rectangle:
                         pos: self.x, self.y
                         size: self.width/(self.width-1), self.height
 
                     Color:
-                        rgba: 1.0, 1.0, 1.0, 1.0
+                        rgba: CILANTRO_WHITE_THEME
                     Rectangle:
                         pos: self.x+self.width, self.y
                         size: self.width/(self.width-1), self.height
@@ -146,12 +149,17 @@
                         size_hint_y: 1.0
 
                     # BODY CONTENT
-                    ScrollView:
-                        StackLayout:
-                            id: body_nav_btns
-                            height: self.minimum_height
-                            size_hint_y: None
-                            spacing: 30
+                    GridLayout:
+                        id: body
+                        rows: 1
+                        rows: 1
+
+                        ScrollView:
+                            StackLayout:
+                                id: body_nav_btns
+                                height: self.minimum_height
+                                size_hint_y: None
+                                spacing: 30
 
                     Widget:
                         name: 'place-holder'
@@ -204,15 +212,11 @@
 
             canvas.before:
                 Color:
-                    rgba: 0.4, 0.4, 0.4, 1.0
+                    rgba: CILANTRO_BLACK_THEME
                 Rectangle:
                     pos: self.x, self.y+self.height
                     size: self.width, self.height/(self.height-1)
 
-            GridLayout:
-                rows: 1
-                cols: 1
-
-                CilantroButton:
-                    text: 'Logout'
-                    id: footer_logout
+            CilantroButton:
+                id: footer_logout
+                text: 'LOGOUT'

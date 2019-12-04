@@ -23,8 +23,8 @@ class AdminPage(Screen):
         template_page = CilantroNavigator()
 
         template_page.header_title.clear_widgets()
-        template_page.header_title.add_widget(CilantroLabel(text='Admin Page',
-                                                            color=RGB_RED))
+        template_page.header_title.text = 'ADMIN PAGE'
+        template_page.header_title.color = RGB_RED
 
         template_page.body_nav_btns.add_widget(CilantroButton(text='Create Audit',
                                                               size_hint_y=None,
@@ -43,13 +43,10 @@ class AdminPage(Screen):
                                                               height=70,
                                                               on_release=clear_all_audit_locks))
 
-        template_page.footer_logout.bind(on_release=lambda _: logout())
+        template_page.footer_logout.text = 'LOGOUT'
+        template_page.footer_logout.bind(on_release=logout)
 
         self.add_widget(template_page)
-
-
-class TemplatesUnlockedPop(Popup):
-    pass
 
 
 def create_audit(callback):
@@ -70,8 +67,14 @@ def clear_all_audit_locks(callback):
     TemplatesUnlockedPop().open()
 
 
-def logout():
+def logout(callback):
     globals.screen_manager.current = globals.HOME_SCREEN
+    globals.screen_manager.transition.duration = 0.3
+    globals.screen_manager.transition.direction = 'up'
+
+
+class TemplatesUnlockedPop(Popup):
+    pass
 
 
 class TestApp(App):

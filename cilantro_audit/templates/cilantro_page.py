@@ -15,13 +15,12 @@ Builder.load_file(path.dirname(path.abspath(__file__)) + "/widgets/cilantro_page
 
 
 class CilantroPage(Screen):
-    page = ObjectProperty()
     header = ObjectProperty()
-    header_back = ObjectProperty()
     header_title = ObjectProperty()
-    header_home = ObjectProperty()
     body = ObjectProperty()
     footer = ObjectProperty()
+    footer_back = ObjectProperty()
+    footer_refresh = ObjectProperty()
     pass
 
 

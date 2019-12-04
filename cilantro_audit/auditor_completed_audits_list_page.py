@@ -1,23 +1,27 @@
 from time import mktime
 from datetime import datetime
-from kivy import require
+
 from kivy.app import App
-from kivy.lang import Builder
 from kivy.properties import ObjectProperty
+from kivy.uix.screenmanager import Screen
 from kivy.uix.label import Label
 from kivy.uix.button import Button
-from kivy.uix.screenmanager import Screen
+
+from cilantro_audit import globals
+
+from cilantro_audit.constants import AUDITOR_COMPLETED_AUDIT_PAGE
+from cilantro_audit.constants import AUDITS_PER_PAGE
+from cilantro_audit.constants import PROD_DB
+
+from cilantro_audit.audit_template import AuditTemplate
+from cilantro_audit.completed_audit import CompletedAudit
+
+from cilantro_audit.templates.cilantro_label import CilantroLabel
+from cilantro_audit.templates.cilantro_button import CilantroButton
+
 from mongoengine import connect
 
-from cilantro_audit.completed_audit import CompletedAudit
-from cilantro_audit.constants import KIVY_REQUIRED_VERSION, PROD_DB, AUDITOR_COMPLETED_AUDIT_PAGE, AUDITS_PER_PAGE
-from cilantro_audit.audit_template import AuditTemplate
-
-EPOCH = datetime.utcfromtimestamp(0)
-require(KIVY_REQUIRED_VERSION)
 connect(PROD_DB)
-
-Builder.load_file("./widgets/auditor_completed_audits_list_page.kv")
 
 TITLE_SORT_ORDER = [
     "title",
@@ -54,8 +58,8 @@ class AuditorCompletedAuditsListPage(Screen):
 
     def __init__(self, **kw):
         super().__init__(**kw)
-        self.date_col.bind(minimum_height=self.audit_list.setter("height"))
         self.title_col.bind(minimum_height=self.audit_list.setter("height"))
+        self.date_col.bind(minimum_height=self.audit_list.setter("height"))
         self.auditor_col.bind(minimum_height=self.audit_list.setter("height"))
         self.audits = []
         self.audit_templates = []
@@ -100,12 +104,12 @@ class AuditorCompletedAuditsListPage(Screen):
 
     # Refreshes the list of audits on the screen
     def refresh_completed_audits(self):
-        self.date_col.clear_widgets()
         self.title_col.clear_widgets()
+        self.date_col.clear_widgets()
         self.auditor_col.clear_widgets()
 
-        audit_dates = list(map(lambda set: set.datetime, self.audits))
         audit_titles = list(map(lambda set: set.title, self.audits))
+        audit_dates = list(map(lambda set: set.datetime, self.audits))
         audit_auditors = list(map(lambda set: set.auditor, self.audits))
 
         counter = 0
@@ -124,11 +128,11 @@ class AuditorCompletedAuditsListPage(Screen):
             lbl = Label(text=auditor, size_hint_y=None, height=40)
             self.auditor_col.add_widget(lbl)
 
-    def build_header_row(self, title, dt, auditor):
-        self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).add_title(title)
+    def build_header_row(self, title, auditor, dt):
         self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).add_blank_label("")
+        self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).add_title(title)
         self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).add_auditor(auditor)
-        self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).add_date_time(format_datetime(utc_to_local(dt)))
+        self.manager.get_screen(AUDITOR_COMPLETED_AUDIT_PAGE).add_datetime(format_datetime(utc_to_local(dt)))
 
     def load_audit_template_and_completed_audit_with_title_and_datetime(self, dt):
         ca = list(CompletedAudit.objects(datetime=dt))
@@ -148,7 +152,7 @@ class AuditorCompletedAuditsListPage(Screen):
 
     def populate_completed_audit_page(self, title):
         ca = self.load_audit_template_and_completed_audit_with_title_and_datetime(title)
-        self.build_header_row(ca.title, ca.datetime, ca.auditor)
+        self.build_header_row(ca.title, ca.auditor, ca.datetime)
 
         self.build_completed_audit_page_body(ca)
 
@@ -169,7 +173,7 @@ def utc_to_local(utc):
 
 
 def invert_datetime(dt):
-    return -(dt - EPOCH).total_seconds()
+    return -(dt - datetime.utcfromtimestamp(0)).total_seconds()
 
 
 class TestApp(App):
