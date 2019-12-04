@@ -82,6 +82,12 @@ def logout(callback):
 def open_reset_password_popup(callback):
     InputCurrentPasswordPopup().open()
 
+class PasswordResetSuccessPopup(Popup):
+    def on_open(self, *args):
+        super().on_open(*args)
+        if self:
+            self.content.focus = True
+
 class PasswordMismatchPopup(Popup):
     def on_open(self, *args):
         super().on_open(*args)
@@ -121,6 +127,7 @@ class InputNewPasswordPopup(Popup):
         if pw1 != "" and pw1 == pw2:
             update_password(pw1)
             self.dismiss()
+            PasswordResetSuccessPopup().open()
         else:
             PasswordMismatchPopup().open()
 

@@ -22,7 +22,7 @@
 <PasswordMismatchPopup>
     id: password_mismatch_popup
     auto_dismiss: True
-    title: "Passwords do not match."
+    title: "Passwords Do Not Match"
     size_hint: None, None
     size: 400, 150
 
@@ -37,6 +37,20 @@
     id: invalid_password_popup
     auto_dismiss: True
     title: "Invalid Password"
+    size_hint: None, None
+    size: 400, 150
+
+    Button:
+        text: "OK"
+        font_size: 30
+        size: 187.5, 30
+        size_hint: None, None
+        on_release: root.dismiss()
+
+<PasswordResetSuccessPopup>
+    id: password_reset_success_popup
+    auto_dismiss: True
+    title: "Your Password Has Been Updated"
     size_hint: None, None
     size: 400, 150
 
