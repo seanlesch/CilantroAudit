@@ -93,28 +93,69 @@ UNRESOLVED_SORT_ORDER = [
 
 
 class CompletedAuditsListPage(Screen):
-    date_col = ObjectProperty()
     title_col = ObjectProperty()
-    audit_list = ObjectProperty()
+    date_col = ObjectProperty()
     auditor_col = ObjectProperty()
-    unresolved_col = ObjectProperty()
     severity_col = ObjectProperty()
+    unresolved_col = ObjectProperty()
+    audit_list = ObjectProperty()
     refresh_button = ObjectProperty()
     page_count_label = ObjectProperty()
 
     def __init__(self, **kw):
         super().__init__(**kw)
-        self.date_col.bind(minimum_height=self.audit_list.setter("height"))
-        self.title_col.bind(minimum_height=self.audit_list.setter("height"))
-        self.auditor_col.bind(minimum_height=self.audit_list.setter("height"))
-        self.unresolved_col.bind(minimum_height=self.audit_list.setter("height"))
-        self.severity_col.bind(minimum_height=self.audit_list.setter("height"))
         self.audits = []
-        self.audit_templates = []
         self.db_index = 0
         self.sort_order = UNRESOLVED_SORT_ORDER
         self.load_completed_audits()
-        self.load_audit_templates()
+
+    def load_completed_audits(self):
+        self.audits = list(
+            CompletedAudit.objects()
+                .order_by(*self.sort_order)
+                .only("title", "datetime", "auditor", "severity", "unresolved_count")
+                .skip(self.db_index * AUDITS_PER_PAGE).limit(AUDITS_PER_PAGE))
+        self.populate_audits(self.audits)
+
+    def populate_audits(self, audits):
+        self.title_col.clear_widgets()
+        self.date_col.clear_widgets()
+        self.auditor_col.clear_widgets()
+        self.severity_col.clear_widgets()
+        self.unresolved_col.clear_widgets()
+
+        audit_titles = list(map(lambda set: set.title, audits))
+        audit_dates = list(map(lambda set: set.datetime, audits))
+        audit_auditors = list(map(lambda set: set.auditor, audits))
+        audit_severities = list(map(lambda set: set.severity, audits))
+        audit_unresolved_counts = list(map(lambda set: set.unresolved_count, audits))
+
+        counter = 0
+        for title in audit_titles:
+            btn = Button(text=title, size_hint_y=None, height=40)
+            btn.id = str(audit_dates[counter])
+            btn.bind(on_press=self.callback)
+            self.title_col.add_widget(btn)
+            counter += 1
+
+        for dt in audit_dates:
+            lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
+            self.date_col.add_widget(lbl)
+
+        for auditor in audit_auditors:
+            lbl = Label(text=auditor, size_hint_y=None, height=40)
+            self.auditor_col.add_widget(lbl)
+
+        for severity in audit_severities:
+            lbl = Label(text=severity.severity[2:],
+                        color=get_severity_color(severity),
+                        size_hint_y=None,
+                        height=40)
+            self.severity_col.add_widget(lbl)
+
+        for count in audit_unresolved_counts:
+            lbl = Label(text=str(count), size_hint_y=None, height=40)
+            self.unresolved_col.add_widget(lbl)
 
     def next_page(self):
         if (self.db_index + 1) * AUDITS_PER_PAGE <= CompletedAudit.objects.count():
@@ -148,70 +189,6 @@ class CompletedAuditsListPage(Screen):
         self.sort_order = UNRESOLVED_SORT_ORDER
         self.load_completed_audits()
 
-    def load_completed_audits(self):
-        self.audits = list(
-            CompletedAudit \
-                .objects() \
-                .order_by(*self.sort_order) \
-                .only("title", "datetime", "auditor", "severity", "unresolved_count") \
-                .skip(self.db_index * AUDITS_PER_PAGE) \
-                .limit(AUDITS_PER_PAGE))
-        self.refresh_completed_audits()
-
-    def load_audit_templates(self):
-        self.audit_templates = list(AuditTemplate.objects().only("title", "questions"))
-
-    # Refreshes the list of audits on the screen
-    def refresh_completed_audits(self):
-        self.date_col.clear_widgets()
-        self.title_col.clear_widgets()
-        self.auditor_col.clear_widgets()
-        self.severity_col.clear_widgets()
-        self.unresolved_col.clear_widgets()
-
-        audit_dates = list(map(lambda set: set.datetime, self.audits))
-        audit_titles = list(map(lambda set: set.title, self.audits))
-        audit_auditors = list(map(lambda set: set.auditor, self.audits))
-        audit_severities = list(map(lambda set: set.severity, self.audits))
-        audit_unresolved_counts = list(map(lambda set: set.unresolved_count, self.audits))
-
-        counter = 0
-        for title in audit_titles:
-            btn = Button(text=title, size_hint_y=None, height=40)
-            btn.id = str(audit_dates[counter])
-            btn.bind(on_press=self.callback)
-            self.title_col.add_widget(btn)
-            counter += 1
-
-        for dt in audit_dates:
-            lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
-            self.date_col.add_widget(lbl)
-
-        for auditor in audit_auditors:
-            lbl = Label(text=auditor, size_hint_y=None, height=40)
-            self.auditor_col.add_widget(lbl)
-
-        for severity in audit_severities:
-            lbl = Label(text=severity.severity[2:],
-                        color=get_severity_color(severity),
-                        size_hint_y=None,
-                        height=40)
-            self.severity_col.add_widget(lbl)
-
-        for count in audit_unresolved_counts:
-            lbl = Label(text=str(count), size_hint_y=None, height=40)
-            self.unresolved_col.add_widget(lbl)
-
-    # Returns the audits from audits[] that match the title passed in
-    def grab_audits_with_title(self, title):
-        audits_with_title = []
-
-        for audit in list(CompletedAudit.objects()):
-            if difflib.get_close_matches(title.lower(), [audit.title.lower()]):
-                audits_with_title.append(audit)
-
-        return audits_with_title
-
     # Breaks up the audit queries that match the search and writes them to the screen
     def search_completed_audits_list(self, title_to_search):
         self.date_col.clear_widgets()
@@ -227,36 +204,21 @@ class CompletedAuditsListPage(Screen):
             self.title_col.add_widget(lbl)
 
         else:
-            audit_dates = list(map(lambda set: set.datetime, audits_found))
-            audit_titles = list(map(lambda set: set.title, audits_found))
-            audit_auditors = list(map(lambda set: set.auditor, audits_found))
-            audit_severities = list(map(lambda set: set.severity, audits_found))
-            audit_unresolved_counts = list(map(lambda set: set.unresolved_count, audits_found))
+            self.populate_audits(audits_found)
 
-            counter = 0
-            for title in audit_titles:
-                btn = Button(text=title, size_hint_y=None, height=40)
-                btn.id = str(audit_dates[counter])
-                btn.bind(on_press=self.callback)
-                self.title_col.add_widget(btn)
-                counter += 1
+    # Returns the audits from audits[] that match the title passed in
+    def grab_audits_with_title(self, title):
+        audits_with_title = []
 
-            for dt in audit_dates:
-                lbl = Label(text=format_datetime(utc_to_local(dt)), size_hint_y=None, height=40)
-                self.date_col.add_widget(lbl)
+        for audit in list(CompletedAudit.objects()):
+            if difflib.get_close_matches(title.lower(), [audit.title.lower()]):
+                audits_with_title.append(audit)
 
-            for auditor in audit_auditors:
-                lbl = Label(text=auditor, size_hint_y=None, height=40)
-                self.auditor_col.add_widget(lbl)
+        return audits_with_title
 
-            for severity in audit_severities:
-                lbl = Label(text=severity.severity[2:], color=get_severity_color(severity), size_hint_y=None,
-                            height=40)
-                self.severity_col.add_widget(lbl)
-
-            for count in audit_unresolved_counts:
-                lbl = Label(text=str(count), size_hint_y=None, height=40)
-                self.unresolved_col.add_widget(lbl)
+    def refresh_completed_audits(self):
+        self.sort_order = UNRESOLVED_SORT_ORDER
+        self.load_completed_audits()
 
     # Helper function that makes the popup wait 0.2 seconds so we can assign focus properly
     def schedule_focus(self, popup):

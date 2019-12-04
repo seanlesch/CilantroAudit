@@ -68,33 +68,42 @@
                             root.sort_by_unresolved()
 
                 ScrollView:
-                    id: scrollable_list
-
                     GridLayout:
                         id: audit_list
                         cols: 5
                         spacing: 10
                         size_hint_y: None
+                        height: self.minimum_height
 
                         GridLayout:
                             id: title_col
                             cols: 1
+                            size_hint_y: None
+                            height: self.minimum_height
 
                         GridLayout:
                             id: date_col
                             cols: 1
+                            size_hint_y: None
+                            height: self.minimum_height
 
                         GridLayout:
                             id: auditor_col
                             cols: 1
+                            size_hint_y: None
+                            height: self.minimum_height
 
                         GridLayout:
                             id: severity_col
                             cols: 1
+                            size_hint_y: None
+                            height: self.minimum_height
 
                         GridLayout:
                             id: unresolved_col
                             cols: 1
+                            size_hint_y: None
+                            height: self.minimum_height
 
             GridLayout:
                 rows: 3
@@ -138,7 +147,7 @@
                 size_hint_y: None
                 size: 400, 50
                 on_release:
-                    root.load_completed_audits()
+                    root.refresh_completed_audits()
 
             Button:
                 text: 'Search'
@@ -152,7 +161,7 @@
                 size_hint_y: None
                 size: 400, 50
                 on_release:
-                    root.refresh_completed_audits()
+                    root.load_completed_audits()
 
 
 <SearchPop>:
