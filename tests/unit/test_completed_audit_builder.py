@@ -61,6 +61,7 @@ class CompletedAuditBuilderTests(unittest.TestCase):
         builder = CompletedAuditBuilder() \
             .with_title("Title") \
             .with_auditor("Auditor") \
+            .with_datetime(datetime.utcnow())\
             .with_answer(VALID_ANSWER) \
             .with_answer(VALID_ANSWER) \
             .with_answer(INVALID_ANSWER) \
@@ -87,6 +88,7 @@ class CompletedAuditBuilderTests(unittest.TestCase):
         audit = CompletedAuditBuilder() \
             .with_title("Title") \
             .with_auditor("Auditor") \
+            .with_datetime(datetime.utcnow())\
             .with_answer(VALID_ANSWER) \
             .build()
         self.assertGreaterEqual(datetime.utcnow(), audit.datetime)
@@ -95,6 +97,7 @@ class CompletedAuditBuilderTests(unittest.TestCase):
         audit = CompletedAuditBuilder() \
             .with_title("Title") \
             .with_auditor("Auditor") \
+            .with_datetime(datetime.utcnow())\
             .with_answer(GREEN_ANSWER) \
             .with_answer(GREEN_ANSWER) \
             .with_answer(GREEN_ANSWER) \
@@ -105,6 +108,7 @@ class CompletedAuditBuilderTests(unittest.TestCase):
         audit = CompletedAuditBuilder() \
             .with_title("Title") \
             .with_auditor("Auditor") \
+            .with_datetime(datetime.utcnow())\
             .with_answer(GREEN_ANSWER) \
             .with_answer(GREEN_ANSWER) \
             .with_answer(YELLOW_ANSWER) \
@@ -116,6 +120,7 @@ class CompletedAuditBuilderTests(unittest.TestCase):
         audit = CompletedAuditBuilder() \
             .with_title("Title") \
             .with_auditor("Auditor") \
+            .with_datetime(datetime.utcnow())\
             .with_answer(GREEN_ANSWER) \
             .with_answer(RED_ANSWER) \
             .with_answer(GREEN_ANSWER) \
@@ -126,6 +131,7 @@ class CompletedAuditBuilderTests(unittest.TestCase):
         audit = CompletedAuditBuilder() \
             .with_title("Title") \
             .with_auditor("Auditor") \
+            .with_datetime(datetime.utcnow())\
             .with_answer(GREEN_ANSWER) \
             .with_answer(YELLOW_ANSWER) \
             .with_answer(GREEN_ANSWER) \
@@ -136,6 +142,7 @@ class CompletedAuditBuilderTests(unittest.TestCase):
         audit = CompletedAuditBuilder() \
             .with_title("Title") \
             .with_auditor("Auditor") \
+            .with_datetime(datetime.utcnow())\
             .with_answer(GREEN_ANSWER) \
             .with_answer(GREEN_ANSWER) \
             .with_answer(RED_ANSWER) \

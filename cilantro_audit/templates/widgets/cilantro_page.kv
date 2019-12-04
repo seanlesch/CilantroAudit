@@ -1,21 +1,23 @@
+#:import CILANTRO_BLACK_THEME cilantro_audit.constants.CILANTRO_BLACK_THEME
+#:import CILANTRO_DARK_THEME cilantro_audit.constants.CILANTRO_DARK_THEME
+#:import CILANTRO_GREY_THEME cilantro_audit.constants.CILANTRO_GREY_THEME
+#:import CILANTRO_WHITE_THEME cilantro_audit.constants.CILANTRO_WHITE_THEME
 
 <CilantroPage>:
-    page: page
     header: header
-    header_back: header_back
+    footer_back: footer_back
     header_title: header_title
-    header_home: header_home
     body: body
     footer: footer
+    footer_refresh: footer_refresh
 
     GridLayout:
-        id: page
         rows: 3
         cols: 1
 
         canvas.before:
             Color:
-                rgba: 0.1, 0.1, 0.1, 1.0
+                rgba: CILANTRO_BLACK_THEME
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -27,17 +29,22 @@
             cols: 3
             size_hint: 1, 0.1
 
-            CilantroButton:
-                id: header_back
-                text: 'Back'
+            canvas.before:
+                Color:
+                    rgba: CILANTRO_BLACK_THEME
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+                Color:
+                    rgba: CILANTRO_GREY_THEME
+                Rectangle:
+                    pos: self.x, self.y
+                    size: self.width, self.height/(self.height-1)
 
             CilantroLabel:
                 id: header_title
                 text: 'Template Page'
-
-            CilantroButton:
-                id: header_home
-                text: 'Return to Homepage'
 
         GridLayout:
             id: body
@@ -45,16 +52,30 @@
             rows: 1
             cols: 1
 
+            canvas.before:
+                Color:
+                    rgba: CILANTRO_BLACK_THEME
+                Rectangle:
+                    pos: self.x, self.y
+                    size: self.width, self.height
+
         GridLayout:
             id: footer
             name: 'footer-grid'
             rows: 1
-            cols: 1
             size_hint: 1, 0.1
 
             canvas.before:
                 Color:
-                    rgba: 0.4, 0.4, 0.4, 1.0
+                    rgba: CILANTRO_GREY_THEME
                 Rectangle:
                     pos: self.x, self.y+self.height
                     size: self.width, self.height/(self.height-1)
+
+            CilantroButton:
+                id: footer_back
+                text: 'BACK'
+
+            CilantroButton:
+                id: footer_refresh
+                text: 'Refresh Page'
