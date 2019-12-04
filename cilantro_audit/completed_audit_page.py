@@ -55,7 +55,7 @@ class CompletedAuditPage(Screen):
         self.grid_list.add_widget(lbl)
 
     def add_question_answer(self, answer, title, datetime, auditor):
-        self.stack_list.height += 80  # integer (80) comes from question_answer size
+        self.stack_list.height += 85  # integer (85) comes from question_answer size
         qa = QuestionAnswer()
         qa.question_text = "[b]Question: [/b]" + answer.text
         qa.answer_response_text = "[b]Response: [/b]" + str(answer.response.response)
