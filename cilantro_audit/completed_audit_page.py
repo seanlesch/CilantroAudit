@@ -91,12 +91,13 @@ class CompletedAuditPage(Screen):
             .get(title=self.resolve_button.title,
                  auditor=self.resolve_button.auditor,
                  datetime=self.resolve_button.datetime)  # Idk if we should make this a method
+
         for answer in audit_to_resolve:
-            answer.resolved = True
-        audit_to_resolve.unresolved_count = 0
+            if answer.resolved is False:
+                answer.resolve_submit()
 
     def resolve_audit_pop(self):
-        show = ConfirmationPop()
+        show = ResolvePop()
 
         show.yes.bind(on_release=lambda _: show.dismiss())
         show.yes.bind(on_release=lambda _: self.resolve_audit())

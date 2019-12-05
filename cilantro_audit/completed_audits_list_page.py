@@ -298,7 +298,7 @@ class CompletedAuditsListPage(Screen):
         self.build_completed_audit_page_body(ca)
 
         if ca.unresolved_count > 0:
-            self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_resolve_button()
+            self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_resolve_audit_button()
 
         self.manager.current = COMPLETED_AUDIT_PAGE
 
