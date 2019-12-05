@@ -40,7 +40,7 @@ class ViewFlagTrendsPage(Screen):
     def populate_page(self):
         self.clear_widgets()
         template_page = CilantroPage()
-        template_page.header_title.text = 'Flagged Questions Trend'
+        template_page.header_title.text = 'Repeated Findings Trends'
         template_page.footer_back.bind(on_release=go_back)
         template_page.body.add_widget(ViewFlagTrendsPageContent())
         self.add_widget(template_page)
