@@ -7,17 +7,12 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 
-from cilantro_audit import globals
-
 from cilantro_audit.constants import AUDITOR_COMPLETED_AUDIT_PAGE
 from cilantro_audit.constants import AUDITS_PER_PAGE
 from cilantro_audit.constants import PROD_DB
 
 from cilantro_audit.audit_template import AuditTemplate
 from cilantro_audit.completed_audit import CompletedAudit
-
-from cilantro_audit.templates.cilantro_label import CilantroLabel
-from cilantro_audit.templates.cilantro_button import CilantroButton
 
 from mongoengine import connect
 
