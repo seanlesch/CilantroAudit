@@ -75,17 +75,29 @@ class CompletedAuditPage(Screen):
         self.stack_list.height = 0  # resets the height of the scrolling view. otherwise it grows with each new audit
         self.reset_scroll_to_top()
 
-    def resolve_pop(self):
+    def resolve_audit(self):
+        audit_to_resolve = CompletedAudit.objects() \
+            .filter(title=self.resolve_button.title,
+                    auditor=self.resolve_button.auditor,
+                    datetime=self.resolve_button.datetime) \
+            .get(title=self.resolve_button.title,
+                 auditor=self.resolve_button.auditor,
+                 datetime=self.resolve_button.datetime)  # Idk if we should make this a method
+        if audit_to_resolve.unresolved_count is 0:
+            audit_to_resolve.modify(resolved=True)
+
+    def resolve_audit_pop(self):
         show = ConfirmationPop()
 
         show.yes.bind(on_release=lambda _: show.dismiss())
+        show.yes.bind(on_release=lambda _: self.resolve_audit())
         show.no.bind(on_release=lambda _: show.dismiss())
 
         show.open()
 
-    def add_resolve_button(self):
+    def add_resolve_audit_button(self):
         btn = Button(text="Resolve Audit", size_hint=(.15, .1), pos_hint={'right': 1})
-        btn.bind(on_release=lambda _: self.resolve_pop())
+        btn.bind(on_release=lambda _: self.resolve_audit_pop())
         self.add_widget(btn)
 
 
