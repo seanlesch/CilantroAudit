@@ -83,8 +83,9 @@ class CompletedAuditPage(Screen):
             .get(title=self.resolve_button.title,
                  auditor=self.resolve_button.auditor,
                  datetime=self.resolve_button.datetime)  # Idk if we should make this a method
-        if audit_to_resolve.unresolved_count is 0:
-            audit_to_resolve.modify(resolved=True)
+        for answer in audit_to_resolve:
+            answer.resolved = True
+        audit_to_resolve.unresolved_count = 0
 
     def resolve_audit_pop(self):
         show = ConfirmationPop()
