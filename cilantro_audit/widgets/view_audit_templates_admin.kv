@@ -76,10 +76,73 @@
             size_hint: 0.1, 0.1
 
 
-<ActiveAuditButton@CilantroButton>:
+<AuditButton@CilantroButton>:
     name: 'active_button_template'
     size_hint_y: None
     height: 70
 
     on_release:
         self.text
+
+<DeletePop>:
+    auto_dismiss: False
+    title: "Confirm Delete"
+    size_hint: .5, .5
+    audit_title: audit_title
+    yes: yes
+
+    FloatLayout:
+        Label:
+            id: confirm_message
+            text: "Are you sure you want to delete"
+            text_width: self.width, None
+            font_size: root.width/20
+            size_hint: 1, None
+            height: self.texture_size[1]
+            pos_hint: {"x": 0, "top": .9}
+        Label:
+            id: audit_title
+            text_width: self.width, None
+            font_size: root.width/20
+            size_hint: 1, None
+            height: self.texture_size[1]
+            pos_hint: {"x": 0, "top": .75}
+
+        Button:
+            text: "No"
+            font_size: root.width/30
+            size_hint: .3, .3
+            pos_hint: {"center_x": .25, "y": 0.05}
+            on_release:
+                root.dismiss()
+
+        Button:
+            text: "Yes"
+            id: yes
+            font_size: root.width/30
+            size_hint: .3, .3
+            pos_hint: {"center_x": .75, "y": 0.05}
+
+            on_release:
+                root.dismiss()
+
+<ConfirmPop>:
+    auto_dismiss: False
+    title: "Audit Deleted"
+    size_hint: .5, .5
+    ok: ok
+
+    FloatLayout:
+        Label:
+            text: "Audit deleted, please refresh the page"
+            font_size: root.width/20
+            size_hint: 1, None
+            pos_hint: {"center_x": 0.5, "top": .75}
+
+        Button:
+            text: "Ok"
+            id: ok
+            font_size: root.width/30
+            size_hint: .3, .3
+            pos_hint: {"y": 0.05, "x": 0.35}
+            on_release: root.dismiss()

@@ -26,7 +26,7 @@ class ViewAuditTemplatesAdmin(Screen):
     def populate_page(self):
         self.clear_widgets()
         template_page = CilantroPage()
-        template_page.header_title.text = 'All Audits'
+        template_page.header_title.text = 'All Audits (Click to delete)'
 
         template_page.body.add_widget(ViewAuditTemplatesContent())
 
@@ -39,7 +39,7 @@ class ViewAuditTemplatesAdmin(Screen):
 
 
 def go_back(callback):
-    globals.screen_manager.current = globals.AUDITOR_SCREEN
+    globals.screen_manager.current = globals.ADMIN_SCREEN
 
 
 def refresh(callback):
@@ -57,14 +57,32 @@ class ViewAuditTemplatesContent(Screen):
         self.templates_list.clear_widgets()
 
         for audit in list(AuditTemplate.objects()):
-            self.templates_list.add_widget(ActiveAuditButton(text=audit.title))
+            self.templates_list.add_widget(AuditButton(text=audit.title))
 
 
-class ActiveAuditButton(CilantroButton):
+class DeletePop(Popup):
+    audit_title = ObjectProperty(None)
+    yes = ObjectProperty(None)
+
+
+class ConfirmPop(Popup):
+    ok = ObjectProperty(None)
+
+
+# todo Make the page automatically refresh when an audit is deleted.
+class AuditButton(CilantroButton):
     def on_release(self, *args):
         super().on_release(*args)
-        globals.screen_manager.current = CREATE_COMPLETED_AUDIT_PAGE
-        globals.screen_manager.get_screen(CREATE_COMPLETED_AUDIT_PAGE).populate_page(self.text)
+        show = DeletePop()
+        show.yes.bind(on_release=lambda _: self.delete_audit())
+        show.audit_title.text = self.text + "?"
+        show.open()
+
+    def delete_audit(self):
+        to_delete = AuditTemplate.objects(title=self.text)
+        to_delete.delete()
+        show = ConfirmPop()
+        show.open()
 
 
 class TestApp(App):

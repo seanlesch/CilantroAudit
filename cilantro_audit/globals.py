@@ -51,6 +51,7 @@ Builder.load_file("./widgets/auditor_completed_audit_page.kv")
 Builder.load_file("./widgets/auditor_completed_audits_list_page.kv")
 Builder.load_file("./widgets/view_audit_templates.kv")
 Builder.load_file("./widgets/view_flag_trends_page.kv")
+Builder.load_file("./widgets/view_audit_templates_admin.kv")
 
 # App Screen Manager
 screen_manager = ScreenManager()
