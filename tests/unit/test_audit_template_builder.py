@@ -37,7 +37,7 @@ class AuditTemplateBuilderTests(unittest.TestCase):
         )
 
     def test_title_max_length(self):
-        too_many_characters = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2f"
+        too_many_characters = "PM4t5qKhqS6oSEtPrtXUaQWbEeZ2ITca4AsSzF2KApecyI6Yh2f" * 10
         self.assertRaises(
             ValidationError,
             AuditTemplateBuilder() \
