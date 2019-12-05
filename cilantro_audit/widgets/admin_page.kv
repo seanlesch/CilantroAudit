@@ -3,18 +3,30 @@
 
 
 <TemplatesUnlockedPop>:
-    title: "Task Completed"
+    no: no
+    yes: yes
     size_hint: .5, .5
+    title: "Unlock Confirmation"
 
     FloatLayout:
         Label:
-            text: "All audit locks cleared; All audits available for submission."
+            text: "Are you sure you want to unlock all locked audits?"
             size_hint: 0.6, 0.2
+            font_size: root.width/30
             pos_hint: {"x": .2, "top": .9}
 
         Button:
-            text: "OK"
+            id: no
+            text: "No"
             size_hint: .3, .3
-            pos_hint: {"center_x": .5, "y": 0}
+            font_size: root.width/30
+            pos_hint: {"right": 1, "y": 0}
             on_release:
                 root.dismiss()
+
+        Button:
+            id: yes
+            text: "Yes"
+            size_hint: .3, .3
+            font_size: root.width/30
+            pos_hint: {"x": 0, "y": 0}
