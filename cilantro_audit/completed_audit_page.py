@@ -47,7 +47,7 @@ class CompletedAuditPage(Screen):
         self.grid_list.add_widget(lbl)
 
     # Needs to be updated when you click out of one audit and load up another
-    def add_date_time(self, dt):
+    def add_datetime(self, dt):
         lbl = Label(text='[b]Date: [/b]' + dt, markup=True, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
@@ -121,8 +121,7 @@ class QuestionAnswer(FloatLayout):
                  auditor=self.resolve_button.auditor,
                  datetime=self.resolve_button.datetime)
         # Remove string label, which has 17 chars as defined in CompletedAuditPage.add_question_answer
-        audit_answer_to_resolve = audit_to_resolve.answers.filter(text=self.question_text[17:]) \
-            .get(text=self.question_text[17:])
+        audit_answer_to_resolve = audit_to_resolve.answers.filter(text=self.question_text[17:]).first()
         audit_answer_to_resolve.resolved = True
         audit_to_resolve.unresolved_count -= 1
         audit_to_resolve.save()
