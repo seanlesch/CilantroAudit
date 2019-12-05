@@ -44,6 +44,7 @@ CREATE_AUDIT_TEMPLATE_PAGE = "CreateAuditTemplatePage"
 CREATE_COMPLETED_AUDIT_PAGE = "CreateCompletedAuditPage"
 VIEW_AUDIT_TEMPLATES = "ViewAuditTemplates"
 VIEW_FLAG_TRENDS_PAGE = "ViewFlagTrendsPage"
+VIEW_AUDIT_TEMPLATES_ADMIN = "ViewAuditTemplatesAdmin"
 
 # Theme Colors
 CILANTRO_BLACK_THEME = get_color_from_hex("#000000")

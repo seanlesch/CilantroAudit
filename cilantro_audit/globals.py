@@ -14,6 +14,7 @@ from cilantro_audit.view_flag_trends_page import ViewFlagTrendsPage
 from cilantro_audit.create_completed_audit_page import CreateCompletedAuditPage
 from cilantro_audit.completed_audit_page import CompletedAuditPage
 from cilantro_audit.auditor_completed_audit_page import AuditorCompletedAuditPage
+from cilantro_audit.view_audit_templates_admin import ViewAuditTemplatesAdmin
 
 from cilantro_audit.constants import KIVY_REQUIRED_VERSION
 from cilantro_audit.constants import HOME_SCREEN
@@ -27,6 +28,7 @@ from cilantro_audit.constants import AUDITOR_COMPLETED_AUDIT_PAGE
 from cilantro_audit.constants import AUDITOR_COMPLETED_AUDITS_LIST_PAGE
 from cilantro_audit.constants import VIEW_AUDIT_TEMPLATES
 from cilantro_audit.constants import VIEW_FLAG_TRENDS_PAGE
+from cilantro_audit.constants import VIEW_AUDIT_TEMPLATES_ADMIN
 
 require(KIVY_REQUIRED_VERSION)
 
@@ -49,6 +51,7 @@ Builder.load_file("./widgets/auditor_completed_audit_page.kv")
 Builder.load_file("./widgets/auditor_completed_audits_list_page.kv")
 Builder.load_file("./widgets/view_audit_templates.kv")
 Builder.load_file("./widgets/view_flag_trends_page.kv")
+Builder.load_file("./widgets/view_audit_templates_admin.kv")
 
 # App Screen Manager
 screen_manager = ScreenManager()
@@ -65,3 +68,4 @@ screen_manager.add_widget(AuditorCompletedAuditPage(name=AUDITOR_COMPLETED_AUDIT
 screen_manager.add_widget(AuditorCompletedAuditsListPage(name=AUDITOR_COMPLETED_AUDITS_LIST_PAGE))
 screen_manager.add_widget(ViewAuditTemplates(name=VIEW_AUDIT_TEMPLATES))
 screen_manager.add_widget(ViewFlagTrendsPage(name=VIEW_FLAG_TRENDS_PAGE))
+screen_manager.add_widget((ViewAuditTemplatesAdmin(name=VIEW_AUDIT_TEMPLATES_ADMIN)))

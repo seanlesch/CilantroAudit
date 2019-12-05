@@ -43,6 +43,10 @@ class AdminPage(Screen):
                                                               size_hint_y=None,
                                                               height=70,
                                                               on_release=clear_all_audit_locks))
+        template_page.body_nav_btns.add_widget(CilantroButton(text='Delete Audit Forms',
+                                                              size_hint_y=None,
+                                                              height=70,
+                                                              on_release=view_audit_templates_admin))
 
         template_page.footer_logout.text = 'LOGOUT'
         template_page.footer_logout.bind(on_release=logout)
@@ -68,6 +72,11 @@ def clear_all_audit_locks(callback):
     confirmation.yes.bind(on_release=lambda _: AuditTemplate.objects().update(upsert=False, multi=True, locked=False))
     confirmation.yes.bind(on_release=lambda _: confirmation.dismiss())
     confirmation.open()
+
+
+def view_audit_templates_admin(callback):
+    globals.screen_manager.get_screen(globals.VIEW_AUDIT_TEMPLATES_ADMIN).populate_page()
+    globals.screen_manager.current = globals.VIEW_AUDIT_TEMPLATES_ADMIN
 
 
 def logout(callback):
