@@ -1,4 +1,5 @@
 #:import CILANTRO_BLACK_THEME cilantro_audit.constants.CILANTRO_BLACK_THEME
+#:import CILANTRO_DARK_THEME cilantro_audit.constants.CILANTRO_DARK_THEME
 
 <ViewAuditTemplates>:
 
@@ -7,8 +8,15 @@
     templates_list: templates_list
 
     GridLayout:
-        rows: 4
+        rows: 3
         cols: 3
+
+        canvas.before:
+            Color:
+                rgba: CILANTRO_BLACK_THEME
+            Rectangle:
+                pos: self.pos
+                size: self.size
 
         # 1st Row
         Widget:
@@ -43,26 +51,18 @@
                         size_hint: 1, None
                         spacing: 2
 
+                        canvas.before:
+                            Color:
+                                rgba: CILANTRO_DARK_THEME
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
+
         Widget:
             name: 'place-holder'
             size_hint: 0.1, 1
 
         # 3rd Row
-        Widget:
-            name: 'place-holder'
-            size_hint: 0.1, 0.1
-
-        CilantroButton:
-            text: 'Refresh List'
-            size_hint: 1, 0.1
-            on_release:
-                root.populate_content()
-
-        Widget:
-            name: 'place-holder'
-            size_hint: 0.1, 0.1
-
-        # 4th Row
         Widget:
             name: 'place-holder'
             size_hint: 0.1, 0.1
@@ -89,6 +89,7 @@
     name: 'inactive_button_template'
     size_hint_y: None
     height: 70
+    color: CILANTRO_DARK_THEME
     background_normal: ''
     background_color: CILANTRO_BLACK_THEME
 
