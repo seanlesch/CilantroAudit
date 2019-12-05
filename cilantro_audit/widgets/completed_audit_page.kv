@@ -36,7 +36,9 @@
         size_hint: .15, .1
         on_release:
             root.clear_page()
-            root.manager.current = 'CompletedAuditsListPage'
+            root.manager.transition = SlideTransition(direction='right')
+            root.manager.current = root.previous_page
+            root.manager.transition.duration = 0.3
 
 <QuestionAnswer>:
     question_label: question_label
