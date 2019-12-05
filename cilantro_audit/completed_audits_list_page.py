@@ -1,3 +1,4 @@
+import difflib
 from time import mktime
 from datetime import datetime
 
@@ -205,8 +206,8 @@ class CompletedAuditsListPage(Screen):
     def grab_audits_with_title(self, title):
         audits_with_title = []
 
-        for audit in self.audits:
-            if audit.title == title:
+        for audit in list(CompletedAudit.objects()):
+            if difflib.get_close_matches(title.lower(), [audit.title.lower()]):
                 audits_with_title.append(audit)
 
         return audits_with_title
@@ -270,10 +271,10 @@ class CompletedAuditsListPage(Screen):
         show.open()
 
     def build_header_row(self, title, auditor, dt):
-        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_title(title)
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_blank_label("")
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_title(title)
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_auditor(auditor)
-        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_date_time(format_datetime(utc_to_local(dt)))
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_datetime(format_datetime(utc_to_local(dt)))
 
     def load_audit_template_and_completed_audit_with_title_and_datetime(self, dt):
         ca = list(CompletedAudit.objects(datetime=dt))
