@@ -10,14 +10,13 @@ from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
 from kivy.uix.popup import Popup
 
-from cilantro_audit import globals
-
 from cilantro_audit.constants import PROD_DB
 from cilantro_audit.constants import RGB_RED
 from cilantro_audit.constants import RGB_GREEN
 from cilantro_audit.constants import RGB_YELLOW
 from cilantro_audit.constants import AUDITS_PER_PAGE
 from cilantro_audit.constants import COMPLETED_AUDIT_PAGE
+from cilantro_audit.constants import COMPLETED_AUDITS_LIST_PAGE
 
 from cilantro_audit.audit_template import AuditTemplate
 from cilantro_audit.completed_audit import CompletedAudit
@@ -290,7 +289,7 @@ class CompletedAuditsListPage(Screen):
 
         for answer in completed_audit.answers:
             self.manager.get_screen(COMPLETED_AUDIT_PAGE) \
-                .add_question_answer(answer)
+                .add_question_answer(answer, completed_audit.title, completed_audit.datetime, completed_audit.auditor)
 
     def populate_completed_audit_page(self, title):
         ca = self.load_audit_template_and_completed_audit_with_title_and_datetime(title)
@@ -301,6 +300,7 @@ class CompletedAuditsListPage(Screen):
         self.manager.current = COMPLETED_AUDIT_PAGE
 
     def callback(self, instance):
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).previous_page = COMPLETED_AUDITS_LIST_PAGE
         self.populate_completed_audit_page(instance.id)
 
 
