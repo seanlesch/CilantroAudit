@@ -43,7 +43,7 @@ def go_back(callback):
 
 
 def refresh(callback):
-    globals.screen_manager.get_screen(globals.VIEW_AUDIT_TEMPLATES).populate_page()
+    globals.screen_manager.get_screen(globals.VIEW_AUDIT_TEMPLATES_ADMIN).populate_page()
 
 
 class ViewAuditTemplatesContent(Screen):
