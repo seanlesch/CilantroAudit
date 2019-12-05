@@ -11,7 +11,7 @@
 
     GridLayout:
         name: 'body-grid'
-        rows: 4
+        rows: 3
         cols: 3
 
         # 1st Row
@@ -111,21 +111,6 @@
             size_hint: 0.1, 1
 
         # 3rd Row
-        Widget:
-            name: 'place-holder'
-            size_hint: 0.1, 0.1
-
-        CilantroButton:
-            text: 'Refresh List'
-            size_hint: 1, 0.1
-            on_release:
-                root.refresh_flagged_questions()
-
-        Widget:
-            name: 'place-holder'
-            size_hint: 0.1, 0.1
-
-        # 4th Row
         Widget:
             name: 'place-holder'
             size_hint: 0.1, 0.1
