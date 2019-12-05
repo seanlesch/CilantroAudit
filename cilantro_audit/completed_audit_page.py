@@ -115,20 +115,8 @@ class CompletedAuditPage(Screen):
         super().__init__(**kw)
         self.completed_audits = []
         self.audit_templates = []
-        self.load_completed_audits()
-        self.load_audit_templates()
         self.ca = CompletedAudit
         self.at = AuditTemplate()
-
-    # Loads all of the completed_audit objects from the database into a list.
-    def load_completed_audits(self):
-        self.completed_audits = list(CompletedAudit.objects().all_fields())
-        self.completed_audits = sorted(self.completed_audits, key=lambda completed_audit: completed_audit.title)
-
-    # Loads all of the audit_template objects from the database into a list.
-    def load_audit_templates(self):
-        self.audit_templates = list(AuditTemplate.objects().all_fields())
-        self.audit_templates = sorted(self.audit_templates, key=lambda audit_template: audit_template.title)
 
     def reset_scroll_to_top(self):
         self.scrolling_panel.scroll_y = 1
