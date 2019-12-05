@@ -276,7 +276,7 @@ class CompletedAuditsListPage(Screen):
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_blank_label("")
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_title(title)
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_auditor(auditor)
-        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_datetime(format_datetime(utc_to_local(dt)))
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_datetime(dt)
 
     def load_audit_template_and_completed_audit_with_title_and_datetime(self, dt):
         ca = list(CompletedAudit.objects(datetime=dt))
@@ -301,6 +301,9 @@ class CompletedAuditsListPage(Screen):
         self.build_header_row(ca.title, ca.auditor, ca.datetime)
 
         self.build_completed_audit_page_body(ca)
+
+        if ca.unresolved_count > 0:
+            self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_resolve_audit_button()
 
         self.manager.current = COMPLETED_AUDIT_PAGE
 

@@ -1,8 +1,10 @@
+from cilantro_audit.auditor_completed_audits_list_page import format_datetime, utc_to_local
 from cilantro_audit.excel_file import ExcelFile
 from kivy.lang import Builder
 from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
 from kivy.properties import StringProperty
+from kivy.uix.button import Button
 from kivy.utils import get_hex_from_color
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
@@ -26,52 +28,6 @@ kvfile = Builder.load_file("./widgets/completed_audit_page.kv")
 
 connect(PROD_DB)
 
-
-# Class for adding a block of text on a completed audit page that holds one question and the answers provided.
-class QuestionAnswer(FloatLayout):
-    question_label = ObjectProperty()
-    question_text = StringProperty()
-
-    answer_response_label = ObjectProperty()
-    answer_response_text = StringProperty()
-
-    answer_comments_label = ObjectProperty()
-    answer_comments_text = StringProperty()
-
-    answer_severity_label = ObjectProperty()
-    answer_severity_text = StringProperty()
-
-    resolve_button = ObjectProperty(None)
-
-    # Handles popup to confirm the resolving of a flagged question.
-    def resolve_response(self):
-        show = ResolvePop()
-        show.yes.bind(on_release=lambda _: show.dismiss())
-        show.yes.bind(on_release=lambda _: self.resolve_submit())
-        show.no.bind(on_release=lambda _: show.dismiss())
-        show.open()
-
-    # Marks a question response as resolved in the database. NOTE: Currently if there are repeated questions in the
-    # audit the behavior of which question will be resolved is undefined.
-    def resolve_submit(self):
-        audit_to_resolve = CompletedAudit.objects() \
-            .filter(title=self.resolve_button.title,
-                    auditor=self.resolve_button.auditor,
-                    datetime=self.resolve_button.datetime) \
-            .get(title=self.resolve_button.title,
-                 auditor=self.resolve_button.auditor,
-                 datetime=self.resolve_button.datetime)
-        # Remove string label, which has 17 chars as defined in CompletedAuditPage.add_question_answer
-        audit_answer_to_resolve = audit_to_resolve.answers.filter(text=self.question_text[17:]) \
-            .get(text=self.question_text[17:])
-        audit_answer_to_resolve.resolved = True
-        audit_to_resolve.unresolved_count -= 1
-        audit_to_resolve.save()
-        self.remove_widget(self.resolve_button)
-
-class ResolvePop(ConfirmationPop):
-    yes = ObjectProperty(None)
-    no = ObjectProperty(None)
 
 # Class for the save dialog popup.
 class SaveDialog(FloatLayout):
@@ -102,9 +58,12 @@ class CompletedAuditPage(Screen):
     grid_list = ObjectProperty()
     question_text = ObjectProperty()
     scrolling_panel = ObjectProperty()
+    bottom_bar = ObjectProperty()
+    resolve_all_button = ObjectProperty()
     header_title = ObjectProperty()
     header_auditor = ObjectProperty()
     header_dt = ObjectProperty()
+    audit_dt = ObjectProperty()
     main_popup = ObjectProperty()
     overwrite_popup = ObjectProperty()
     file_saved_popup = ObjectProperty()
@@ -134,11 +93,12 @@ class CompletedAuditPage(Screen):
         lbl = Label(text='[b]Auditor: [/b]' + auditor, markup=True, size_hint_y=None, height=40, font_size=20,
                     halign="left")
         self.header_auditor = Label(text=auditor)
-
         self.grid_list.add_widget(lbl)
 
     # Needs to be updated when you click out of one audit and load up another
     def add_datetime(self, dt):
+        self.audit_dt = dt
+        dt = format_datetime(utc_to_local(dt))
         lbl = Label(text='[b]Date: [/b]' + dt, markup=True, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
         self.header_dt = Label(text=dt)
@@ -241,6 +201,36 @@ class CompletedAuditPage(Screen):
         content = FileSavedPopup(ok=self.close_file_saved_popup)
         self.file_saved_popup = Popup(title="File Exported", content=content, size_hint=(0.5, 0.5))
         self.file_saved_popup.open()
+
+    def resolve_audit(self):
+        audit_to_resolve = CompletedAudit.objects() \
+            .filter(title=self.header_title.text,
+                    auditor=self.header_auditor.text,
+                    datetime=self.audit_dt) \
+            .first()
+        # Resolve in Database
+        for answer in audit_to_resolve.answers:
+            if answer.resolved is False:
+                answer.resolved = True
+        audit_to_resolve.unresolved_count = 0
+        audit_to_resolve.save()
+        # Remove all resolve buttons
+        for qa in self.stack_list.children:
+            qa.remove_widget(qa.resolve_button)
+        self.bottom_bar.remove_widget(self.resolve_all_button)
+
+    def resolve_audit_pop(self):
+        show = ResolvePop()
+
+        show.yes.bind(on_release=lambda _: show.dismiss())
+        show.yes.bind(on_release=lambda _: self.resolve_audit())
+        show.no.bind(on_release=lambda _: show.dismiss())
+        show.open()
+
+    def add_resolve_audit_button(self):
+        self.resolve_all_button = Button(text="Resolve All Findings")
+        self.resolve_all_button.bind(on_release=lambda _: self.resolve_audit_pop())
+        self.bottom_bar.add_widget(self.resolve_all_button)
 
 
 class ResolvePop(ConfirmationPop):

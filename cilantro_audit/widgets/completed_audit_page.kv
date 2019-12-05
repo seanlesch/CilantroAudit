@@ -6,6 +6,7 @@
     stack_list: stack_list
     grid_list: grid_list
     scrolling_panel: scrolling_panel
+    bottom_bar: bottom_bar
 
     GridLayout:
         id: grid_list
@@ -33,10 +34,10 @@
                 size_hint_y: None
 
     GridLayout:
+        id: bottom_bar
         rows: 1
-        cols: 2
-        spacing: 30
-        size_hint_y: 0.1
+        cols: 3
+        size_hint_y: .1
 
         Button:
             text: "Back"
