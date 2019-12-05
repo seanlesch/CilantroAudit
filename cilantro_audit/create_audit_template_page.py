@@ -1,6 +1,5 @@
 from kivy.app import App
 from kivy.properties import ObjectProperty
-from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import Screen
 from kivy.uix.popup import Popup
 

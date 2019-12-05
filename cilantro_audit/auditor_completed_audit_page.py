@@ -4,15 +4,8 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import Screen
 from kivy.uix.label import Label
 
-from cilantro_audit import globals
-
-from cilantro_audit.constants import RGB_RED
-from cilantro_audit.constants import RGB_GREEN
-from cilantro_audit.constants import RGB_YELLOW
 from cilantro_audit.constants import PROD_DB
 
-from cilantro_audit.audit_template import AuditTemplate
-from cilantro_audit.completed_audit import CompletedAudit
 
 from mongoengine import connect
 
@@ -63,7 +56,7 @@ class AuditorCompletedAuditPage(Screen):
 
     # Integer (80) comes from question_answer size
     def add_question_answer_auditor_version(self, answer):
-        self.stack_list.height += 80
+        self.stack_list.height += 105
         qa = AuditorQuestionAnswer()
         qa.question_text = "[b]Question: [/b]" + answer.text
         qa.answer_response_text = "[b]Response: [/b]" + str(answer.response.response)
