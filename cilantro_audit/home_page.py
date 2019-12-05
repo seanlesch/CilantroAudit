@@ -76,7 +76,7 @@ class FirstTimeUsePopup(Popup):
             self.content.focus = True
 
     def update_title(self, password):
-        self.title = "Welcome to CilantroAudit!\n\nYour default password is:   " \
+        self.title = "Welcome to CilantroAudit!\n\nYour initial password is:   " \
                      + password \
                      + "\n\nPlease log in and change it."
 
