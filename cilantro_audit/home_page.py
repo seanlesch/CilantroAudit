@@ -1,17 +1,18 @@
-from cilantro_audit import globals
-
 from kivy.app import App
-from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
+from mongoengine import connect
 
-from cilantro_audit.constants import RGB_LIGHT_RED
+from cilantro_audit import globals
 from cilantro_audit.constants import RGB_LIGHT_GREEN
-from cilantro_audit.password_manager import password_is_valid
-
-from cilantro_audit.templates.cilantro_navigator import CilantroNavigator
+from cilantro_audit.constants import RGB_LIGHT_RED, PROD_DB
+from cilantro_audit.password_manager import password_is_valid, generate_default_password, PasswordHash
 from cilantro_audit.templates.cilantro_button import CilantroButton
 from cilantro_audit.templates.cilantro_label import CilantroLabel
+from cilantro_audit.templates.cilantro_navigator import CilantroNavigator
+
+connect(PROD_DB)
 
 
 class HomePage(Screen):
@@ -49,7 +50,13 @@ class HomePage(Screen):
 
 
 def login_admin(callback):
-    AdminLoginPopup().open()
+    if 0 == PasswordHash.objects.count():
+        default_password = generate_default_password()
+        p = FirstTimeUsePopup()
+        p.update_title(default_password)
+        p.open()
+    else:
+        AdminLoginPopup().open()
 
 
 def login_auditor(callback):
@@ -60,6 +67,18 @@ def login_auditor(callback):
 
 def exit_app(callback):
     exit(1)
+
+
+class FirstTimeUsePopup(Popup):
+    def on_open(self, *args):
+        super().on_open(*args)
+        if self:
+            self.content.focus = True
+
+    def update_title(self, password):
+        self.title = "Welcome to CilantroAudit!\n\nYour default password is:   " \
+                     + password \
+                     + "\n\nPlease log in and change it."
 
 
 class AdminLoginPopup(Popup):

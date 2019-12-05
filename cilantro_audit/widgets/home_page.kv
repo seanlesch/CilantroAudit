@@ -40,3 +40,17 @@
                 size_hint: None, None
                 on_release:
                     root.validate_password(root.content.children[1].text)
+
+<FirstTimeUsePopup>
+    id: first_time_use_popup
+    auto_dismiss: True
+    title: ""
+    size_hint: None, None
+    size: 400, 175
+
+    Button:
+        text: "OK"
+        font_size: 30
+        size: 187.5, 30
+        size_hint: None, None
+        on_release: root.dismiss()

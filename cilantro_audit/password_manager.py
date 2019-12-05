@@ -1,5 +1,6 @@
 import hashlib
-from _hashlib import HASH
+import random
+import string
 
 from mongoengine import connect, Document, StringField
 
@@ -25,3 +26,9 @@ def password_is_valid(password):
 def update_password(password):
     PasswordHash.objects.delete()
     PasswordHash(sha512_encode(password)).save()
+
+
+def generate_default_password():
+    password = ''.join(random.choices(string.digits, k=4))
+    PasswordHash(sha512_encode(password)).save()
+    return password
