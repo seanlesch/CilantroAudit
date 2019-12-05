@@ -18,6 +18,8 @@ from cilantro_audit.audit_template import AuditTemplate
 
 from mongoengine import connect
 
+from cilantro_audit.create_completed_audit_page import ConfirmationPop
+
 connect(PROD_DB)
 
 
@@ -26,6 +28,7 @@ class CompletedAuditPage(Screen):
     grid_list = ObjectProperty()
     question_text = ObjectProperty()
     scrolling_panel = ObjectProperty()
+    previous_page = ""
 
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -44,7 +47,7 @@ class CompletedAuditPage(Screen):
         self.grid_list.add_widget(lbl)
 
     # Needs to be updated when you click out of one audit and load up another
-    def add_datetime(self, dt):
+    def add_date_time(self, dt):
         lbl = Label(text='[b]Date: [/b]' + dt, markup=True, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
@@ -52,8 +55,8 @@ class CompletedAuditPage(Screen):
         lbl = Label(text=text, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
-    def add_question_answer(self, answer):
-        self.stack_list.height += 80  # integer (80) comes from question_answer size
+    def add_question_answer(self, answer, title, datetime, auditor):
+        self.stack_list.height += 85  # integer (85) comes from question_answer size
         qa = QuestionAnswer()
         qa.question_text = "[b]Question: [/b]" + answer.text
         qa.answer_response_text = "[b]Response: [/b]" + str(answer.response.response)
@@ -61,6 +64,11 @@ class CompletedAuditPage(Screen):
         qa.answer_severity_text = "[b]Severity: [/b]" + str(answer.severity.severity[2:])
         if qa.answer_severity_text == "[b]Severity: [/b]RED":
             qa.answer_severity_text = "[b]Severity: [/b][color=" + get_hex_from_color(RGB_RED) + "]RED[/color]"
+            if not answer.resolved:
+                qa.resolve_button.visible = True
+                qa.resolve_button.datetime = datetime
+                qa.resolve_button.title = title
+                qa.resolve_button.auditor = auditor
         elif qa.answer_severity_text == "[b]Severity: [/b]YELLOW":
             qa.answer_severity_text = "[b]Severity: [/b][color=" + get_hex_from_color(RGB_YELLOW) + "]YELLOW[/color]"
         elif qa.answer_severity_text == "[b]Severity: [/b]GREEN":
@@ -72,6 +80,11 @@ class CompletedAuditPage(Screen):
         self.stack_list.clear_widgets()
         self.stack_list.height = 0  # resets the height of the scrolling view. otherwise it grows with each new audit
         self.reset_scroll_to_top()
+
+
+class ResolvePop(ConfirmationPop):
+    yes = ObjectProperty(None)
+    no = ObjectProperty(None)
 
 
 class QuestionAnswer(FloatLayout):
@@ -86,6 +99,34 @@ class QuestionAnswer(FloatLayout):
 
     answer_severity_label = ObjectProperty()
     answer_severity_text = StringProperty()
+
+    resolve_button = ObjectProperty(None)
+
+    # Handles popup to confirm the resolving of a flagged question.
+    def resolve_response(self):
+        show = ResolvePop()
+        show.yes.bind(on_release=lambda _: show.dismiss())
+        show.yes.bind(on_release=lambda _: self.resolve_submit())
+        show.no.bind(on_release=lambda _: show.dismiss())
+        show.open()
+
+    # Marks a question response as resolved in the database. NOTE: Currently if there are repeated questions in the
+    # audit the behavior of which question will be resolved is undefined.
+    def resolve_submit(self):
+        audit_to_resolve = CompletedAudit.objects() \
+            .filter(title=self.resolve_button.title,
+                    auditor=self.resolve_button.auditor,
+                    datetime=self.resolve_button.datetime) \
+            .get(title=self.resolve_button.title,
+                 auditor=self.resolve_button.auditor,
+                 datetime=self.resolve_button.datetime)
+        # Remove string label, which has 17 chars as defined in CompletedAuditPage.add_question_answer
+        audit_answer_to_resolve = audit_to_resolve.answers.filter(text=self.question_text[17:]) \
+            .get(text=self.question_text[17:])
+        audit_answer_to_resolve.resolved = True
+        audit_to_resolve.unresolved_count -= 1
+        audit_to_resolve.save()
+        self.remove_widget(self.resolve_button)
 
 
 class TestApp(App):

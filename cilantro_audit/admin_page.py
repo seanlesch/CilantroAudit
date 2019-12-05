@@ -1,8 +1,9 @@
-from cilantro_audit import globals
-
 from kivy.app import App
-from kivy.uix.popup import Popup
+from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
+from kivy.uix.popup import Popup
+
+from cilantro_audit import globals
 
 from cilantro_audit.constants import RGB_RED
 
@@ -67,8 +68,10 @@ def view_flag_trends(callback):
 
 
 def clear_all_audit_locks(callback):
-    AuditTemplate.objects().update(upsert=False, multi=True, locked=False)
-    TemplatesUnlockedPop().open()
+    confirmation = TemplatesUnlockedPop()
+    confirmation.yes.bind(on_release=lambda _: AuditTemplate.objects().update(upsert=False, multi=True, locked=False))
+    confirmation.yes.bind(on_release=lambda _: confirmation.dismiss())
+    confirmation.open()
 
 
 def view_audit_templates_admin(callback):
@@ -83,6 +86,7 @@ def logout(callback):
 
 
 class TemplatesUnlockedPop(Popup):
+    yes = ObjectProperty(None)
     pass
 
 

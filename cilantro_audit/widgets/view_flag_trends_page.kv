@@ -1,4 +1,3 @@
-#:import VIEW_FLAG_TRENDS_PAGE cilantro_audit.constants.VIEW_FLAG_TRENDS_PAGE
 
 <ViewFlagTrendsPage>:
 
@@ -7,11 +6,10 @@
     audit_title_col: audit_title_col
     question_text_col: question_text_col
     times_flagged_col: times_flagged_col
-    page_count_label: page_count_label
 
     GridLayout:
         name: 'body-grid'
-        rows: 4
+        rows: 3
         cols: 3
 
         # 1st Row
@@ -33,99 +31,61 @@
             size_hint: 0.1, 1
 
         GridLayout:
-            cols: 2
-            spacing: 10
+            rows: 2
+            cols: 1
 
             GridLayout:
                 rows: 2
                 cols: 1
-                spacing: 5
+                size_hint_x: 1.8
 
                 GridLayout:
-                    rows: 2
-                    cols: 1
-                    spacing: 5
-                    size_hint_x: 1.8
+                    rows: 1
+                    cols: 3
+                    size_hint_y: 0.1
 
+                    CilantroButton:
+                        text: 'Question'
+                        on_release:
+                            root.sort_by_audit_template()
+
+                    CilantroButton:
+                        text: 'Audit Title'
+                        on_release:
+                            root.sort_by_question()
+
+                    CilantroButton:
+                        text: 'Number of Findings'
+                        on_release:
+                            root.sort_by_times_flagged()
+
+                ScrollView:
                     GridLayout:
                         rows: 1
                         cols: 3
-                        spacing: 5
-                        size_hint_y: 0.1
+                        size_hint_y: None
+                        height: self.minimum_height
 
-                        CilantroButton:
-                            text: 'Audit Title'
-                            on_release:
-                                root.sort_by_audit_template()
-
-                        CilantroButton:
-                            text: 'Question'
-                            on_release:
-                                root.sort_by_question()
-
-                        CilantroButton:
-                            text: 'Number of Findings'
-                            on_release:
-                                root.sort_by_times_flagged()
-
-                    ScrollView:
-                        GridLayout:
-                            rows: 1
-                            cols: 3
-                            spacing: 5
+                        StackLayout:
+                            id: question_text_col
                             size_hint_y: None
                             height: self.minimum_height
 
-                            StackLayout:
-                                id: audit_title_col
-                                size_hint_y: None
-                                height: self.minimum_height
+                        StackLayout:
+                            id: audit_title_col
+                            size_hint_y: None
+                            height: self.minimum_height
 
-                            StackLayout:
-                                id: question_text_col
-                                size_hint_y: None
-                                height: self.minimum_height
-
-                            StackLayout:
-                                id: times_flagged_col
-                                size_hint_y: None
-                                height: self.minimum_height
-
-            GridLayout:
-                rows: 3
-                size_hint_x: 0.1
-                Button:
-                    id: next_page
-                    text: 'Next Page'
-                    on_press: root.next_page()
-                Label:
-                    id: page_count_label
-                    text: "Page 1"
-                Button:
-                    id: previous_page
-                    text: 'Prev Page'
-                    on_press: root.prev_page()
+                        StackLayout:
+                            id: times_flagged_col
+                            size_hint_y: None
+                            height: self.minimum_height
 
         Widget:
             name: 'place-holder'
             size_hint: 0.1, 1
 
         # 3rd Row
-        Widget:
-            name: 'place-holder'
-            size_hint: 0.1, 0.1
-
-        CilantroButton:
-            text: 'Refresh List'
-            size_hint: 1, 0.1
-            on_release:
-                root.refresh_flagged_questions()
-
-        Widget:
-            name: 'place-holder'
-            size_hint: 0.1, 0.1
-
-        # 4th Row
         Widget:
             name: 'place-holder'
             size_hint: 0.1, 0.1
@@ -140,12 +100,62 @@
 
 <EntryLabel>:
     size_hint_y: None
-    text_size: self.width-20, None
-    halign: 'center'
 
-    canvas.before:
-        Color:
-            rgb: 0, 0, 0, 1
-        Rectangle:
-            pos: self.pos
-            size: 1000, 3
+
+<QuestionButton>:
+    size_hint_y: None
+
+
+<AuditListPop>:
+    name_col: name_col
+    date_col: date_col
+    unresolved_col: unresolved_col
+    size_hint: .8, .8
+
+    GridLayout:
+        id: list_layout
+        rows: 2
+
+        GridLayout:
+            id: headers
+            cols: 3
+            size_hint_y: 0.15
+
+            CilantroLabel:
+                id: date_header
+                text: "Audit Date"
+
+            CilantroLabel:
+                id: name_header
+                text: "Auditor Name"
+
+            CilantroLabel:
+                id: unresolved_header
+                text: "Unresolved Answers"
+
+        ScrollView:
+            id: scrollable_list
+
+            GridLayout:
+                id: audit_list
+                cols: 3
+                size_hint_y: None
+                height: self.minimum_height
+
+                GridLayout:
+                    id: date_col
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                GridLayout:
+                    id: name_col
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                GridLayout:
+                    id: unresolved_col
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
