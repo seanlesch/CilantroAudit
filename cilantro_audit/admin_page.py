@@ -43,7 +43,7 @@ class AdminPage(Screen):
                                                               size_hint_y=None,
                                                               height=70,
                                                               on_release=clear_all_audit_locks))
-        template_page.body_nav_btns.add_widget(CilantroButton(text='View Audit Forms',
+        template_page.body_nav_btns.add_widget(CilantroButton(text='Delete Audit Forms',
                                                               size_hint_y=None,
                                                               height=70,
                                                               on_release=view_audit_templates_admin))

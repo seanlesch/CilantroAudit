@@ -26,7 +26,7 @@ class ViewAuditTemplatesAdmin(Screen):
     def populate_page(self):
         self.clear_widgets()
         template_page = CilantroPage()
-        template_page.header_title.text = 'All Audits (Click to delete)'
+        template_page.header_title.text = 'Delete Audit Forms (Click to delete)'
 
         template_page.body.add_widget(ViewAuditTemplatesContent())
 
