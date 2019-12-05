@@ -194,7 +194,7 @@ class CompletedAuditsListPage(Screen):
         self.populate_audits()
 
     def sort_by_severity(self):
-        sort_reverse = False
+        sort_reverse = True
 
         # Get the audit's current page columns
         audit_titles = list(map(lambda x: x.title, self.audits))
