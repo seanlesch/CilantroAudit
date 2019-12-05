@@ -18,6 +18,9 @@ from cilantro_audit.constants import AUDITS_PER_PAGE
 from cilantro_audit.constants import COMPLETED_AUDIT_PAGE
 from cilantro_audit.constants import COMPLETED_AUDITS_LIST_PAGE
 
+from cilantro_audit.templates.cilantro_button import CilantroButton
+
+
 from cilantro_audit.audit_template import AuditTemplate
 from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.audit_template import Severity
@@ -176,7 +179,7 @@ class CompletedAuditsListPage(Screen):
 
         counter = 0
         for title in audit_titles:
-            btn = Button(text=title, size_hint_y=None, height=40)
+            btn = CilantroButton(text=title, size_hint_y=None, height=40, font_size=15)
             btn.id = str(audit_dates[counter])
             btn.bind(on_press=self.callback)
             self.title_col.add_widget(btn)
