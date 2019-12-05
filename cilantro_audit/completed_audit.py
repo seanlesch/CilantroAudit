@@ -97,5 +97,5 @@ class CompletedAudit(Document):
         super().validate(clean)
         unresolved_count = sum(not answer.resolved for answer in self.answers)
         if self.unresolved_count is not unresolved_count:
-            raise ValidationError("Resolved answer count " + str(unresolved_count) + " does not match expected count" +
+            raise ValidationError("Resolved answer count " + str(unresolved_count) + " does not match expected count " +
                                   str(self.unresolved_count) + " .")

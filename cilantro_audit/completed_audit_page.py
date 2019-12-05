@@ -1,3 +1,4 @@
+from cilantro_audit.auditor_completed_audits_list_page import format_datetime, utc_to_local
 from cilantro_audit.excel_file import ExcelFile
 from kivy.lang import Builder
 from kivy.uix.popup import Popup
@@ -57,10 +58,12 @@ class CompletedAuditPage(Screen):
     grid_list = ObjectProperty()
     question_text = ObjectProperty()
     scrolling_panel = ObjectProperty()
-    bottom_bar=ObjectProperty()
+    bottom_bar = ObjectProperty()
+    resolve_all_button = ObjectProperty()
     header_title = ObjectProperty()
     header_auditor = ObjectProperty()
     header_dt = ObjectProperty()
+    audit_dt = ObjectProperty()
     main_popup = ObjectProperty()
     overwrite_popup = ObjectProperty()
     file_saved_popup = ObjectProperty()
@@ -90,11 +93,12 @@ class CompletedAuditPage(Screen):
         lbl = Label(text='[b]Auditor: [/b]' + auditor, markup=True, size_hint_y=None, height=40, font_size=20,
                     halign="left")
         self.header_auditor = Label(text=auditor)
-
         self.grid_list.add_widget(lbl)
 
     # Needs to be updated when you click out of one audit and load up another
     def add_datetime(self, dt):
+        self.audit_dt = dt
+        dt = format_datetime(utc_to_local(dt))
         lbl = Label(text='[b]Date: [/b]' + dt, markup=True, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
         self.header_dt = Label(text=dt)
@@ -202,14 +206,18 @@ class CompletedAuditPage(Screen):
         audit_to_resolve = CompletedAudit.objects() \
             .filter(title=self.header_title.text,
                     auditor=self.header_auditor.text,
-                    datetime=self.header_dt.text) \
-            .get(title=self.header_title.text,
-                 auditor=self.header_auditor.text,
-                 datetime=self.header_dt.text)
-            # is the issue with datetime here?
-        for answer in audit_to_resolve:
+                    datetime=self.audit_dt) \
+            .first()
+        # Resolve in Database
+        for answer in audit_to_resolve.answers:
             if answer.resolved is False:
-                answer.resolve_submit()
+                answer.resolved = True
+        audit_to_resolve.unresolved_count = 0
+        audit_to_resolve.save()
+        # Remove all resolve buttons
+        for qa in self.stack_list.children:
+            qa.remove_widget(qa.resolve_button)
+        self.bottom_bar.remove_widget(self.resolve_all_button)
 
     def resolve_audit_pop(self):
         show = ResolvePop()
@@ -217,13 +225,12 @@ class CompletedAuditPage(Screen):
         show.yes.bind(on_release=lambda _: show.dismiss())
         show.yes.bind(on_release=lambda _: self.resolve_audit())
         show.no.bind(on_release=lambda _: show.dismiss())
-
         show.open()
 
     def add_resolve_audit_button(self):
-        btn = Button(text="Resolve All Findings")
-        btn.bind(on_release=lambda _: self.resolve_audit_pop())
-        self.bottom_bar.add_widget(btn)
+        self.resolve_all_button = Button(text="Resolve All Findings")
+        self.resolve_all_button.bind(on_release=lambda _: self.resolve_audit_pop())
+        self.bottom_bar.add_widget(self.resolve_all_button)
 
 
 class ResolvePop(ConfirmationPop):
