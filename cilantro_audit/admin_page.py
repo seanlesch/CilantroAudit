@@ -34,7 +34,7 @@ class AdminPage(Screen):
                                                               size_hint_y=None,
                                                               height=70,
                                                               on_release=view_submitted_audits_page))
-        template_page.body_nav_btns.add_widget(CilantroButton(text='View Flag Trends',
+        template_page.body_nav_btns.add_widget(CilantroButton(text='Repeated Findings Trends',
                                                               size_hint_y=None,
                                                               height=70,
                                                               on_release=view_flag_trends))
