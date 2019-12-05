@@ -6,6 +6,7 @@ from kivy.uix.popup import Popup
 from cilantro_audit import globals
 
 from cilantro_audit.constants import RGB_RED
+from cilantro_audit.password_manager import update_password, password_is_valid
 
 from cilantro_audit.templates.cilantro_navigator import CilantroNavigator
 from cilantro_audit.templates.cilantro_button import CilantroButton
@@ -43,6 +44,10 @@ class AdminPage(Screen):
                                                               size_hint_y=None,
                                                               height=70,
                                                               on_release=clear_all_audit_locks))
+        template_page.body_nav_btns.add_widget(CilantroButton(text='Reset Password',
+                                                              size_hint_y=None,
+                                                              height=70,
+                                                              on_release=open_reset_password_popup))
 
         template_page.footer_logout.text = 'LOGOUT'
         template_page.footer_logout.bind(on_release=logout)
@@ -74,6 +79,63 @@ def logout(callback):
     globals.screen_manager.current = globals.HOME_SCREEN
     globals.screen_manager.transition.duration = 0.3
     globals.screen_manager.transition.direction = 'up'
+
+
+def open_reset_password_popup(callback):
+    InputCurrentPasswordPopup().open()
+
+
+class PasswordResetSuccessPopup(Popup):
+    def on_open(self, *args):
+        super().on_open(*args)
+        if self:
+            self.content.focus = True
+
+
+class PasswordMismatchPopup(Popup):
+    def on_open(self, *args):
+        super().on_open(*args)
+        if self:
+            self.content.focus = True
+
+
+class InvalidPasswordPopup(Popup):
+    def on_open(self, *args):
+        super().on_open(*args)
+        if self:
+            self.content.focus = True
+
+
+class InputCurrentPasswordPopup(Popup):
+    def on_open(self, *args):
+        super().on_open(*args)
+        if self:
+            self.content.children[1].focus = True
+
+    def try_create_password(self, current_password):
+        if password_is_valid(current_password):
+            self.dismiss()
+            InputNewPasswordPopup().open()
+        else:
+            InvalidPasswordPopup().open()
+
+
+class InputNewPasswordPopup(Popup):
+    def on_open(self, *args):
+        super().on_open(*args)
+        if self:
+            self.content.children[3].focus = True
+
+    def passwords_match(self, pw1, pw2):
+        return pw1 == pw2
+
+    def try_update_password(self, pw1, pw2):
+        if pw1 != "" and pw1 == pw2:
+            update_password(pw1)
+            self.dismiss()
+            PasswordResetSuccessPopup().open()
+        else:
+            PasswordMismatchPopup().open()
 
 
 class TemplatesUnlockedPop(Popup):
