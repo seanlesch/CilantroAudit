@@ -1,5 +1,3 @@
-from time import mktime
-from datetime import datetime
 from operator import itemgetter
 from difflib import get_close_matches
 
@@ -223,7 +221,6 @@ def get_severity_color(severity):
         return RGB_GREEN
 
 
-# Class defining the search popup
 class SearchPop(Popup):
     search_text = ObjectProperty(None)
     popup_search_button = ObjectProperty(None)
