@@ -47,7 +47,7 @@ class CompletedAuditPage(Screen):
         self.grid_list.add_widget(lbl)
 
     # Needs to be updated when you click out of one audit and load up another
-    def add_date_time(self, dt):
+    def add_datetime(self, dt):
         lbl = Label(text='[b]Date: [/b]' + dt, markup=True, size_hint_y=None, height=40, halign="left")
         self.grid_list.add_widget(lbl)
 
