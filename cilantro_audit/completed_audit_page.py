@@ -1,4 +1,4 @@
-import kivy
+from kivy.app import App
 from cilantro_audit.excel_file import ExcelFile
 from kivy.lang import Builder
 from kivy.uix.popup import Popup
@@ -8,6 +8,8 @@ from kivy.utils import get_hex_from_color
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from kivy.uix.floatlayout import FloatLayout
+
+from cilantro_audit import globals
 
 from cilantro_audit.constants import PROD_DB
 from cilantro_audit.constants import RGB_RED
@@ -21,6 +23,8 @@ import os
 
 kvfile = Builder.load_file("./widgets/completed_audit_page.kv")
 from mongoengine import connect
+
+from cilantro_audit.create_completed_audit_page import ConfirmationPop
 
 connect(PROD_DB)
 
@@ -39,6 +43,37 @@ class QuestionAnswer(FloatLayout):
     answer_severity_label = ObjectProperty()
     answer_severity_text = StringProperty()
 
+    resolve_button = ObjectProperty(None)
+
+    # Handles popup to confirm the resolving of a flagged question.
+    def resolve_response(self):
+        show = ResolvePop()
+        show.yes.bind(on_release=lambda _: show.dismiss())
+        show.yes.bind(on_release=lambda _: self.resolve_submit())
+        show.no.bind(on_release=lambda _: show.dismiss())
+        show.open()
+
+    # Marks a question response as resolved in the database. NOTE: Currently if there are repeated questions in the
+    # audit the behavior of which question will be resolved is undefined.
+    def resolve_submit(self):
+        audit_to_resolve = CompletedAudit.objects() \
+            .filter(title=self.resolve_button.title,
+                    auditor=self.resolve_button.auditor,
+                    datetime=self.resolve_button.datetime) \
+            .get(title=self.resolve_button.title,
+                 auditor=self.resolve_button.auditor,
+                 datetime=self.resolve_button.datetime)
+        # Remove string label, which has 17 chars as defined in CompletedAuditPage.add_question_answer
+        audit_answer_to_resolve = audit_to_resolve.answers.filter(text=self.question_text[17:]) \
+            .get(text=self.question_text[17:])
+        audit_answer_to_resolve.resolved = True
+        audit_to_resolve.unresolved_count -= 1
+        audit_to_resolve.save()
+        self.remove_widget(self.resolve_button)
+
+class ResolvePop(ConfirmationPop):
+    yes = ObjectProperty(None)
+    no = ObjectProperty(None)
 
 # Class for the save dialog popup.
 class SaveDialog(FloatLayout):
@@ -77,6 +112,7 @@ class CompletedAuditPage(Screen):
     file_saved_popup = ObjectProperty()
     error_popup = ObjectProperty()
     other_popup = ObjectProperty()
+    previous_page = ""
 
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -126,9 +162,8 @@ class CompletedAuditPage(Screen):
         lbl = Label(text=text, size_hint_y=None, height=40, font_size=20, halign="left")
         self.grid_list.add_widget(lbl)
 
-    # Adds one question/answer block to a completed audit page.
-    def add_question_answer(self, answer):
-        self.stack_list.height += 125  # integer (80) comes from question_answer size
+    def add_question_answer(self, answer, title, datetime, auditor):
+        self.stack_list.height += 125  # integer (85) comes from question_answer size
         qa = QuestionAnswer()
         qa.question_text = "[b]Question: [/b]" + answer.text
         qa.answer_response_text = "[b]Response: [/b]" + str(answer.response.response)
@@ -136,6 +171,11 @@ class CompletedAuditPage(Screen):
         qa.answer_severity_text = "[b]Severity: [/b]" + str(answer.severity.severity[2:])
         if qa.answer_severity_text == "[b]Severity: [/b]RED":
             qa.answer_severity_text = "[b]Severity: [/b][color=" + get_hex_from_color(RGB_RED) + "]RED[/color]"
+            if not answer.resolved:
+                qa.resolve_button.visible = True
+                qa.resolve_button.datetime = datetime
+                qa.resolve_button.title = title
+                qa.resolve_button.auditor = auditor
         elif qa.answer_severity_text == "[b]Severity: [/b]YELLOW":
             qa.answer_severity_text = "[b]Severity: [/b][color=" + get_hex_from_color(RGB_YELLOW) + "]YELLOW[/color]"
         elif qa.answer_severity_text == "[b]Severity: [/b]GREEN":

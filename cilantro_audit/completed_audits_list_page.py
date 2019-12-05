@@ -1,3 +1,4 @@
+import difflib
 from time import mktime
 from datetime import datetime
 
@@ -15,6 +16,7 @@ from cilantro_audit.constants import RGB_GREEN
 from cilantro_audit.constants import RGB_YELLOW
 from cilantro_audit.constants import AUDITS_PER_PAGE
 from cilantro_audit.constants import COMPLETED_AUDIT_PAGE
+from cilantro_audit.constants import COMPLETED_AUDITS_LIST_PAGE
 
 from cilantro_audit.audit_template import AuditTemplate
 from cilantro_audit.completed_audit import CompletedAudit
@@ -203,8 +205,8 @@ class CompletedAuditsListPage(Screen):
     def grab_audits_with_title(self, title):
         audits_with_title = []
 
-        for audit in self.audits:
-            if audit.title == title:
+        for audit in list(CompletedAudit.objects()):
+            if difflib.get_close_matches(title.lower(), [audit.title.lower()]):
                 audits_with_title.append(audit)
 
         return audits_with_title
@@ -268,10 +270,10 @@ class CompletedAuditsListPage(Screen):
         show.open()
 
     def build_header_row(self, title, auditor, dt):
-        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_title(title)
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_blank_label("")
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_title(title)
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_auditor(auditor)
-        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_date_time(format_datetime(utc_to_local(dt)))
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).add_datetime(format_datetime(utc_to_local(dt)))
 
     def load_audit_template_and_completed_audit_with_title_and_datetime(self, dt):
         ca = list(CompletedAudit.objects(datetime=dt))
@@ -289,7 +291,7 @@ class CompletedAuditsListPage(Screen):
 
         for answer in completed_audit.answers:
             self.manager.get_screen(COMPLETED_AUDIT_PAGE) \
-                .add_question_answer(answer)
+                .add_question_answer(answer, completed_audit.title, completed_audit.datetime, completed_audit.auditor)
 
     def populate_completed_audit_page(self, title):
         ca = self.load_audit_template_and_completed_audit_with_title_and_datetime(title)
@@ -300,6 +302,7 @@ class CompletedAuditsListPage(Screen):
         self.manager.current = COMPLETED_AUDIT_PAGE
 
     def callback(self, instance):
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).previous_page = COMPLETED_AUDITS_LIST_PAGE
         self.populate_completed_audit_page(instance.id)
 
 
