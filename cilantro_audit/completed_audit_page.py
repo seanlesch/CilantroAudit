@@ -1,4 +1,3 @@
-from kivy.app import App
 from cilantro_audit.excel_file import ExcelFile
 from kivy.lang import Builder
 from kivy.uix.popup import Popup
@@ -8,8 +7,6 @@ from kivy.utils import get_hex_from_color
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from kivy.uix.floatlayout import FloatLayout
-
-from cilantro_audit import globals
 
 from cilantro_audit.constants import PROD_DB
 from cilantro_audit.constants import RGB_RED
