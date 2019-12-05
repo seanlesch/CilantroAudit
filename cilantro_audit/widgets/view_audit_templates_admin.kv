@@ -1,0 +1,85 @@
+#:import CILANTRO_BLACK_THEME cilantro_audit.constants.CILANTRO_BLACK_THEME
+
+<ViewAuditTemplates>:
+
+
+<ViewAuditTemplatesContent>:
+    templates_list: templates_list
+
+    GridLayout:
+        rows: 4
+        cols: 3
+
+        # 1st Row
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
+
+        Widget:
+            name: 'place-holder'
+            size_hint: 1, 0.1
+
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
+
+        # 2nd Row
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 1
+
+        GridLayout:
+            rows: 2
+            cols: 1
+
+            GridLayout:
+                rows: 2
+                cols: 1
+
+                ScrollView:
+                    StackLayout:
+                        id: templates_list
+                        height: self.minimum_height
+                        size_hint: 1, None
+                        spacing: 2
+
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 1
+
+        # 3rd Row
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
+
+        CilantroButton:
+            text: 'Refresh List'
+            size_hint: 1, 0.1
+            on_release:
+                root.populate_content()
+
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
+
+        # 4th Row
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
+
+        Widget:
+            name: 'place-holder'
+            size_hint: 1, 0.1
+
+        Widget:
+            name: 'place-holder'
+            size_hint: 0.1, 0.1
+
+
+<ActiveAuditButton@CilantroButton>:
+    name: 'active_button_template'
+    size_hint_y: None
+    height: 70
+
+    on_release:
+        self.text
