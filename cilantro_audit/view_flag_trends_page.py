@@ -164,6 +164,10 @@ class EntryLabel(CilantroLabel):
 class QuestionButton(CilantroButton):
     audit_title = StringProperty()
 
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.font_size = 20
+
 
 # A popup listing all of the completed audits containing an answer
 class AuditListPop(Popup):
