@@ -1,6 +1,7 @@
 from kivy.app import App
 from kivy.properties import ObjectProperty
 from kivy.properties import StringProperty
+from kivy.uix.button import Button
 from kivy.utils import get_hex_from_color
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
@@ -15,6 +16,7 @@ from cilantro_audit.constants import RGB_YELLOW
 
 from cilantro_audit.completed_audit import CompletedAudit
 from cilantro_audit.audit_template import AuditTemplate
+from cilantro_audit.create_audit_template_page import ConfirmationPop
 
 from mongoengine import connect
 
@@ -72,6 +74,19 @@ class CompletedAuditPage(Screen):
         self.stack_list.clear_widgets()
         self.stack_list.height = 0  # resets the height of the scrolling view. otherwise it grows with each new audit
         self.reset_scroll_to_top()
+
+    def resolve_pop(self):
+        show = ConfirmationPop()
+
+        show.yes.bind(on_release=lambda _: show.dismiss())
+        show.no.bind(on_release=lambda _: show.dismiss())
+
+        show.open()
+
+    def add_resolve_button(self):
+        btn = Button(text="Resolve Audit", size_hint=(.15, .1), pos_hint={'right': 1})
+        btn.bind(on_release=lambda _: self.resolve_pop())
+        self.add_widget(btn)
 
 
 class QuestionAnswer(FloatLayout):
