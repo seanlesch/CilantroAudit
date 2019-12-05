@@ -121,7 +121,7 @@ class InputNewPasswordPopup(Popup):
     def on_open(self, *args):
         super().on_open(*args)
         if self:
-            self.content.children[0].focus = True
+            self.content.children[3].focus = True
 
     def passwords_match(self, pw1, pw2):
         return pw1 == pw2
