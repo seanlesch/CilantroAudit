@@ -14,7 +14,6 @@ from cilantro_audit.templates.cilantro_label import CilantroLabel
 from cilantro_audit.audit_template import AuditTemplate
 
 
-
 class AdminPage(Screen):
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -82,11 +81,13 @@ def logout(callback):
 def open_reset_password_popup(callback):
     InputCurrentPasswordPopup().open()
 
+
 class PasswordResetSuccessPopup(Popup):
     def on_open(self, *args):
         super().on_open(*args)
         if self:
             self.content.focus = True
+
 
 class PasswordMismatchPopup(Popup):
     def on_open(self, *args):
@@ -94,11 +95,13 @@ class PasswordMismatchPopup(Popup):
         if self:
             self.content.focus = True
 
+
 class InvalidPasswordPopup(Popup):
     def on_open(self, *args):
         super().on_open(*args)
         if self:
             self.content.focus = True
+
 
 class InputCurrentPasswordPopup(Popup):
     def on_open(self, *args):
@@ -118,7 +121,7 @@ class InputNewPasswordPopup(Popup):
     def on_open(self, *args):
         super().on_open(*args)
         if self:
-            self.content.children[1].focus = True
+            self.content.children[0].focus = True
 
     def passwords_match(self, pw1, pw2):
         return pw1 == pw2
@@ -130,7 +133,6 @@ class InputNewPasswordPopup(Popup):
             PasswordResetSuccessPopup().open()
         else:
             PasswordMismatchPopup().open()
-
 
 
 class TemplatesUnlockedPop(Popup):
