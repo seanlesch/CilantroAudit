@@ -109,7 +109,7 @@ class AuditorCompletedAuditsListPage(Screen):
 
         counter = 0
         for title in audit_titles:
-            btn = Button(text=title, size_hint_y=None, height=40)
+            btn = CilantroButton(text=title, size_hint_y=None, height=40, font_size=15)
             btn.id = str(audit_dates[counter])
             btn.bind(on_press=self.callback)
             self.title_col.add_widget(btn)
