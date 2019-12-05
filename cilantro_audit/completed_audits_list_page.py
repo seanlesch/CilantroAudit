@@ -286,6 +286,8 @@ class CompletedAuditsListPage(Screen):
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).stack_list.clear_widgets()
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).stack_list.height = 0
         self.manager.get_screen(COMPLETED_AUDIT_PAGE).reset_scroll_to_top()
+        self.manager.get_screen(COMPLETED_AUDIT_PAGE).ca = completed_audit
+
 
         for answer in completed_audit.answers:
             self.manager.get_screen(COMPLETED_AUDIT_PAGE) \

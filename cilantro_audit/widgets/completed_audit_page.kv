@@ -1,3 +1,4 @@
+#:import os os
 
 <CompletedAuditPage>:
 
@@ -5,6 +6,7 @@
     stack_list: stack_list
     grid_list: grid_list
     scrolling_panel: scrolling_panel
+    bottom_bar: bottom_bar
 
     GridLayout:
         id: grid_list
@@ -31,14 +33,21 @@
                 spacing: 80
                 size_hint_y: None
 
-    Button:
-        text: "Back"
-        size_hint: .15, .1
-        on_release:
-            root.clear_page()
-            root.manager.transition = SlideTransition(direction='right')
-            root.manager.current = root.previous_page
-            root.manager.transition.duration = 0.3
+    GridLayout:
+        id: bottom_bar
+        rows: 1
+        cols: 3
+        size_hint_y: .1
+
+        Button:
+            text: "Back"
+            on_release:
+                root.clear_page()
+                root.manager.current = 'CompletedAuditsListPage'
+
+        Button:
+            text: "Export to Excel"
+            on_release: root.show_save()
 
 <QuestionAnswer>:
     question_label: question_label
@@ -48,12 +57,13 @@
     resolve_button: resolve_button
 
     size_hint: 1, None
-    height: 80
+    height: 120
 
     Label:
         id: question_label
         markup: True
         text: root.question_text
+        font_size: 20
         color: 1, 1, 1, 1
         size_hint: None, None
         pos_hint: {"top": 1, "center_x": 0.6}
@@ -63,6 +73,7 @@
         id: answer_response_label
         markup: True
         text: root.answer_response_text
+        font_size: 20
         color: 1, 1, 1, 1
         size_hint: None, None
         pos_hint: {"top": .8, "center_x": 0.6}
@@ -72,6 +83,7 @@
         id: answer_comments_label
         markup: True
         text: root.answer_comments_text
+        font_size: 20
         color: 1, 1, 1, 1
         size_hint: None, None
         pos_hint: {"top": .6, "center_x": 0.6}
@@ -81,6 +93,7 @@
         id: answer_severity_label
         markup: True
         text: root.answer_severity_text
+        font_size: 20
         color: 1,1,1,1
         size_hint: None, None
         pos_hint: {"top": .4, "center_x": 0.6}
@@ -96,3 +109,101 @@
         text: 'Mark as resolved'
         pos_hint: {"top": 0.5, "center_x": 0.9}
         on_release: root.resolve_response()
+
+<SaveDialog>
+    text_input: text_input
+
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+
+        FileChooserListView:
+            id: filechooser
+            path: "C:\\Users\\" + os.getlogin() + "\\Desktop"
+            on_selection: text_input.text = self.selection and self.selection[0] or ''
+            dirselect: True
+            show_hidden: True
+
+        TextInput:
+            id: text_input
+            text: "C:\\Users\\" + os.getlogin() + "\\Desktop\\example.xlsx"
+            size_hint_y: None
+            height: 30
+            multiline: False
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Save"
+                on_release: root.save(filechooser.path, text_input.text)
+
+<OverwritePopup>
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+
+        Label:
+            text_size: root.width, None
+            text: "Another file was found with the same name. Would you like to overwrite it?"
+            halign: 'center'
+            font_size: 17
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "No"
+                on_release: root.no()
+
+            Button:
+                text: "Yes"
+                on_release: root.yes()
+
+<FileSavedPopup>
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+
+        Label:
+            text_size: root.width, None
+            text: "File successfully exported."
+            halign: 'center'
+            font_size: 17
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+
+            Button:
+                text: "Ok"
+                on_release: root.ok()
+
+<ErrorPopup>
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+
+        Label:
+            text_size: root.width, None
+            markup: True
+            text: "[color=#fc0303][b]Error:[/b][/color] Please enter a file not a directory."
+            halign: 'center'
+            font_size: 17
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+
+            Button:
+                text: "Ok"
+                on_release: root.ok()
+
