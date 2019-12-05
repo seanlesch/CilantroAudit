@@ -20,7 +20,7 @@
     Label:
         id: question_label
         text: root.question_text
-        font_size: root.width/50
+        font_size: root.width/60
         color: 1, 1, 1, 1
         size_hint: None, None
         pos_hint: {"top": 1.5, "center_x": 0.5}
@@ -57,12 +57,12 @@
         on_press: root.other_box_press()
 
     # Comments label
-    Label:
-        text: "Comments"
-        font_size: root.width/60
-        size_hint: None, None
-        pos_hint: {"top": 1.5, "center_x": 0.7}
-        font_size: root.width/40
+    #Label:
+        #text: "Comments"
+        #font_size: root.width/60
+        #size_hint: None, None
+        #pos_hint: {"top": 1.5, "center_x": 0.7}
+        #font_size: root.width/40
 
     # Comments input
     TextInput:
@@ -94,4 +94,4 @@
         font_size: root.width/25
         text: "!"
         size_hint: None, None
-        pos_hint: {"top": 1.5, "center_x": 0.62}
+        pos_hint: {"top": 1, "center_x": 0.70}

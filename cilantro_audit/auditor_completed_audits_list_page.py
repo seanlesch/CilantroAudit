@@ -16,6 +16,8 @@ from cilantro_audit.completed_audit import CompletedAudit
 
 from mongoengine import connect
 
+from cilantro_audit.templates.cilantro_button import CilantroButton
+
 connect(PROD_DB)
 
 TITLE_SORT_ORDER = [
