@@ -29,8 +29,8 @@
                 GridLayout:
                     id: headers
                     cols: 5
-                    spacing: 10
                     size_hint_y: 0.1
+                    spacing: 10
 
                     Button:
                         id: title_header
@@ -68,33 +68,42 @@
                             root.sort_by_unresolved()
 
                 ScrollView:
-                    id: scrollable_list
-
                     GridLayout:
                         id: audit_list
                         cols: 5
-                        spacing: 10
                         size_hint_y: None
+                        height: self.minimum_height
+                        spacing: 10
 
                         GridLayout:
                             id: title_col
                             cols: 1
+                            size_hint_y: None
+                            height: self.minimum_height
 
                         GridLayout:
                             id: date_col
                             cols: 1
+                            size_hint_y: None
+                            height: self.minimum_height
 
                         GridLayout:
                             id: auditor_col
                             cols: 1
+                            size_hint_y: None
+                            height: self.minimum_height
 
                         GridLayout:
                             id: severity_col
                             cols: 1
+                            size_hint_y: None
+                            height: self.minimum_height
 
                         GridLayout:
                             id: unresolved_col
                             cols: 1
+                            size_hint_y: None
+                            height: self.minimum_height
 
             GridLayout:
                 rows: 3
@@ -122,8 +131,8 @@
         GridLayout:
             id: navigation_options
             cols: 4
-            spacing: 10
             size_hint_y: 0.1
+            spacing: 10
 
             Button:
                 text: 'Return to Admin Page'
@@ -138,7 +147,7 @@
                 size_hint_y: None
                 size: 400, 50
                 on_release:
-                    root.load_completed_audits()
+                    root.refresh_completed_audits()
 
             Button:
                 text: 'Search'
@@ -156,18 +165,17 @@
 
 
 <SearchPop>:
-    auto_dismiss: True
-    title: "Search Criteria"
-    size_hint: .5, .5
-
     search_text: search_text
     popup_search_button: popup_search_button
+    auto_dismiss: True
+    size_hint: .5, .5
+    title: "Search Criteria"
 
     GridLayout:
         rows: 3
 
         Label:
-            text: "Please enter the title of the audit you are looking for."
+            text: "Please enter the title of the audit you are looking for:"
 
         TextInput:
             id: search_text
