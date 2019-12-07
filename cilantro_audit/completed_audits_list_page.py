@@ -41,12 +41,12 @@ class CompletedAuditsListPage(Screen):
         super().__init__(**kw)
         self.audits = []
         self.sorted_audits = []
+        self.db_index = 0
         self.title_col_key = 0
         self.date_col_key = 1
         self.auditor_col_key = 2
         self.severity_col_key = 3
         self.unresolved_col_key = 4
-        self.db_index = 0
         self.load_completed_audits()
 
     # Retrieve the current page of audits (sorted) from the database and populate it
@@ -59,7 +59,7 @@ class CompletedAuditsListPage(Screen):
         self.sort_by_unresolved()
         self.populate_audits()
 
-    # Populate sorted audits into separate columns
+    # Populate the sorted columns
     def populate_audits(self):
         self.title_col.clear_widgets()
         self.date_col.clear_widgets()
@@ -115,137 +115,96 @@ class CompletedAuditsListPage(Screen):
     def sort_by_title(self):
         sort_reverse = False
 
-        # Get the audit's current page columns
-        audit_titles = list(map(lambda x: x.title, self.audits))
-        audit_dates = list(map(lambda x: x.datetime, self.audits))
-        audit_auditors = list(map(lambda x: x.auditor, self.audits))
-        audit_severities = list(map(lambda x: str(x.severity.severity), self.audits))
-        audit_unresolved_counts = list(map(lambda x: str(x.unresolved_count), self.audits))
+        # Get the current page/search columns as tuples and sort them in the given order
+        self.get_current_cols_as_tuples()
+        self.sorted_audits = sorted(self.sorted_audits,
+                                    key=itemgetter(self.title_col_key,
+                                                   self.unresolved_col_key,
+                                                   self.date_col_key,
+                                                   self.auditor_col_key,
+                                                   self.severity_col_key),
+                                    reverse=sort_reverse)
 
-        # Convert the columns into tuple
-        self.sorted_audits = list(zip(*[audit_titles,
-                                        audit_dates,
-                                        audit_auditors,
-                                        audit_severities,
-                                        audit_unresolved_counts]))
-
-        # Sort the tuple
-        self.sorted_audits = sorted(self.sorted_audits, key=itemgetter(self.title_col_key,
-                                                                       self.unresolved_col_key,
-                                                                       self.date_col_key,
-                                                                       self.auditor_col_key,
-                                                                       self.severity_col_key), reverse=sort_reverse)
-
-        # Populate the sorted columns
+        # Populate the sorted tuple
         self.populate_audits()
 
     def sort_by_date(self):
         sort_reverse = True
 
-        # Get the audit's current page columns
-        audit_titles = list(map(lambda x: x.title, self.audits))
-        audit_dates = list(map(lambda x: x.datetime, self.audits))
-        audit_auditors = list(map(lambda x: x.auditor, self.audits))
-        audit_severities = list(map(lambda x: str(x.severity.severity), self.audits))
-        audit_unresolved_counts = list(map(lambda x: str(x.unresolved_count), self.audits))
+        # Get the current page/search columns as tuples and sort them in the given order
+        self.get_current_cols_as_tuples()
+        self.sorted_audits = sorted(self.sorted_audits,
+                                    key=itemgetter(self.date_col_key,
+                                                   self.unresolved_col_key,
+                                                   self.title_col_key,
+                                                   self.auditor_col_key,
+                                                   self.severity_col_key),
+                                    reverse=sort_reverse)
 
-        # Convert the columns into tuple
-        self.sorted_audits = list(zip(*[audit_titles,
-                                        audit_dates,
-                                        audit_auditors,
-                                        audit_severities,
-                                        audit_unresolved_counts]))
-
-        # Sort the tuple
-        self.sorted_audits = sorted(self.sorted_audits, key=itemgetter(self.date_col_key,
-                                                                       self.unresolved_col_key,
-                                                                       self.title_col_key,
-                                                                       self.auditor_col_key,
-                                                                       self.severity_col_key), reverse=sort_reverse)
-
-        # Populate the sorted columns
+        # Populate the sorted tuple
         self.populate_audits()
 
     def sort_by_auditor(self):
         sort_reverse = False
 
-        # Get the audit's current page columns
-        audit_titles = list(map(lambda x: x.title, self.audits))
-        audit_dates = list(map(lambda x: x.datetime, self.audits))
-        audit_auditors = list(map(lambda x: x.auditor, self.audits))
-        audit_severities = list(map(lambda x: str(x.severity.severity), self.audits))
-        audit_unresolved_counts = list(map(lambda x: str(x.unresolved_count), self.audits))
+        # Get the current page/search columns as tuples and sort them in the given order
+        self.get_current_cols_as_tuples()
+        self.sorted_audits = sorted(self.sorted_audits,
+                                    key=itemgetter(self.auditor_col_key,
+                                                   self.unresolved_col_key,
+                                                   self.date_col_key,
+                                                   self.title_col_key,
+                                                   self.severity_col_key),
+                                    reverse=sort_reverse)
 
-        # Convert the columns into tuple
-        self.sorted_audits = list(zip(*[audit_titles,
-                                        audit_dates,
-                                        audit_auditors,
-                                        audit_severities,
-                                        audit_unresolved_counts]))
-
-        # Sort the tuple
-        self.sorted_audits = sorted(self.sorted_audits, key=itemgetter(self.auditor_col_key,
-                                                                       self.unresolved_col_key,
-                                                                       self.date_col_key,
-                                                                       self.title_col_key,
-                                                                       self.severity_col_key), reverse=sort_reverse)
-
-        # Populate the sorted columns
+        # Populate the sorted tuple
         self.populate_audits()
 
     def sort_by_severity(self):
         sort_reverse = True
 
-        # Get the audit's current page columns
-        audit_titles = list(map(lambda x: x.title, self.audits))
-        audit_dates = list(map(lambda x: x.datetime, self.audits))
-        audit_auditors = list(map(lambda x: x.auditor, self.audits))
-        audit_severities = list(map(lambda x: str(x.severity.severity), self.audits))
-        audit_unresolved_counts = list(map(lambda x: str(x.unresolved_count), self.audits))
+        # Get the current page/search columns as tuples and sort them in the given order
+        self.get_current_cols_as_tuples()
+        self.sorted_audits = sorted(self.sorted_audits,
+                                    key=itemgetter(self.severity_col_key,
+                                                   self.unresolved_col_key,
+                                                   self.date_col_key,
+                                                   self.title_col_key,
+                                                   self.auditor_col_key),
+                                    reverse=sort_reverse)
 
-        # Convert the columns into tuple
-        self.sorted_audits = list(zip(*[audit_titles,
-                                        audit_dates,
-                                        audit_auditors,
-                                        audit_severities,
-                                        audit_unresolved_counts]))
-
-        # Sort the tuple
-        self.sorted_audits = sorted(self.sorted_audits, key=itemgetter(self.severity_col_key,
-                                                                       self.unresolved_col_key,
-                                                                       self.date_col_key,
-                                                                       self.title_col_key,
-                                                                       self.auditor_col_key), reverse=sort_reverse)
-
-        # Populate the sorted columns
+        # Populate the sorted tuple
         self.populate_audits()
 
     def sort_by_unresolved(self):
         sort_reverse = True
 
-        # Get the audit's current page columns
+        # Get the current page/search columns as tuples and sort them in the given order
+        self.get_current_cols_as_tuples()
+        self.sorted_audits = sorted(self.sorted_audits,
+                                    key=itemgetter(self.unresolved_col_key,
+                                                   self.date_col_key,
+                                                   self.title_col_key,
+                                                   self.auditor_col_key,
+                                                   self.severity_col_key),
+                                    reverse=sort_reverse)
+
+        # Populate the sorted tuple
+        self.populate_audits()
+
+    # Convert the current page/search columns into tuples
+    def get_current_cols_as_tuples(self):
         audit_titles = list(map(lambda x: x.title, self.audits))
         audit_dates = list(map(lambda x: x.datetime, self.audits))
         audit_auditors = list(map(lambda x: x.auditor, self.audits))
         audit_severities = list(map(lambda x: str(x.severity.severity), self.audits))
         audit_unresolved_counts = list(map(lambda x: str(x.unresolved_count), self.audits))
 
-        # Convert the columns into tuple
         self.sorted_audits = list(zip(*[audit_titles,
                                         audit_dates,
                                         audit_auditors,
                                         audit_severities,
                                         audit_unresolved_counts]))
-
-        # Sort the tuple
-        self.sorted_audits = sorted(self.sorted_audits, key=itemgetter(self.unresolved_col_key,
-                                                                       self.date_col_key,
-                                                                       self.title_col_key,
-                                                                       self.auditor_col_key,
-                                                                       self.severity_col_key), reverse=sort_reverse)
-
-        # Populate the sorted columns
-        self.populate_audits()
 
     def refresh_completed_audits(self):
         self.load_completed_audits()
