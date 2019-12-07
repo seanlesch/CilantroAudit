@@ -133,7 +133,7 @@ class CompletedAuditsListPage(Screen):
     # Get the current page/search columns as tuples and sort them in the given order
     def sort_by_severity(self):
         self.get_current_cols_as_tuples()
-        self.sorted_audits = sorted(self.sorted_audits, key=itemgetter(self.severity_col_key), reverse=True)
+        self.sorted_audits = sorted(self.sorted_audits, key=itemgetter(self.severity_col_key), reverse=False)
         self.populate_audits()
 
     # Get the current page/search columns as tuples and sort them in the given order
