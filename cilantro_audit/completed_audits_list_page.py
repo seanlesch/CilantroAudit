@@ -52,8 +52,8 @@ class CompletedAuditsListPage(Screen):
     # Retrieve the current page of audits (sorted) from the database and populate it
     def load_completed_audits(self):
         self.audits = list(
-            CompletedAudit.objects().order_by("-unresolved_count", "-datetime", "title", "auditor", "severity")
-                .only("title", "datetime", "auditor", "severity", "unresolved_count")
+            CompletedAudit.objects().only("title", "datetime", "auditor", "severity", "unresolved_count")
+                .order_by("-unresolved_count", "severity", "-datetime", "title", "auditor")
                 .skip(self.db_index * AUDITS_PER_PAGE).limit(AUDITS_PER_PAGE))
         self.sorted_audits = self.audits
         self.sort_by_unresolved()
@@ -112,84 +112,34 @@ class CompletedAuditsListPage(Screen):
             self.page_count_label.text = "Page " + str(self.db_index + 1)
             self.load_completed_audits()
 
+    # Get the current page/search columns as tuples and sort them in the given order
     def sort_by_title(self):
-        sort_reverse = False
-
-        # Get the current page/search columns as tuples and sort them in the given order
         self.get_current_cols_as_tuples()
-        self.sorted_audits = sorted(self.sorted_audits,
-                                    key=itemgetter(self.title_col_key,
-                                                   self.unresolved_col_key,
-                                                   self.date_col_key,
-                                                   self.auditor_col_key,
-                                                   self.severity_col_key),
-                                    reverse=sort_reverse)
-
-        # Populate the sorted tuple
+        self.sorted_audits = sorted(self.sorted_audits, key=itemgetter(self.title_col_key), reverse=False)
         self.populate_audits()
 
+    # Get the current page/search columns as tuples and sort them in the given order
     def sort_by_date(self):
-        sort_reverse = True
-
-        # Get the current page/search columns as tuples and sort them in the given order
         self.get_current_cols_as_tuples()
-        self.sorted_audits = sorted(self.sorted_audits,
-                                    key=itemgetter(self.date_col_key,
-                                                   self.unresolved_col_key,
-                                                   self.title_col_key,
-                                                   self.auditor_col_key,
-                                                   self.severity_col_key),
-                                    reverse=sort_reverse)
-
-        # Populate the sorted tuple
+        self.sorted_audits = sorted(self.sorted_audits, key=itemgetter(self.date_col_key), reverse=True)
         self.populate_audits()
 
+    # Get the current page/search columns as tuples and sort them in the given order
     def sort_by_auditor(self):
-        sort_reverse = False
-
-        # Get the current page/search columns as tuples and sort them in the given order
         self.get_current_cols_as_tuples()
-        self.sorted_audits = sorted(self.sorted_audits,
-                                    key=itemgetter(self.auditor_col_key,
-                                                   self.unresolved_col_key,
-                                                   self.date_col_key,
-                                                   self.title_col_key,
-                                                   self.severity_col_key),
-                                    reverse=sort_reverse)
-
-        # Populate the sorted tuple
+        self.sorted_audits = sorted(self.sorted_audits, key=itemgetter(self.auditor_col_key), reverse=False)
         self.populate_audits()
 
+    # Get the current page/search columns as tuples and sort them in the given order
     def sort_by_severity(self):
-        sort_reverse = True
-
-        # Get the current page/search columns as tuples and sort them in the given order
         self.get_current_cols_as_tuples()
-        self.sorted_audits = sorted(self.sorted_audits,
-                                    key=itemgetter(self.severity_col_key,
-                                                   self.unresolved_col_key,
-                                                   self.date_col_key,
-                                                   self.title_col_key,
-                                                   self.auditor_col_key),
-                                    reverse=sort_reverse)
-
-        # Populate the sorted tuple
+        self.sorted_audits = sorted(self.sorted_audits, key=itemgetter(self.severity_col_key), reverse=True)
         self.populate_audits()
 
+    # Get the current page/search columns as tuples and sort them in the given order
     def sort_by_unresolved(self):
-        sort_reverse = True
-
-        # Get the current page/search columns as tuples and sort them in the given order
         self.get_current_cols_as_tuples()
-        self.sorted_audits = sorted(self.sorted_audits,
-                                    key=itemgetter(self.unresolved_col_key,
-                                                   self.date_col_key,
-                                                   self.title_col_key,
-                                                   self.auditor_col_key,
-                                                   self.severity_col_key),
-                                    reverse=sort_reverse)
-
-        # Populate the sorted tuple
+        self.sorted_audits = sorted(self.sorted_audits, key=itemgetter(self.unresolved_col_key), reverse=True)
         self.populate_audits()
 
     # Convert the current page/search columns into tuples
@@ -226,11 +176,14 @@ class CompletedAuditsListPage(Screen):
             self.sort_by_unresolved()
             self.populate_audits()
 
-    # Returns the audits from audits[] that match the title passed in
+    # Return all audits (sorted) that matches the given title
     def grab_audits_with_title(self, title):
         audits_with_title = []
+        all_audits_sorted = list(
+            CompletedAudit.objects().only("title", "datetime", "auditor", "severity", "unresolved_count")
+                .order_by("-unresolved_count", "severity", "-datetime", "title", "auditor"))
 
-        for audit in list(CompletedAudit.objects()):
+        for audit in all_audits_sorted:
             if get_close_matches(title.lower(), [audit.title.lower()]):
                 audits_with_title.append(audit)
 
